@@ -1,0 +1,13 @@
+﻿<Window x:Class="CustomerLogger.AdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Admin" Height="300" Width="300">
+    <Grid>
+        <Button x:Name="StartDayButton" Content="Start Day" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="110,150,0,0" Click="StartDayButton_Click"/>
+        <Button x:Name="EndDayButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="110,175,0,0" Height="20" Content="End Day" Click="EndDayButton_Click"/>
+        <Button x:Name="LogDirectoryButton" Content="Log Directory" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="110,32,0,0" Click="LogDirectoryButton_Click" Height="21"/>
+        <Button x:Name="CloseButton" Content="Stop Program" HorizontalAlignment="Left" VerticalAlignment="Top" Width="94" Margin="101,239,0,0" Click="CloseButton_Click"/>
+        <Button x:Name="ExitButton" Content="Exit" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="110,214,0,0" Click="ExitButton_Click"/>
+
+    </Grid>
+</Window>
