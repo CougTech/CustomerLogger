@@ -105,9 +105,11 @@ namespace CustomerLogger {
             endDayTimer.IsEnabled = false; // stop timer
 
             // end the log and display message
-            EndLog();
-            MessageWindow mw = new MessageWindow("End day \n" + DateTime.Now.ToString("MM-dd-yyyy"));
-            mw.Show();
+            if (null != _writer) {
+                EndLog();
+                MessageWindow mw = new MessageWindow("End day \n" + DateTime.Now.ToString("MM-dd-yyyy"));
+                mw.Show();
+            }
 
             endDayTimer.Interval = TimeUntilNextTimer(endTime); // update time to next day at 5:00 pm
             endDayTimer.IsEnabled = true;
