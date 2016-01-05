@@ -29,6 +29,10 @@ namespace CustomerLogger {
         private int _number_records;
         private string _log_path;
 
+        private TimeSpan startTime = new TimeSpan(8, 0, 0); // 8:00 am (24 hour clock)
+        private TimeSpan endTime = new TimeSpan(17, 0, 0); // 5:00 pm
+        private System.Windows.Threading.DispatcherTimer startDayTimer, endDayTimer; // fires an event to start/end the log for the day
+
         public MainWindow() {
             InitializeComponent();
             _writer = null;
@@ -39,7 +43,16 @@ namespace CustomerLogger {
             _summary_page = new SummaryPage(this);
             ContentFrame.Navigate(_student_id_page);
             _log_path = Directory.GetCurrentDirectory();
-            
+
+            startDayTimer = new System.Windows.Threading.DispatcherTimer();
+            //startDayTimer.Interval = startTime;
+            startDayTimer.IsEnabled = true;
+            //startDayTimer.Tick += handlerhere()
+
+            endDayTimer = new System.Windows.Threading.DispatcherTimer();
+            //endDayTimer.Interval = endTime;
+            endDayTimer.IsEnabled = true;
+            //endDayTimer.Tick += handlerhere()
         }
 
         public string LogPath {
@@ -74,6 +87,25 @@ namespace CustomerLogger {
             _writer.addToCurrent("Device");
             _writer.addToCurrent("Problem");
             _writer.WriteLine();
+        }
+
+        private void AutoStartLog(object sender, EventArgs e) {
+            startDayTimer.IsEnabled = false; // stop timer
+
+            // start the log and display message
+            //startDayTimer.Interval = updatedtime
+
+            startDayTimer.IsEnabled = true;
+        }
+
+        private void AutoEndLog(object sender, EventArgs e)
+        {
+            endDayTimer.IsEnabled = false; // stop timer
+
+            // end the log and display message
+            //endDayTimer.Interval = updatedtime
+
+            endDayTimer.IsEnabled = true;
         }
 
         //add to text to current line for customer log
