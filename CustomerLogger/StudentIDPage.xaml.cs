@@ -42,7 +42,7 @@ namespace CustomerLogger {
         }
 
         private void StudentNumberTextBox_GotFocus(object sender, RoutedEventArgs e) {
-            StudentNumberTextBox.Text = String.Empty;
+            StudentNumberTextBox.SelectAll();
         }
 
         private void StudentNumberTextBox_TextChanged(object sender, TextChangedEventArgs e) {
@@ -62,8 +62,10 @@ namespace CustomerLogger {
             is_num = int.TryParse(StudentNumberTextBox.Text, out n);
 
             if(is_num && correct_length) { 
-            
                 SubmitButton.IsEnabled = true;
+            }
+            else {
+                SubmitButton.IsEnabled = false;
             }
         }
     }
