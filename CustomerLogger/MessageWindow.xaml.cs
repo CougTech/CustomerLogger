@@ -33,7 +33,6 @@ namespace CustomerLogger {
         }
 
         private void OKButton_Click(object sender, RoutedEventArgs e) {
-            //Task.Delay(TimeSpan.FromSeconds(3)).ContinueWith((x) => close_window());
             this.Close();
         }
 

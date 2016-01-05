@@ -31,7 +31,7 @@ namespace CustomerLogger {
 
         private TimeSpan startTime = new TimeSpan(8, 0, 0); // 8:00 am (24 hour clock)
         private TimeSpan endTime = new TimeSpan(17, 0, 0); // 5:00 pm
-        private System.Windows.Threading.DispatcherTimer startDayTimer, endDayTimer; // fires an event to start/end the log for the day
+        private System.Windows.Threading.DispatcherTimer startDayTimer, endDayTimer;
 
         public MainWindow() {
             InitializeComponent();
@@ -44,15 +44,15 @@ namespace CustomerLogger {
             ContentFrame.Navigate(_student_id_page);
             _log_path = Directory.GetCurrentDirectory();
 
-            startDayTimer = new System.Windows.Threading.DispatcherTimer();
-            //startDayTimer.Interval = startTime;
+            startDayTimer = new System.Windows.Threading.DispatcherTimer(); // Timer to automatically start logging at 8:00 am
+            startDayTimer.Interval = TimeUntilNextTimer(startTime);
             startDayTimer.IsEnabled = true;
-            //startDayTimer.Tick += handlerhere()
+            startDayTimer.Tick += new EventHandler(AutoStartLog);
 
-            endDayTimer = new System.Windows.Threading.DispatcherTimer();
-            //endDayTimer.Interval = endTime;
+            endDayTimer = new System.Windows.Threading.DispatcherTimer(); // Timer to automatically end logging at 5:00 pm
+            endDayTimer.Interval = TimeUntilNextTimer(endTime);
             endDayTimer.IsEnabled = true;
-            //endDayTimer.Tick += handlerhere()
+            endDayTimer.Tick += new EventHandler(AutoEndLog);
         }
 
         public string LogPath {
@@ -93,19 +93,34 @@ namespace CustomerLogger {
             startDayTimer.IsEnabled = false; // stop timer
 
             // start the log and display message
-            //startDayTimer.Interval = updatedtime
+            StartLog(DateTime.Now.ToString("MM-dd-yyyy"));
+            MessageWindow mw = new MessageWindow("Start New day \n" + DateTime.Now.ToString("MM-dd-yyyy"));
+            mw.Show();
 
+            startDayTimer.Interval = TimeUntilNextTimer(startTime); // update time to next day at 8:00 am
             startDayTimer.IsEnabled = true;
         }
 
-        private void AutoEndLog(object sender, EventArgs e)
-        {
+        private void AutoEndLog(object sender, EventArgs e) {
             endDayTimer.IsEnabled = false; // stop timer
 
             // end the log and display message
-            //endDayTimer.Interval = updatedtime
+            EndLog();
+            MessageWindow mw = new MessageWindow("End day \n" + DateTime.Now.ToString("MM-dd-yyyy"));
+            mw.Show();
 
+            endDayTimer.Interval = TimeUntilNextTimer(endTime); // update time to next day at 5:00 pm
             endDayTimer.IsEnabled = true;
+        }
+
+        private TimeSpan TimeUntilNextTimer(TimeSpan target_time) {
+            DateTime dt = DateTime.Today.Add(target_time);
+
+            if (DateTime.Now > dt) { // if past the target time then set it for the next day
+                dt = dt.AddDays(1);
+            }
+
+            return dt.Subtract(DateTime.Now);
         }
 
         //add to text to current line for customer log
@@ -142,7 +157,7 @@ namespace CustomerLogger {
         private void AdminButton_Click(object sender, RoutedEventArgs e) {
             AdminWindow aw = new AdminWindow(this);
 
-            aw.Show();
+            aw.ShowDialog(); // keeps admin window on top of all other windows, preventing multiple admin windows from opening
         }
 
         public void changePage(Page page) {
@@ -170,9 +185,6 @@ namespace CustomerLogger {
 
         //TODO:
         //Find way to truly clear all of history
-
-        //TODO:
-        //Find Automation for start and end of days
 
         //TODO:
         //Make Pretty
