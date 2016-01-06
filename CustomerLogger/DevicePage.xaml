@@ -12,13 +12,13 @@
 
     <Grid>
         <Button x:Name="SubmitButton" Content="Next" HorizontalAlignment="Left" Margin="1115,628,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="SubmitButton_Click"/>
-        <RadioButton x:Name="ComputerButton" Content="Computer" HorizontalAlignment="Left" Margin="426,204,0,0" VerticalAlignment="Top" FontSize="30" Click="ComputerButton_Click"/>
-        <RadioButton x:Name="PhoneButton" Content="Phone" HorizontalAlignment="Left" Margin="426,251,0,0" VerticalAlignment="Top" FontSize="30" Click="PhoneButton_Click"/>
-        <RadioButton x:Name="TabletButton" Content="Tablet" HorizontalAlignment="Left" Margin="426,298,0,0" VerticalAlignment="Top" FontSize="30" Click="TabletButton_Click"/>
-        <RadioButton x:Name="AccountButton" Content="WSU Account" HorizontalAlignment="Left" Margin="426,345,0,0" VerticalAlignment="Top" FontSize="30" Click="AccountButton_Click"/>
-        <RadioButton x:Name="Other" Content="Other" HorizontalAlignment="Left" Margin="426,455,0,0" VerticalAlignment="Top" FontSize="30" RenderTransformOrigin="0.513,-0.055" Click="Other_Click"/>
-        <TextBlock x:Name="ProblemText" HorizontalAlignment="Left" Margin="330,143,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="25" Text="Please select what is giving you trouble:"/>
-        <RadioButton x:Name="RentalButton" Content="Rental" HorizontalAlignment="Left" Margin="426,400,0,0" VerticalAlignment="Top" FontSize="30" Click="RentalButton_Click"/>
+        <RadioButton x:Name="ComputerButton" Content="Computer" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="484,256,0,0" VerticalAlignment="Top" FontSize="30" Click="ComputerButton_Click"/>
+        <RadioButton x:Name="PhoneButton" Content="Phone" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="484,303,0,0" VerticalAlignment="Top" FontSize="30" Click="PhoneButton_Click"/>
+        <RadioButton x:Name="TabletButton" Content="Tablet" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="484,350,0,0" VerticalAlignment="Top" FontSize="30" Click="TabletButton_Click"/>
+        <RadioButton x:Name="AccountButton" Content="WSU Account" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="484,397,0,0" VerticalAlignment="Top" FontSize="30" Click="AccountButton_Click"/>
+        <RadioButton x:Name="Other" Content="Other" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="484,507,0,0" VerticalAlignment="Top" FontSize="30" RenderTransformOrigin="0.513,-0.055" Click="Other_Click"/>
+        <TextBlock x:Name="ProblemText" HorizontalAlignment="Left" Margin="388,195,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="25" Text="Please select what is giving you trouble:"/>
+        <RadioButton x:Name="RentalButton" Content="Rental" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="484,452,0,0" VerticalAlignment="Top" FontSize="30" Click="RentalButton_Click"/>
 
     </Grid>
 </Page>

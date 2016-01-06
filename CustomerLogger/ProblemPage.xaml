@@ -12,16 +12,16 @@
 
     <Grid>
         <Button x:Name="NextButton"  Content="Next" HorizontalAlignment="Left" Margin="1115,628,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="NextButton_Click"/>
-        <RadioButton x:Name="HardwareButton" Content="Hardware" HorizontalAlignment="Left" Margin="352,204,0,0" VerticalAlignment="Top" FontSize="30" Click="HardwareButton_Click"/>
-        <RadioButton x:Name="SoftwareButton" Content="Software" HorizontalAlignment="Left" Margin="352,251,0,0" VerticalAlignment="Top" FontSize="30" Click="SoftwareButton_Click"/>
-        <RadioButton x:Name="WirelessButton" Content="Wireless" HorizontalAlignment="Left" Margin="352,298,0,0" VerticalAlignment="Top" FontSize="30" Click="WirelessButton_Click"/>
-        <RadioButton x:Name="EmailButton" Content="Email" HorizontalAlignment="Left" Margin="352,345,0,0" VerticalAlignment="Top" FontSize="30" Click="EmailButton_Click"/>
-        <RadioButton x:Name="PasswordButton" Content="Password" HorizontalAlignment="Left" Margin="352,392,0,0" VerticalAlignment="Top" FontSize="30" Click="PasswordButton_Click"/>
-        <RadioButton x:Name="WSUServiceButton" Content="WSU Service" HorizontalAlignment="Left" Margin="352,438,0,0" VerticalAlignment="Top" FontSize="30" Click="WSUServiceButton_Click"/>
-        <RadioButton x:Name="ApplicationButton"  Content="Application (Visual Studio, Office, etc)" HorizontalAlignment="Left" Margin="352,485,0,0" VerticalAlignment="Top" FontSize="30" Click="ApplicationButton_Click"/>
-        <RadioButton x:Name="Other" Content="Other" HorizontalAlignment="Left" Margin="352,595,0,0" VerticalAlignment="Top" FontSize="30" RenderTransformOrigin="0.513,-0.055" Click="Other_Click"/>
-        <TextBlock x:Name="ProblemText" HorizontalAlignment="Left" Margin="259,124,0,0" TextWrapping="Wrap" Text="Please select the option that best describes your problem:" VerticalAlignment="Top" FontSize="25"/>
-        <RadioButton x:Name="RentalButton" Content="Rent/Extend/Return Rental Computer" HorizontalAlignment="Left" Margin="352,540,0,0" VerticalAlignment="Top" FontSize="30" Click="RentalButton_Click"/>
+        <RadioButton x:Name="HardwareButton" Content="Hardware" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="352,204,0,0" VerticalAlignment="Top" FontSize="30" Click="HardwareButton_Click" Width="511"/>
+        <RadioButton x:Name="SoftwareButton" Content="Software" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="352,251,0,0" VerticalAlignment="Top" FontSize="30" Click="SoftwareButton_Click"/>
+        <RadioButton x:Name="WirelessButton" Content="Wireless" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="352,298,0,0" VerticalAlignment="Top" FontSize="30" Click="WirelessButton_Click"/>
+        <RadioButton x:Name="EmailButton" Content="Email" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="352,345,0,0" VerticalAlignment="Top" FontSize="30" Click="EmailButton_Click"/>
+        <RadioButton x:Name="PasswordButton" Content="Password" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="352,392,0,0" VerticalAlignment="Top" FontSize="30" Click="PasswordButton_Click"/>
+        <RadioButton x:Name="WSUServiceButton" Content="WSU Service" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="352,438,0,0" VerticalAlignment="Top" FontSize="30" Click="WSUServiceButton_Click"/>
+        <RadioButton x:Name="ApplicationButton"  Content="Application (Visual Studio, Office, etc)" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="352,485,0,0" VerticalAlignment="Top" FontSize="30" Click="ApplicationButton_Click"/>
+        <RadioButton x:Name="Other" Content="Other" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="352,595,0,0" VerticalAlignment="Top" FontSize="30" RenderTransformOrigin="0.513,-0.055" Click="Other_Click"/>
+        <TextBlock x:Name="ProblemText" HorizontalAlignment="Left" Margin="275,140,0,0" TextWrapping="Wrap" Text="Please select the option that best describes your problem:" VerticalAlignment="Top" FontSize="25"/>
+        <RadioButton x:Name="RentalButton" Content="Rent/Extend/Return Rental Computer" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="352,540,0,0" VerticalAlignment="Top" FontSize="30" Click="RentalButton_Click"/>
 
     </Grid>
 </Page>

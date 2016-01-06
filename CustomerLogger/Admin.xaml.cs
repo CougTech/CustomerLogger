@@ -27,6 +27,7 @@ namespace CustomerLogger {
             InitializeComponent();
             _main_window = main_window;
             _folder_dialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.Activate();
         }
 
         private void StartDayButton_Click(object sender, RoutedEventArgs e) {

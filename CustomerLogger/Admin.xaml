@@ -1,9 +1,9 @@
 ﻿<Window x:Class="CustomerLogger.AdminWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Admin" Height="270.63" Width="233.917" ResizeMode="NoResize" ShowActivated="False" ShowInTaskbar="False" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="0" WindowStyle="ThreeDBorderWindow">
+        Title="Admin" Height="270.63" Width="233.917" ResizeMode="NoResize" ShowActivated="False" ShowInTaskbar="False" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" BorderThickness="0">
     <Window.Background>
-        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.WindowColorKey}}"/>
+        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlLightLightColorKey}}"/>
     </Window.Background>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -37,7 +37,7 @@
         <Button x:Name="CloseButton" Content="Stop Program" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Margin="0,141,0,0" Click="StopButton_Click" TabIndex="4" Height="30" Grid.Column="1">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="{DynamicResource {x:Static SystemColors.ScrollBarColorKey}}" Offset="1"/>
+                    <GradientStop Color="#FFC8C8C8" Offset="1"/>
                     <GradientStop Color="White"/>
                 </LinearGradientBrush>
             </Button.Background>
