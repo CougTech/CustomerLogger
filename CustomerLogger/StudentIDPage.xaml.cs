@@ -26,6 +26,9 @@ namespace CustomerLogger {
         public StudentIDPage(MainWindow mw) {
             InitializeComponent();
             _main_window = mw;
+            //this.Width = _main_window.Width;
+            //this.Height = _main_window.Height;
+
             SubmitButton.IsEnabled = false;
             StudentNumberTextBox.Focus();
         }

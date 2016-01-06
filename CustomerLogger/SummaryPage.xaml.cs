@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace CustomerLogger {
     /// <summary>
     /// Interaction logic for SummayPage.xaml
     /// </summary>
-    public partial class SummaryPage:Page {
+    public partial class SummaryPage : Page {
         MainWindow _main_window;
         public SummaryPage(MainWindow mw) {
             InitializeComponent();
@@ -38,7 +39,6 @@ namespace CustomerLogger {
             _main_window.writeLine();
             _main_window.Reset();
             SubmitButton.IsEnabled = false;
-
         }
 
     }

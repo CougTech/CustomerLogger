@@ -48,12 +48,12 @@ namespace CustomerLogger {
             }
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e) {
+        private void StopButton_Click(object sender, RoutedEventArgs e) {
             _main_window.Close();
             this.Close();
         }
 
-        private void ExitButton_Click(object sender, RoutedEventArgs e) {
+        private void CloseButton_Click(object sender, RoutedEventArgs e) {
             this.Close();
         }
     }

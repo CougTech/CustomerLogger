@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using CSV;
+using System.ComponentModel;
 
 namespace CustomerLogger {
     /// <summary>
@@ -53,6 +54,15 @@ namespace CustomerLogger {
             endDayTimer.Interval = TimeUntilNextTimer(endTime);
             endDayTimer.IsEnabled = true;
             endDayTimer.Tick += new EventHandler(AutoEndLog);
+
+            ContentFrame.Navigated += ContentFrame_Navigated;
+        }
+
+        private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            if (e.Content == _student_id_page) { // Will clear all back history once Student ID Page has finished loading
+                removeBackHistory();
+            }
         }
 
         public string LogPath {
@@ -157,9 +167,14 @@ namespace CustomerLogger {
         }
 
         private void AdminButton_Click(object sender, RoutedEventArgs e) {
-            AdminWindow aw = new AdminWindow(this);
 
-            aw.ShowDialog(); // keeps admin window on top of all other windows, preventing multiple admin windows from opening
+            AdminPassword ap = new AdminPassword();
+            ap.ShowDialog();
+
+            if (ap.IsCorrect) { // open admin window only if password is correct
+                AdminWindow aw = new AdminWindow(this);
+                aw.ShowDialog(); // keeps admin window on top of all other windows, preventing multiple admin windows from opening
+            }
         }
 
         public void changePage(Page page) {
@@ -169,17 +184,21 @@ namespace CustomerLogger {
         public void Reset() {
             _student_id_page = new StudentIDPage(this);
             changePage(_student_id_page);
-            
-            //clear navigation history
-            var entry = ContentFrame.NavigationService.RemoveBackEntry();
-            while(entry != null) {
 
-                entry = ContentFrame.NavigationService.RemoveBackEntry();
-            }
+            //clear navigation history
+            removeBackHistory();
 
             _device_page = new DevicePage(this);
             _problem_page = new ProblemPage(this);
             _summary_page = new SummaryPage(this);
+        }
+
+        private void removeBackHistory() {
+            var entry = ContentFrame.NavigationService.RemoveBackEntry();
+            while (entry != null)
+            {
+                entry = ContentFrame.NavigationService.RemoveBackEntry();
+            }
         }
 
         //TODO:
