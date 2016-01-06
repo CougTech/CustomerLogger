@@ -7,13 +7,11 @@
 	  Title="ProblemPage"
       d:DesignWidth="669.254"
       d:DesignHeight="483.022"
-      Background="White"
       Height="688"
       Width="1200">
 
     <Grid>
         <Button x:Name="NextButton"  Content="Next" HorizontalAlignment="Left" Margin="1115,628,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="NextButton_Click"/>
-        <Label x:Name="ProblemPageLabel" Content="Problem Page" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <RadioButton x:Name="HardwareButton" Content="Hardware" HorizontalAlignment="Left" Margin="352,204,0,0" VerticalAlignment="Top" FontSize="30" Click="HardwareButton_Click"/>
         <RadioButton x:Name="SoftwareButton" Content="Software" HorizontalAlignment="Left" Margin="352,251,0,0" VerticalAlignment="Top" FontSize="30" Click="SoftwareButton_Click"/>
         <RadioButton x:Name="WirelessButton" Content="Wireless" HorizontalAlignment="Left" Margin="352,298,0,0" VerticalAlignment="Top" FontSize="30" Click="WirelessButton_Click"/>

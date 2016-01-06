@@ -7,13 +7,11 @@
 	  Title="DevicPage"
       d:DesignWidth="669.254"
       d:DesignHeight="483.022"
-      Background="White"
       Height="688"
       Width="1200">
 
     <Grid>
         <Button x:Name="SubmitButton" Content="Next" HorizontalAlignment="Left" Margin="1115,628,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="SubmitButton_Click"/>
-        <Label x:Name="DevicePageLable" Content="Device Page" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Width="86"/>
         <RadioButton x:Name="ComputerButton" Content="Computer" HorizontalAlignment="Left" Margin="426,204,0,0" VerticalAlignment="Top" FontSize="30" Click="ComputerButton_Click"/>
         <RadioButton x:Name="PhoneButton" Content="Phone" HorizontalAlignment="Left" Margin="426,251,0,0" VerticalAlignment="Top" FontSize="30" Click="PhoneButton_Click"/>
         <RadioButton x:Name="TabletButton" Content="Tablet" HorizontalAlignment="Left" Margin="426,298,0,0" VerticalAlignment="Top" FontSize="30" Click="TabletButton_Click"/>

@@ -5,19 +5,18 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d"
 	  Title="SummaryPage"
-      Background="White"
       Height="688"
       Width="1200">
 
     <Grid>
         <Button x:Name="SubmitButton" Content="Submit" HorizontalAlignment="Left" Margin="1115,628,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="SubmitButton_Click"/>
-        <Label x:Name="SummaryPageLable" Content="Summary Page" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Width="98"/>
-        <TextBlock x:Name="StudentIDLabel" HorizontalAlignment="Left" Margin="58,64,0,0" TextWrapping="Wrap" Text="Student Number:" VerticalAlignment="Top" FontSize="50"/>
-        <TextBlock x:Name="StudentID" HorizontalAlignment="Left" Margin="453,64,0,0" TextWrapping="Wrap" Text="00000000" VerticalAlignment="Top" FontSize="50"/>
-        <TextBlock x:Name="DeviceLabel" HorizontalAlignment="Left" Margin="58,205,0,0" TextWrapping="Wrap" Text="Device:" VerticalAlignment="Top" FontSize="50"/>
-        <TextBlock x:Name="Device" HorizontalAlignment="Left" Margin="453,205,0,0" TextWrapping="Wrap" Text="A Device" VerticalAlignment="Top" FontSize="50"/>
-        <TextBlock x:Name="ProblemLabel" HorizontalAlignment="Left" Margin="58,365,0,0" TextWrapping="Wrap" Text="Problem:" VerticalAlignment="Top" FontSize="50"/>
-        <TextBlock x:Name="Problem" HorizontalAlignment="Left" Margin="453,365,0,0" TextWrapping="Wrap" Text="A Problem" VerticalAlignment="Top" FontSize="50"/>
+        <TextBlock x:Name="StudentIDLabel" Margin="287,270,503,0" TextWrapping="Wrap" Text="ID Number:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <TextBlock x:Name="StudentID" HorizontalAlignment="Left" Margin="623,270,0,0" TextWrapping="Wrap" Text="00000000" VerticalAlignment="Top" FontSize="48"/>
+        <TextBlock x:Name="DeviceLabel" Margin="287,365,686,0" TextWrapping="Wrap" Text="Device:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <TextBlock x:Name="Device" HorizontalAlignment="Left" Margin="623,365,0,0" TextWrapping="Wrap" Text="A Device" VerticalAlignment="Top" FontSize="48"/>
+        <TextBlock x:Name="ProblemLabel" Margin="287,461,686,0" TextWrapping="Wrap" Text="Problem:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <TextBlock x:Name="Problem" HorizontalAlignment="Left" Margin="623,461,0,0" TextWrapping="Wrap" Text="A Problem" VerticalAlignment="Top" FontSize="48"/>
+        <Label x:Name="label" Content="Summary" HorizontalAlignment="Left" Margin="441,120,0,0" VerticalAlignment="Top" Width="303" Height="110" FontSize="64" FontStyle="Italic"/>
 
     </Grid>
 </Page>

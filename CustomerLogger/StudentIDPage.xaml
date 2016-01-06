@@ -5,9 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
 	  Title="StudentIDPage"
-      d:DesignWidth="669.254"
-      d:DesignHeight="483.022"
-      Background="White"
+      d:DesignWidth="1086.342"
+      d:DesignHeight="617.504"
       VerticalAlignment="Stretch"
       HorizontalAlignment="Stretch"
       Height="688"
@@ -15,9 +14,8 @@
 
     <Grid>
         <Button x:Name="SubmitButton" Content="Next" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="50" Margin="1115,628,0,0" Click="SubmitButton_Click"/>
-        <Label x:Name="StudentIDPageLabel" Content="Student ID Page" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox x:Name="StudentNumberTextBox" MaxLines="1" MaxLength="9" HorizontalAlignment="Left" Height="90" Margin="316,340,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="469" FontSize="60" GotFocus="StudentNumberTextBox_GotFocus" TextChanged="StudentNumberTextBox_TextChanged"/>
-        <TextBlock HorizontalAlignment="Left" Margin="219,253,0,0" TextWrapping="Wrap" Text="Please swipe your card or enter student number:" VerticalAlignment="Top" FontSize="30"/>
+        <TextBox x:Name="StudentNumberTextBox" MaxLines="1" MaxLength="9" HorizontalAlignment="Center" Height="90" Margin="357,325,373,273" TextWrapping="Wrap" VerticalAlignment="Center" Width="470" FontSize="60" GotFocus="StudentNumberTextBox_GotFocus" TextChanged="StudentNumberTextBox_TextChanged"/>
+        <TextBlock Margin="312,253,213,0" TextWrapping="Wrap" Text="Please swipe your card or enter ID number:" VerticalAlignment="Top" FontSize="30"/>
 
     </Grid>
 </Page>
