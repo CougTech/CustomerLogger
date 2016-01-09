@@ -18,11 +18,13 @@ namespace CustomerLogger {
     /// <summary>
     /// Interaction logic for SummayPage.xaml
     /// </summary>
-    public partial class SummaryPage : Page {
+    public partial class SummaryPage:Page {
         MainWindow _main_window;
         public SummaryPage(MainWindow mw) {
             InitializeComponent();
             _main_window = mw;
+            SubmitButton.IsEnabled = true;
+            SubmitButton.Focus();
         }
 
         public void setText() {
@@ -33,12 +35,20 @@ namespace CustomerLogger {
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e) {
-            _main_window.addToCurrent(StudentID.Text);
-            _main_window.addToCurrent(Device.Text);
-            _main_window.addToCurrent(Problem.Text);
-            _main_window.writeLine();
-            _main_window.Reset();
-            SubmitButton.IsEnabled = false;
+            if(SubmitButton.IsEnabled) {
+                _main_window.addToCurrent(StudentID.Text);
+                _main_window.addToCurrent(Device.Text);
+                _main_window.addToCurrent(Problem.Text);
+                _main_window.writeLine();
+                _main_window.Reset();
+                SubmitButton.IsEnabled = false;
+            }
+        }
+
+        private void Grid_KeyUp(object sender, KeyEventArgs e) {
+            if(e.Key == Key.Enter) {
+                SubmitButton_Click(sender, e);
+            }
         }
 
     }

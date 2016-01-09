@@ -30,11 +30,13 @@ namespace CustomerLogger {
         }
 
         public string Device {
-            get { return _device;}
+            get { return _device; }
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e) {
-            _main_window.changePage(_main_window.ProblemPage);
+            if(SubmitButton.IsEnabled) {
+                _main_window.changePage(_main_window.ProblemPage);
+            }
         }
 
         private void ComputerButton_Click(object sender, RoutedEventArgs e) {
@@ -65,6 +67,12 @@ namespace CustomerLogger {
         private void RentalButton_Click(object sender, RoutedEventArgs e) {
             _device = "Rental";
             SubmitButton.IsEnabled = true;
+        }
+
+        private void Grid_KeyUp(object sender, KeyEventArgs e) {
+            if(e.Key == Key.Enter) {
+                SubmitButton_Click(sender, e);
+            }
         }
 
 

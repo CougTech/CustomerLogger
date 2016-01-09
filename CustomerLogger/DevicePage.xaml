@@ -10,7 +10,7 @@
       Height="688"
       Width="1200">
 
-    <Grid>
+    <Grid KeyUp="Grid_KeyUp">
         <Button x:Name="SubmitButton" Content="Next" HorizontalAlignment="Left" Margin="1115,628,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="SubmitButton_Click"/>
         <RadioButton x:Name="ComputerButton" Content="Computer" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="484,256,0,0" VerticalAlignment="Top" FontSize="30" Click="ComputerButton_Click"/>
         <RadioButton x:Name="PhoneButton" Content="Phone" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="484,303,0,0" VerticalAlignment="Top" FontSize="30" Click="PhoneButton_Click"/>

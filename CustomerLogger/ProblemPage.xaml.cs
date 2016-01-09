@@ -30,12 +30,14 @@ namespace CustomerLogger {
         }
 
         public string Problem {
-            get { return _problem;}
+            get { return _problem; }
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e) {
-            _main_window.SummaryPage.setText();
-            _main_window.changePage(_main_window.SummaryPage);
+            if(NextButton.IsEnabled) {
+                _main_window.SummaryPage.setText();
+                _main_window.changePage(_main_window.SummaryPage);
+            }
         }
 
         private void HardwareButton_Click(object sender, RoutedEventArgs e) {
@@ -45,12 +47,12 @@ namespace CustomerLogger {
 
         private void SoftwareButton_Click(object sender, RoutedEventArgs e) {
             _problem = "Software";
-            NextButton.IsEnabled = true;       
+            NextButton.IsEnabled = true;
         }
 
         private void WirelessButton_Click(object sender, RoutedEventArgs e) {
             _problem = "Wireless";
-            NextButton.IsEnabled = true;       
+            NextButton.IsEnabled = true;
         }
 
         private void EmailButton_Click(object sender, RoutedEventArgs e) {
@@ -81,6 +83,12 @@ namespace CustomerLogger {
         private void RentalButton_Click(object sender, RoutedEventArgs e) {
             _problem = "Rent/Checkout/Extend Rental";
             NextButton.IsEnabled = true;
+        }
+
+        private void Grid_KeyUp(object sender, KeyEventArgs e) {
+            if(e.Key == Key.Enter) {
+                NextButton_Click(sender, e);
+            }
         }
     }
 }

@@ -39,8 +39,10 @@ namespace CustomerLogger {
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e) {
 
-            _student_id = StudentNumberTextBox.Text;
-            _main_window.changePage(_main_window.DevicePage);
+            if(SubmitButton.IsEnabled) {
+                _student_id = StudentNumberTextBox.Text;
+                _main_window.changePage(_main_window.DevicePage);
+            }
 
         }
 
@@ -53,22 +55,27 @@ namespace CustomerLogger {
             bool correct_length;
             bool is_num;
 
-            if(StudentNumberTextBox.Text.Length == 8 || StudentNumberTextBox.Text.Length == 9) { 
-            
+            if(StudentNumberTextBox.Text.Length == 8 || StudentNumberTextBox.Text.Length == 9) {
+
                 correct_length = true;
-            } else { 
-            
+            } else {
+
                 correct_length = false;
             }
 
             int n;
             is_num = int.TryParse(StudentNumberTextBox.Text, out n);
 
-            if(is_num && correct_length) { 
+            if(is_num && correct_length) {
                 SubmitButton.IsEnabled = true;
-            }
-            else {
+            } else {
                 SubmitButton.IsEnabled = false;
+            }
+        }
+
+        private void StudentNumberTextBox_KeyUp(object sender, KeyEventArgs e) {
+            if(e.Key == Key.Enter) {
+                SubmitButton_Click(sender, e);
             }
         }
     }
