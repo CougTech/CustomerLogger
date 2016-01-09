@@ -11,7 +11,7 @@
       Width="1200">
 
     <Grid KeyUp="Grid_KeyUp">
-        <Button x:Name="SubmitButton" Content="Next" HorizontalAlignment="Left" Margin="1115,628,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="SubmitButton_Click"/>
+        <Button x:Name="SubmitButton" Content="Next" HorizontalAlignment="Left" Margin="1030,598,0,0" VerticalAlignment="Top" Width="160" Height="80" Click="SubmitButton_Click"/>
         <RadioButton x:Name="ComputerButton" Content="Computer" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="484,256,0,0" VerticalAlignment="Top" FontSize="30" Click="ComputerButton_Click"/>
         <RadioButton x:Name="PhoneButton" Content="Phone" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="484,303,0,0" VerticalAlignment="Top" FontSize="30" Click="PhoneButton_Click"/>
         <RadioButton x:Name="TabletButton" Content="Tablet" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="484,350,0,0" VerticalAlignment="Top" FontSize="30" Click="TabletButton_Click"/>
