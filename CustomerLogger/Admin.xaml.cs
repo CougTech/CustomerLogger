@@ -26,6 +26,13 @@ namespace CustomerLogger {
         public AdminWindow(MainWindow main_window) {
             InitializeComponent();
             _main_window = main_window;
+            DirectoryTextBlock.Text = _main_window.LogPath;
+            if(_main_window.Logging) { 
+            
+                LogGoingTextBlock.Text = "Logging: Yes";
+            } else {
+                LogGoingTextBlock.Text = "Logging: No";
+            }
             _folder_dialog = new System.Windows.Forms.FolderBrowserDialog();
             this.Activate();
         }
@@ -34,12 +41,16 @@ namespace CustomerLogger {
             _main_window.StartLog(DateTime.Now.ToString("MM-dd-yyyy"));
             MessageWindow mw = new MessageWindow("Start New day \n" + DateTime.Now.ToString("MM-dd-yyyy"));
             mw.Show();
+            _main_window.Logging = true;
+            LogGoingTextBlock.Text = "Logging: Yes";
         }
 
         private void EndDayButton_Click(object sender, RoutedEventArgs e) {
             _main_window.EndLog();
             MessageWindow mw = new MessageWindow("End day \n" + DateTime.Now.ToString("MM-dd-yyyy"));
             mw.Show();
+            _main_window.Logging = false;
+            LogGoingTextBlock.Text = "Logging: No";
         }
 
         private void LogDirectoryButton_Click(object sender, RoutedEventArgs e) {
@@ -47,6 +58,7 @@ namespace CustomerLogger {
             if(System.Windows.Forms.DialogResult.OK == result) {
                 _main_window.LogPath = _folder_dialog.SelectedPath.ToString();
             }
+            DirectoryTextBlock.Text = _main_window.LogPath;
         }
 
         private void StopButton_Click(object sender, RoutedEventArgs e) {

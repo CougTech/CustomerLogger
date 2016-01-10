@@ -29,6 +29,7 @@ namespace CustomerLogger {
         private SummaryPage _summary_page;
         private int _number_records;
         private string _log_path;
+        private bool _logging;
 
         private TimeSpan startTime = new TimeSpan(8, 0, 0); // 8:00 am (24 hour clock)
         private TimeSpan endTime = new TimeSpan(17, 0, 0); // 5:00 pm
@@ -42,6 +43,7 @@ namespace CustomerLogger {
             _device_page = new DevicePage(this);
             _problem_page = new ProblemPage(this);
             _summary_page = new SummaryPage(this);
+            _logging = false;
             ContentFrame.Navigate(_student_id_page);
             _log_path = Directory.GetCurrentDirectory();
 
@@ -67,6 +69,7 @@ namespace CustomerLogger {
 
         public string LogPath {
             set { _log_path = value; }
+            get { return _log_path;}
         }
 
         public StudentIDPage StudentIDPage{
@@ -83,6 +86,11 @@ namespace CustomerLogger {
 
         public SummaryPage SummaryPage {
             get {return _summary_page; }
+        }
+
+        public bool Logging {
+            get {return _logging; }
+            set {_logging = value; }
         }
 
         public void StartLog(string name) {
