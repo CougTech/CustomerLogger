@@ -20,14 +20,14 @@ namespace CustomerLogger {
 
         private System.Windows.Threading.DispatcherTimer openTimer;
 
-        public MessageWindow(string message) {
+        public MessageWindow(string message, double interval) {
             InitializeComponent();
     
             MessageTextBox.Text = message;
 
             // Display this window for 3 seconds
             openTimer = new System.Windows.Threading.DispatcherTimer();
-            openTimer.Interval = TimeSpan.FromSeconds(3.0);
+            openTimer.Interval = TimeSpan.FromSeconds(interval);
             openTimer.IsEnabled = true;
             openTimer.Tick += new EventHandler(this.close_window);
         }

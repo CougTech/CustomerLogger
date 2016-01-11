@@ -40,6 +40,10 @@ namespace CustomerLogger {
                 _main_window.addToCurrent(Device.Text);
                 _main_window.addToCurrent(Problem.Text);
                 _main_window.writeLine();
+
+                MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you", 4.0);
+                mw.ShowDialog();
+
                 _main_window.Reset();
                 SubmitButton.IsEnabled = false;
             }

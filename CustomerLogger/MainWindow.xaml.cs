@@ -112,7 +112,7 @@ namespace CustomerLogger {
 
             // start the log and display message
             StartLog(DateTime.Now.ToString("MM-dd-yyyy"));
-            MessageWindow mw = new MessageWindow("Start New day \n" + DateTime.Now.ToString("MM-dd-yyyy"));
+            MessageWindow mw = new MessageWindow("Start New day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
             mw.Show();
 
             startDayTimer.Interval = TimeUntilNextTimer(startTime); // update time to next day at 8:00 am
@@ -125,7 +125,7 @@ namespace CustomerLogger {
             // end the log and display message
             if (null != _writer) {
                 EndLog();
-                MessageWindow mw = new MessageWindow("End day \n" + DateTime.Now.ToString("MM-dd-yyyy"));
+                MessageWindow mw = new MessageWindow("End day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
                 mw.Show();
             }
 

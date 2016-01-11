@@ -39,7 +39,7 @@ namespace CustomerLogger {
 
         private void StartDayButton_Click(object sender, RoutedEventArgs e) {
             _main_window.StartLog(DateTime.Now.ToString("MM-dd-yyyy"));
-            MessageWindow mw = new MessageWindow("Start New day \n" + DateTime.Now.ToString("MM-dd-yyyy"));
+            MessageWindow mw = new MessageWindow("Start New day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
             mw.Show();
             _main_window.Logging = true;
             LogGoingTextBlock.Text = "Logging: Yes";
@@ -47,7 +47,7 @@ namespace CustomerLogger {
 
         private void EndDayButton_Click(object sender, RoutedEventArgs e) {
             _main_window.EndLog();
-            MessageWindow mw = new MessageWindow("End day \n" + DateTime.Now.ToString("MM-dd-yyyy"));
+            MessageWindow mw = new MessageWindow("End day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
             mw.Show();
             _main_window.Logging = false;
             LogGoingTextBlock.Text = "Logging: No";
