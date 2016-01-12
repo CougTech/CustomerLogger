@@ -95,6 +95,7 @@ namespace CustomerLogger {
 
         public void StartLog(string name) {
 
+            _logging = true;
             //create a new writer
             _writer = new CSVWriter(_log_path + "\\" + name + ".csv");
             _writer.addToCurrent("Log for: ");
@@ -172,6 +173,8 @@ namespace CustomerLogger {
             _number_records = 0;
             //close and dealocate the csv writer
             _writer = null;
+
+            _logging = false;
         }
 
         private void AdminButton_Click(object sender, RoutedEventArgs e) {
