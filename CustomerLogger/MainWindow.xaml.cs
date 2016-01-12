@@ -45,7 +45,7 @@ namespace CustomerLogger {
             _summary_page = new SummaryPage(this);
             _logging = false;
             ContentFrame.Navigate(_student_id_page);
-            _log_path = Directory.GetCurrentDirectory();
+            _log_path = GetDefaultDirectory();
 
             startDayTimer = new System.Windows.Threading.DispatcherTimer(); // Timer to automatically start logging at 8:00 am
             startDayTimer.Interval = TimeUntilNextTimer(startTime);
@@ -58,13 +58,6 @@ namespace CustomerLogger {
             endDayTimer.Tick += new EventHandler(AutoEndLog);
 
             ContentFrame.Navigated += ContentFrame_Navigated;
-        }
-
-        private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
-        {
-            if (e.Content == _student_id_page) { // Will clear all back history once Student ID Page has finished loading
-                removeBackHistory();
-            }
         }
 
         public string LogPath {
@@ -91,6 +84,28 @@ namespace CustomerLogger {
         public bool Logging {
             get {return _logging; }
             set {_logging = value; }
+        }
+        
+        // reads in a file to set the default directory
+        private string GetDefaultDirectory()
+        {
+            try {
+                using (FileStream fs = new FileStream("defaultdir.cfg", FileMode.Open)) {
+                    using (StreamReader sr = new StreamReader(fs)) {
+                        return sr.ReadLine(); // directory should be first and only line in file
+                    }
+                }
+            }
+            catch (Exception e) {
+                return Directory.GetCurrentDirectory(); // return current directory if failed to read file
+            }
+        }
+        
+        private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            if (e.Content == _student_id_page) { // Will clear all back history once Student ID Page has finished loading
+                removeBackHistory();
+            }
         }
 
         public void StartLog(string name) {
