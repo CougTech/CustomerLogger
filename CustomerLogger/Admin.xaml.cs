@@ -38,6 +38,12 @@ namespace CustomerLogger {
         }
 
         private void StartDayButton_Click(object sender, RoutedEventArgs e) {
+            
+            if (_main_window.Logging) {
+                MessageBox.Show("The day has already been started!", "Error"); // avoid being able to start a day if it is already started
+                return;
+            }
+            
             _main_window.StartLog(DateTime.Now.ToString("MM-dd-yyyy"));
             MessageWindow mw = new MessageWindow("Start New day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
             mw.Show();
@@ -45,6 +51,12 @@ namespace CustomerLogger {
         }
 
         private void EndDayButton_Click(object sender, RoutedEventArgs e) {
+            
+            if (false == _main_window.Logging) {
+                MessageBox.Show("The day has not been started!", "Error"); // avoid being able to end a day if it is not started
+                return;
+            }
+            
             _main_window.EndLog();
             MessageWindow mw = new MessageWindow("End day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
             mw.Show();
