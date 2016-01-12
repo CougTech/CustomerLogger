@@ -30,6 +30,8 @@ namespace CustomerLogger {
             openTimer.Interval = TimeSpan.FromSeconds(interval);
             openTimer.IsEnabled = true;
             openTimer.Tick += new EventHandler(this.close_window);
+
+            OKButton.Focus(); // focus on OK button so user can press enter to close popup
         }
 
         private void OKButton_Click(object sender, RoutedEventArgs e) {
