@@ -111,10 +111,21 @@ namespace CustomerLogger {
         public void StartLog(string name) {
 
             _logging = true;
+            _number_records = 0;
             //create a new writer
-            _writer = new CSVWriter(_log_path + "\\" + name + ".csv");
+            try
+            {
+                _writer = new CSVWriter(_log_path + "\\" + name + ".csv");
+            }
+            catch (Exception e) {
+                MessageBox.Show(e.Message, "Error Starting Log");
+                return;
+            }
             _writer.addToCurrent("Log for: ");
             _writer.addToCurrent(name);
+            _writer.addToCurrent(" ");
+            _writer.addToCurrent("Log Start Time: ");
+            _writer.addToCurrent(DateTime.Now.ToShortTimeString());
             _writer.WriteLine();
             _writer.addToCurrent("Time");
             _writer.addToCurrent("ID Number");
@@ -185,7 +196,9 @@ namespace CustomerLogger {
             _writer.addToCurrent("Customers for today: ");
             _writer.addToCurrent(_number_records.ToString());
             _writer.WriteLine();
-            _number_records = 0;
+            _writer.addToCurrent("Log End Time: ");
+            _writer.addToCurrent(DateTime.Now.ToShortTimeString());
+            _writer.WriteLine();
             //close and dealocate the csv writer
             _writer = null;
 
@@ -219,6 +232,13 @@ namespace CustomerLogger {
             _summary_page = new SummaryPage(this);
         }
 
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (true == _logging) {
+                EndLog(); // Will finish writing the log if the program got closed with Alt+F4 (not sure if it works on crashes..)
+            }
+        }
+
         private void removeBackHistory() {
             var entry = ContentFrame.NavigationService.RemoveBackEntry();
             while (entry != null)
@@ -227,13 +247,5 @@ namespace CustomerLogger {
             }
         }
 
-        //TODO:
-        //Make sure valid ID Numbers only
-
-        //TODO:
-        //Find way to truly clear all of history
-
-        //TODO:
-        //Make Pretty
     }
 }

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow"
         WindowStyle="None"
-        WindowState="Maximized">
+        WindowState="Maximized" Closing="Window_Closing">
     <Grid>
         <Frame x:Name="ContentFrame" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,28,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Visible" IsTabStop="False">
             <Frame.Background>
