@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using System.Net.Mail;
+using System.Net;
 using CSV;
 using System.ComponentModel;
 
@@ -30,6 +32,7 @@ namespace CustomerLogger {
         private int _number_records;
         private string _log_path;
         private bool _logging;
+        private string _email_pwd;
 
         private TimeSpan startTime = new TimeSpan(8, 0, 0); // 8:00 am (24 hour clock)
         private TimeSpan endTime = new TimeSpan(17, 0, 0); // 5:00 pm
@@ -44,6 +47,7 @@ namespace CustomerLogger {
             _problem_page = new ProblemPage(this);
             _summary_page = new SummaryPage(this);
             _logging = false;
+            _email_pwd = "";
             ContentFrame.Navigate(_student_id_page);
             _log_path = GetDefaultDirectory();
 
@@ -63,6 +67,11 @@ namespace CustomerLogger {
         public string LogPath {
             set { _log_path = value; }
             get { return _log_path;}
+        }
+
+        public string EmailPassword {
+            set { _email_pwd = value; }
+            get { return _email_pwd; }
         }
 
         public StudentIDPage StudentIDPage{
@@ -187,6 +196,13 @@ namespace CustomerLogger {
                 _writer.addToStart(DateTime.Now.ToString("h:mm"));
                 _writer.WriteLine();
                 _number_records++;
+
+                SendTicket(); // send in otrs ticket after writing to csv file
+            }
+            else {
+                if (true == _logging) {
+                    MessageBox.Show("Trying to write to file but the CSV writer is set to null.", "Error Writing Record"); // Show an error message if tried to write a record but there is no CSV writer
+                }
             }
         }
 
@@ -207,10 +223,10 @@ namespace CustomerLogger {
 
         private void AdminButton_Click(object sender, RoutedEventArgs e) {
 
-            AdminPassword ap = new AdminPassword();
+            PasswordWindow ap = new PasswordWindow();
             ap.ShowDialog();
 
-            if (ap.IsCorrect) { // open admin window only if password is correct
+            if (ap.Password == "couglolz") { // open admin window only if password is correct
                 AdminWindow aw = new AdminWindow(this);
                 aw.ShowDialog(); // keeps admin window on top of all other windows, preventing multiple admin windows from opening
             }
@@ -247,5 +263,28 @@ namespace CustomerLogger {
             }
         }
 
+        private void SendTicket() {
+            
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
+            client.Credentials = new NetworkCredential("cougtech.helpdesk@gmail.com", _email_pwd);
+
+            MailAddress sender = new MailAddress("cougtech.helpdesk@gmail.com");
+            MailAddress receiver = new MailAddress("cougtech@wsu.edu");
+
+            MailMessage msg = new MailMessage(sender, receiver);
+            msg.Subject = "##Cougtech Walk-in " + StudentIDPage.StudentID + " " + ProblemPage.Problem + " Issues";
+            msg.Body = DateTime.Now.ToLongTimeString() + "\n" + StudentIDPage.StudentID + "\n" + DevicePage.Device + "\n" + ProblemPage.Problem;
+
+            Cursor = Cursors.AppStarting;
+            try {
+                client.Send(msg);
+            }
+            catch (Exception e) {
+                System.Windows.MessageBox.Show("Could not send OTRS ticket. Please let a CougTech employee know of this problem. Thank you.", "Failed To Send");
+            }
+            Cursor = Cursors.Arrow;
+        }
     }
 }

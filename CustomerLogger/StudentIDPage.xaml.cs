@@ -55,7 +55,7 @@ namespace CustomerLogger {
             bool correct_length;
             bool is_num;
 
-            if(StudentNumberTextBox.Text.Length == 8 || StudentNumberTextBox.Text.Length == 9) {
+            if(StudentNumberTextBox.Text.Length == 8 || (StudentNumberTextBox.Text.Length == 9 && StudentNumberTextBox.Text[0] == '0')) { // length of 9 is only correct if first digit is 0
 
                 correct_length = true;
             } else {

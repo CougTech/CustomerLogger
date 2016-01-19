@@ -17,28 +17,25 @@ namespace CustomerLogger
     /// <summary>
     /// Interaction logic for AdminPassword.xaml
     /// </summary>
-    public partial class AdminPassword : Window
+    public partial class PasswordWindow : Window
     {
-        private bool _correct;
-        //private System.Security.SecureString _pwd;
+        private string _pwd;
 
-        public AdminPassword()
+        public PasswordWindow()
         {
             InitializeComponent();
-            _correct = false;
+            _pwd = "";
             passwordBox.Focus();
         }
 
-        public bool IsCorrect
+        public string Password
         {
-            get { return _correct; }
+            get { return _pwd; }
         }
 
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
-            if(passwordBox.Password == "couglolz") { // hardcoded password for now...
-                _correct = true;
-            }
+            _pwd = passwordBox.Password;
 
             this.Close();
         }

@@ -54,8 +54,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AdminPassword.xaml.cs">
-      <DependentUpon>AdminPassword.xaml</DependentUpon>
+    <Compile Include="PasswordWindow.xaml.cs">
+      <DependentUpon>PasswordWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DevicePage.xaml.cs">
       <DependentUpon>DevicePage.xaml</DependentUpon>
@@ -76,7 +76,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AdminPassword.xaml">
+    <Page Include="PasswordWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

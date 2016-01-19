@@ -79,5 +79,14 @@ namespace CustomerLogger {
         private void CloseButton_Click(object sender, RoutedEventArgs e) {
             this.Close();
         }
+
+        private void emailButton_Click(object sender, RoutedEventArgs e)
+        {
+            PasswordWindow pw = new PasswordWindow();
+            pw.ShowDialog();
+
+            _main_window.EmailPassword = pw.Password;
+            System.Windows.MessageBox.Show("Email password set!");
+        }
     }
 }
