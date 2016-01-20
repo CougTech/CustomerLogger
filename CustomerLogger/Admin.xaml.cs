@@ -33,6 +33,15 @@ namespace CustomerLogger {
             } else {
                 LogGoingTextBlock.Text = "Logging: No";
             }
+
+            if (_main_window.EmailLogging) {
+                emailSendTextBlock.Text = "Emails Sending: Yes";
+                emailButton.Content = "Disable Emails";
+            }
+            else {
+                emailSendTextBlock.Text = "Emails Sending: No";
+            }
+
             _folder_dialog = new System.Windows.Forms.FolderBrowserDialog();
             this.Activate();
         }
@@ -82,11 +91,24 @@ namespace CustomerLogger {
 
         private void emailButton_Click(object sender, RoutedEventArgs e)
         {
-            PasswordWindow pw = new PasswordWindow();
-            pw.ShowDialog();
+            if (_main_window.EmailLogging == false)
+            {
+                PasswordWindow pw = new PasswordWindow();
+                pw.ShowDialog();
 
-            _main_window.EmailPassword = pw.Password;
-            System.Windows.MessageBox.Show("Email password set!");
+                _main_window.EmailPassword = pw.Password;
+                _main_window.EmailLogging = true;
+                emailSendTextBlock.Text = "Emails Sending: Yes";
+                emailButton.Content = "Disable Emails";
+                System.Windows.MessageBox.Show("Email password set!");
+            }
+            else
+            {
+                _main_window.EmailPassword = ""; // clear out password when not sending email
+                _main_window.EmailLogging = false;
+                emailSendTextBlock.Text = "Emails Sending: No";
+                emailButton.Content = "Email Login";
+            }
         }
     }
 }

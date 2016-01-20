@@ -31,7 +31,7 @@ namespace CustomerLogger {
         private SummaryPage _summary_page;
         private int _number_records;
         private string _log_path;
-        private bool _logging;
+        private bool _logging, _email_logging;
         private string _email_pwd;
 
         private TimeSpan startTime = new TimeSpan(8, 0, 0); // 8:00 am (24 hour clock)
@@ -47,6 +47,7 @@ namespace CustomerLogger {
             _problem_page = new ProblemPage(this);
             _summary_page = new SummaryPage(this);
             _logging = false;
+            _email_logging = false;
             _email_pwd = "";
             ContentFrame.Navigate(_student_id_page);
             _log_path = GetDefaultDirectory();
@@ -94,7 +95,14 @@ namespace CustomerLogger {
             get {return _logging; }
             set {_logging = value; }
         }
-        
+
+        public bool EmailLogging
+        {
+            get { return _email_logging; }
+            set { _email_logging = value; }
+        }
+
+
         // reads in a file to set the default directory
         private string GetDefaultDirectory()
         {
@@ -120,6 +128,7 @@ namespace CustomerLogger {
         public void StartLog(string name) {
 
             _logging = true;
+            _email_logging = true;
             _number_records = 0;
             //create a new writer
             try
@@ -191,13 +200,12 @@ namespace CustomerLogger {
         //write the line for the end of the customer log
         public void writeLine() {
 
-            if(null != _writer) { 
-            
+            if(null != _writer) {
+
                 _writer.addToStart(DateTime.Now.ToString("h:mm"));
                 _writer.WriteLine();
                 _number_records++;
 
-                SendTicket(); // send in otrs ticket after writing to csv file
             }
             else {
                 if (true == _logging) {
@@ -219,6 +227,7 @@ namespace CustomerLogger {
             _writer = null;
 
             _logging = false;
+            _email_logging = false;
         }
 
         private void AdminButton_Click(object sender, RoutedEventArgs e) {
@@ -263,7 +272,7 @@ namespace CustomerLogger {
             }
         }
 
-        private void SendTicket() {
+        public int SendTicket() {
             
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;
@@ -271,11 +280,15 @@ namespace CustomerLogger {
             client.Credentials = new NetworkCredential("cougtech.helpdesk@gmail.com", _email_pwd);
 
             MailAddress sender = new MailAddress("cougtech.helpdesk@gmail.com");
-            MailAddress receiver = new MailAddress("cougtech@wsu.edu");
+            MailAddress receiver = new MailAddress("rodriada000@gmail.com");
 
             MailMessage msg = new MailMessage(sender, receiver);
             msg.Subject = "##Cougtech Walk-in " + StudentIDPage.StudentID + " " + ProblemPage.Problem + " Issues";
-            msg.Body = DateTime.Now.ToLongTimeString() + "\n" + StudentIDPage.StudentID + "\n" + DevicePage.Device + "\n" + ProblemPage.Problem;
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + StudentIDPage.StudentID + "\n" + DevicePage.Device + "\n" + ProblemPage.Problem);
+            sb.AppendLine("\n[*] Please change the customer for this ticket by selecting the | Customer | button above and enter their ID number.");
+            msg.Body = sb.ToString();
 
             Cursor = Cursors.AppStarting;
             try {
@@ -283,8 +296,11 @@ namespace CustomerLogger {
             }
             catch (Exception e) {
                 System.Windows.MessageBox.Show("Could not send OTRS ticket. Please let a CougTech employee know of this problem. Thank you.", "Failed To Send");
+                Cursor = Cursors.Arrow;
+                return -1; // -1 for error
             }
             Cursor = Cursors.Arrow;
+            return 0; // 0 for success
         }
     }
 }

@@ -36,7 +36,14 @@ namespace CustomerLogger {
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e) {
             if(SubmitButton.IsEnabled) {
-                _main_window.addToCurrent(StudentID.Text);
+                if (_main_window.EmailLogging == true) {
+                    int result = _main_window.SendTicket(); // send in otrs ticket 
+                    if (result < 0) {
+                        return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
+                    }
+                }
+
+                _main_window.addToCurrent(StudentID.Text); // write to csv file
                 _main_window.addToCurrent(Device.Text);
                 _main_window.addToCurrent(Problem.Text);
                 _main_window.writeLine();
