@@ -280,7 +280,7 @@ namespace CustomerLogger {
             client.Credentials = new NetworkCredential("cougtech.helpdesk@gmail.com", _email_pwd);
 
             MailAddress sender = new MailAddress("cougtech.helpdesk@gmail.com");
-            MailAddress receiver = new MailAddress("rodriada000@gmail.com");
+            MailAddress receiver = new MailAddress("cougtech@wsu.edu");
 
             MailMessage msg = new MailMessage(sender, receiver);
             msg.Subject = "##Cougtech Walk-in " + StudentIDPage.StudentID + " " + ProblemPage.Problem + " Issues";

@@ -36,7 +36,7 @@ namespace CustomerLogger {
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e) {
             if(SubmitButton.IsEnabled) {
-                if (_main_window.EmailLogging == true) {
+                if (_main_window.EmailLogging == true && (Device.Text != "Rental" && Problem.Text != "Rent/Checkout/Extend Rental")) { // don't send tickets that are rentals (ramsay creates one)
                     int result = _main_window.SendTicket(); // send in otrs ticket 
                     if (result < 0) {
                         return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
