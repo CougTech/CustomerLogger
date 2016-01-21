@@ -283,11 +283,13 @@ namespace CustomerLogger {
             MailAddress receiver = new MailAddress("cougtech@wsu.edu");
 
             MailMessage msg = new MailMessage(sender, receiver);
-            msg.Subject = "##Cougtech Walk-in " + StudentIDPage.StudentID + " " + ProblemPage.Problem + " Issues";
+            msg.Subject = "##Cougtech Walk-in " + ProblemPage.Problem + ": " + StudentIDPage.StudentID;
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + StudentIDPage.StudentID + "\n" + DevicePage.Device + "\n" + ProblemPage.Problem);
-            sb.AppendLine("\n[*] Please change the customer for this ticket by selecting the | Customer | button above and enter their ID number.");
+            sb.AppendLine("\n[*] Please change the customer information for this ticket by selecting the | Customer | button above and enter their ID number in the Customer User field.");
+            sb.AppendLine("[*] Add your notes by selecting the | Note | button above.");
+            sb.AppendLine("[*] Close the ticket when you are done by selecting the | Close | button above.");
             msg.Body = sb.ToString();
 
             Cursor = Cursors.AppStarting;
