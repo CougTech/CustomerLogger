@@ -156,9 +156,11 @@ namespace CustomerLogger {
             startDayTimer.IsEnabled = false; // stop timer
 
             // start the log and display message
-            StartLog(DateTime.Now.ToString("MM-dd-yyyy"));
-            MessageWindow mw = new MessageWindow("Start New day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
-            mw.Show();
+            if (DateTime.Today.DayOfWeek != DayOfWeek.Saturday && DateTime.Today.DayOfWeek != DayOfWeek.Sunday) { // don't start logs on saturday/sunday
+                StartLog(DateTime.Now.ToString("MM-dd-yyyy"));
+                MessageWindow mw = new MessageWindow("Start New day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
+                mw.Show();
+            }
 
             startDayTimer.Interval = TimeUntilNextTimer(startTime); // update time to next day at 8:00 am
             startDayTimer.IsEnabled = true;
