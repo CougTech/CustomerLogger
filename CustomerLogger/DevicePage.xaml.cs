@@ -17,6 +17,8 @@ namespace CustomerLogger {
     /// <summary>
     /// Interaction logic for DevicePage.xaml
     /// </summary>
+    
+    //guces the customer a list of radial buttons so they can choose their device
     public partial class DevicePage:Page {
 
         MainWindow _main_window;
@@ -33,12 +35,16 @@ namespace CustomerLogger {
             get { return _device; }
         }
 
+        //make sure the submit button is enabled first them move on
         private void SubmitButton_Click(object sender, RoutedEventArgs e) {
             if(SubmitButton.IsEnabled) {
                 _main_window.changePage(_main_window.ProblemPage);
             }
         }
 
+        //these radial button events are all the same,
+        //set the device string to the option they selected and enable submitbutton
+        //so they can continue
         private void ComputerButton_Click(object sender, RoutedEventArgs e) {
             _device = "Computer";
             SubmitButton.IsEnabled = true;
@@ -69,6 +75,7 @@ namespace CustomerLogger {
             SubmitButton.IsEnabled = true;
         }
 
+        //make sure enter key works
         private void Grid_KeyUp(object sender, KeyEventArgs e) {
             if(e.Key == Key.Enter) {
                 SubmitButton_Click(sender, e);
