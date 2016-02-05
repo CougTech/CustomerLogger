@@ -18,7 +18,7 @@ namespace CustomerLogger {
     /// Interaction logic for DevicePage.xaml
     /// </summary>
     
-    //guces the customer a list of radial buttons so they can choose their device
+    //gives the customer a list of radial buttons so they can choose their device
     public partial class DevicePage:Page {
 
         MainWindow _main_window;
