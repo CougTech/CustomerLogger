@@ -38,20 +38,47 @@ namespace CustomerLogger {
         private TimeSpan endTime = new TimeSpan(17, 0, 0); // 5:00 pm
         private System.Windows.Threading.DispatcherTimer startDayTimer, endDayTimer;
 
+
+        //runs everything.
         public MainWindow() {
             InitializeComponent();
             _writer = null;
             _number_records = 0;
+            //The way this works is there is one window and we have different
+            //pages that we flip between. Each page is responcible for getting
+            //a piece of info from the customer. Each page takes a reference to the
+            //main window so if can modify the necessary data fields
+            
+            //so.... this is probably a terrible design
+            //I am pretty sure the little windows are just supposed
+            //to pass info from themselves to the main window
+            //and not access the actual data in the main window.
+            //so this is kinda a terrible design, like it is bad.
+            //we should probably fix this
+            //TODO: fix this design
+            //I guess to be fair I should say I made this decision
+            //to use this sub-par design because I was just trying
+            //to get something to work. And this was much faster to code
+            //than figure out the proper events and all that... I am a backend
+            //programmer and UI's are dumb.... Anyway bad design but at least
+            //you know why I did it.
+            //But still TODO: fix this design
+            
+            //here is the page objects
             _student_id_page = new StudentIDPage(this);
             _device_page = new DevicePage(this);
             _problem_page = new ProblemPage(this);
             _summary_page = new SummaryPage(this);
+            
+            //state variables
             _logging = false;
             _email_logging = false;
             _email_pwd = "";
             ContentFrame.Navigate(_student_id_page);
             _log_path = GetDefaultDirectory();
 
+            //sets up timers to go at particular times
+            //start of cougtech and end of cougtech working
             startDayTimer = new System.Windows.Threading.DispatcherTimer(); // Timer to automatically start logging at 8:00 am
             startDayTimer.Interval = TimeUntilNextTimer(startTime);
             startDayTimer.IsEnabled = true;
@@ -65,11 +92,13 @@ namespace CustomerLogger {
             ContentFrame.Navigated += ContentFrame_Navigated;
         }
 
+        //holds the path to where csv logs are saved
         public string LogPath {
             set { _log_path = value; }
             get { return _log_path;}
         }
 
+        //saves password used for emailing otrs
         public string EmailPassword {
             set { _email_pwd = value; }
             get { return _email_pwd; }
@@ -118,6 +147,8 @@ namespace CustomerLogger {
             }
         }
         
+        //remove histroy when done, so we don't have to worry about customer going back and seeing
+        //other student ID's but also so we don't get duplicates of the same customer
         private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
         {
             if (e.Content == _student_id_page) { // Will clear all back history once Student ID Page has finished loading
@@ -125,6 +156,8 @@ namespace CustomerLogger {
             }
         }
 
+        //starts a .csv log for the day
+        //it will be given the name passed in .csv
         public void StartLog(string name) {
 
             _logging = true;
@@ -139,23 +172,29 @@ namespace CustomerLogger {
                 MessageBox.Show(e.Message, "Error Starting Log");
                 return;
             }
+            //basic header stuff for the csv
+            //the name of the log, the time it started
             _writer.addToCurrent("Log for: ");
             _writer.addToCurrent(name);
             _writer.addToCurrent(" ");
             _writer.addToCurrent("Log Start Time: ");
             _writer.addToCurrent(DateTime.Now.ToShortTimeString());
             _writer.WriteLine();
+            //and then header for the collumns
             _writer.addToCurrent("Time");
             _writer.addToCurrent("ID Number");
             _writer.addToCurrent("Device");
             _writer.addToCurrent("Problem");
             _writer.WriteLine();
+             //woot woot for making human readable outp
         }
 
+        //automatically starts the day when the timer is hit
         private void AutoStartLog(object sender, EventArgs e) {
             startDayTimer.IsEnabled = false; // stop timer
 
             // start the log and display message
+            //we make the name of the log being the date in the MM-dd-yyyy format
             if (DateTime.Today.DayOfWeek != DayOfWeek.Saturday && DateTime.Today.DayOfWeek != DayOfWeek.Sunday) { // don't start logs on saturday/sunday
                 StartLog(DateTime.Now.ToString("MM-dd-yyyy"));
                 MessageWindow mw = new MessageWindow("Start New day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
@@ -166,6 +205,7 @@ namespace CustomerLogger {
             startDayTimer.IsEnabled = true;
         }
 
+        //automatically ends the log
         private void AutoEndLog(object sender, EventArgs e) {
             endDayTimer.IsEnabled = false; // stop timer
 
@@ -180,6 +220,7 @@ namespace CustomerLogger {
             endDayTimer.IsEnabled = true;
         }
 
+        //resets the timer to go for the next day
         private TimeSpan TimeUntilNextTimer(TimeSpan target_time) {
             DateTime dt = DateTime.Today.Add(target_time);
 
@@ -191,6 +232,7 @@ namespace CustomerLogger {
         }
 
         //add to text to current line for customer log
+        //delagtes to the internal CSV writer object
         public void addToCurrent(string text) {
 
             if(null != _writer) { 
@@ -200,6 +242,7 @@ namespace CustomerLogger {
         }
 
         //write the line for the end of the customer log
+        //delagtes to the internal CSV writer object
         public void writeLine() {
 
             if(null != _writer) {
@@ -217,6 +260,9 @@ namespace CustomerLogger {
         }
 
         //close the file (log for the day)
+        //this includes tallying up the customers for the day and writing it
+        //then putting the log end time and writting it
+        //destroying the writer and then resetting state variables
         public void EndLog() {
 
             _writer.addToCurrent("Customers for today: ");
@@ -232,21 +278,30 @@ namespace CustomerLogger {
             _email_logging = false;
         }
 
+        //opens the admin button, after the user successfully puts in our secret password
         private void AdminButton_Click(object sender, RoutedEventArgs e) {
 
             PasswordWindow ap = new PasswordWindow();
             ap.ShowDialog();
 
+            //This is also terrible, but easy to use... but still, we should move this out to a file somewhere
+            //because this is dumb
+            //and bad, and should be fixed if we want to do this correctly
+            //woot woot for hardcoded passwords....
             if (ap.Password == "couglolz") { // open admin window only if password is correct
                 AdminWindow aw = new AdminWindow(this);
                 aw.ShowDialog(); // keeps admin window on top of all other windows, preventing multiple admin windows from opening
             }
         }
 
+        //allows us to move from one page to the next via our current page... because of my bad design
         public void changePage(Page page) {
             ContentFrame.Navigate(page);
         }
 
+        //resets all pages and state related to signing in customer
+        //usefull when someone has submitted and we do not want to keep
+        //old submissions floating arround in memory.
         public void Reset() {
             _student_id_page = new StudentIDPage(this);
             changePage(_student_id_page);
@@ -259,6 +314,9 @@ namespace CustomerLogger {
             _summary_page = new SummaryPage(this);
         }
 
+        //make sure that if the window closes for any reason (possibly other than a crash
+        //this may work in a crash, but we haven't tested that, also we are planning on this not crashing)
+        //we end the log, just so we have less chance of corrupted logs
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (true == _logging) {
@@ -266,6 +324,8 @@ namespace CustomerLogger {
             }
         }
 
+        //remove page history so customer can't go back after the final submission
+        //this way we don't get duplicates and people need to sign up
         private void removeBackHistory() {
             var entry = ContentFrame.NavigationService.RemoveBackEntry();
             while (entry != null)
@@ -274,6 +334,9 @@ namespace CustomerLogger {
             }
         }
 
+        //sends ticket to orts via email
+        //this way we can make notes and all that good otrs stuff....
+        //this is the code that actually takes our customer logger info and sends it to otrs
         public int SendTicket() {
             
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
