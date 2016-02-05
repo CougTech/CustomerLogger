@@ -17,6 +17,8 @@ namespace CustomerLogger {
     /// <summary>
     /// Interaction logic for ProblemPage.xaml
     /// </summary>
+    
+    //allows the user to choose a problem from the list
     public partial class ProblemPage:Page {
 
         private MainWindow _main_window;
@@ -32,7 +34,8 @@ namespace CustomerLogger {
         public string Problem {
             get { return _problem; }
         }
-
+        
+        //when they have made an option customer can move on
         private void NextButton_Click(object sender, RoutedEventArgs e) {
             if(NextButton.IsEnabled) {
                 _main_window.SummaryPage.setText();
@@ -40,6 +43,9 @@ namespace CustomerLogger {
             }
         }
 
+        //all of these radial buttons are pretty similar. The customer
+        //selects there issue. Then we save the text of the problem
+        //and then we enable the next button.
         private void HardwareButton_Click(object sender, RoutedEventArgs e) {
             _problem = "Hardware";
             NextButton.IsEnabled = true;
