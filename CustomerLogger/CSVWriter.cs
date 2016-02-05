@@ -4,6 +4,15 @@ using System.Linq;
 //Ryan Huard
 //v 1.0.0
 
+//Usage
+//CSVWriter w = new CSVWriter(file_name.csv)
+//Add to line:
+//      w.addToCurrent("some string") will add "some string" at the end of the line as a new cell
+//      w.addToStart("some string") will add "some string" at the front of the line in a new cell
+//      after you have completed the line:
+//w.WriteLine
+
+
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
