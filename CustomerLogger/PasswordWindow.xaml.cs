@@ -17,6 +17,9 @@ namespace CustomerLogger
     /// <summary>
     /// Interaction logic for AdminPassword.xaml
     /// </summary>
+    
+    //when the customer wants to go to the admin window they have to get through this first
+    //pretty simple just gets the password from the user and saves it to check when going to admin window
     public partial class PasswordWindow : Window
     {
         private string _pwd;
