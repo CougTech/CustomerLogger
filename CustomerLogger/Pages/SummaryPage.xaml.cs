@@ -51,6 +51,11 @@ namespace CustomerLogger {
             submitTimer.Tick += SubmitTimer_Tick;
         }
 
+        public void StopTimer()
+        {
+            submitTimer.IsEnabled = false;
+        }
+
         private void SubmitButton_Click(object sender, RoutedEventArgs e) {
             submitTimer.IsEnabled = false;
             PageFinished(new object(), new EventArgs());

@@ -9,7 +9,7 @@
       Width="1200">
 
     <Grid KeyUp="Grid_KeyUp">
-        <Button x:Name="SubmitButton" Content="Submit" HorizontalAlignment="Left" Margin="1030,598,0,0" VerticalAlignment="Top" Width="160" Height="80" Click="SubmitButton_Click"/>
+        <Button x:Name="SubmitButton" Content="Submit" HorizontalAlignment="Right" Margin="0,0,21,28" VerticalAlignment="Bottom" Width="160" Height="80" Click="SubmitButton_Click" FontSize="26.667"/>
         <TextBlock x:Name="StudentIDLabel" Margin="315,270,475,0" TextWrapping="Wrap" Text="ID Number:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
         <TextBlock x:Name="StudentID" HorizontalAlignment="Left" Margin="651,270,0,0" TextWrapping="Wrap" Text="00000000" VerticalAlignment="Top" FontSize="48"/>
         <TextBlock x:Name="DeviceLabel" Margin="315,365,658,0" TextWrapping="Wrap" Text="Device:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>

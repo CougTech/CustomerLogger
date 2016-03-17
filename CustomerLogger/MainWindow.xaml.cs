@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Net;
 using CSV;
 using System.ComponentModel;
+using CustomerLogger.Pages;
 
 namespace CustomerLogger
 {
@@ -18,6 +19,7 @@ namespace CustomerLogger
     public partial class MainWindow:Window {
         private CSVWriter _writer;
         private StudentIDPage _student_id_page;
+        private AppointmentPage _appt_page;
         private DevicePage _device_page;
         private ProblemPage _problem_page;
         private SummaryPage _summary_page;
@@ -79,6 +81,19 @@ namespace CustomerLogger
             endDayTimer.Tick += new EventHandler(AutoEndLog);
 
             ContentFrame.Navigated += ContentFrame_Navigated;
+            ContentFrame.Navigating += ContentFrame_Navigating;
+        }
+
+        // stops the timer on the summary page if the user decides to go back for some reason
+        private void ContentFrame_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            if (e.NavigationMode == NavigationMode.Back)
+            {
+                if (e.Content == ProblemPage)
+                {
+                    SummaryPage.StopTimer();
+                }
+            }
         }
 
         //holds the path to where csv logs are saved
@@ -107,6 +122,11 @@ namespace CustomerLogger
 
         public SummaryPage SummaryPage {
             get {return _summary_page; }
+        }
+
+        public AppointmentPage AppointmentPage
+        {
+            get { return _appt_page; }
         }
 
         public bool Logging {
@@ -141,6 +161,9 @@ namespace CustomerLogger
             _student_id_page = new StudentIDPage();
             _student_id_page.PageFinished += _page_PageFinished;
 
+            _appt_page = new AppointmentPage();
+            _appt_page.PageFinished += _page_PageFinished;
+
             _device_page = new DevicePage();
             _device_page.PageFinished += _page_PageFinished;
 
@@ -151,12 +174,49 @@ namespace CustomerLogger
             _summary_page.PageFinished += _summary_page_PageFinished;
         }
 
+        // this will create a ticket specifically for appointments and will skip the rest of the questions
+        private void SendAppointment()
+        {
+            if (EmailLogging == true)
+            { // don't send tickets that are rentals (ramsay creates one)
+                int result = SendTicket(StudentIDPage.StudentID, " ", "Appointment"); // send in otrs ticket 
+                if (result < 0)
+                {
+                    return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
+                }
+            }
+
+            //write to csv file
+            addToCurrent(StudentIDPage.StudentID);
+            addToCurrent(" "); // empty string for device since it is an appointment
+            addToCurrent("Appointment");
+            writeLine();
+
+            //let customer know they can sit down
+            MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you", 4.0);
+            mw.ShowDialog();
+
+            //get back to first state
+            Reset();
+        }
+
         // Changes page when user clicks 'next' on any of the pages except SummaryPage
         private void _page_PageFinished(object sender, EventArgs e)
         {
             if (ContentFrame.Content == StudentIDPage)
             {
-                ContentFrame.Navigate(DevicePage); // @ student id page, go to devices next
+                ContentFrame.Navigate(AppointmentPage); // @ student id page, go to devices next
+            }
+            else if (ContentFrame.Content == AppointmentPage)
+            {
+                if (AppointmentPage.HasAppointment == true) // @ appointment page
+                {
+                    SendAppointment(); // send in ticket and reset if user has one
+                }
+                else
+                {
+                    ContentFrame.Navigate(DevicePage); // otherwise go to devices page next
+                }
             }
             else if (ContentFrame.Content == DevicePage)
             {
@@ -175,7 +235,7 @@ namespace CustomerLogger
         {
             if (EmailLogging == true && (DevicePage.Device != "Rental" && ProblemPage.Problem != "Rent/Checkout/Extend Rental"))
             { // don't send tickets that are rentals (ramsay creates one)
-                int result = SendTicket(); // send in otrs ticket 
+                int result = SendTicket(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem); // send in otrs ticket 
                 if (result < 0)
                 {
                     return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
@@ -382,7 +442,7 @@ namespace CustomerLogger
         //sends ticket to orts via email
         //this way we can make notes and all that good otrs stuff....
         //this is the code that actually takes our customer logger info and sends it to otrs
-        public int SendTicket() {
+        public int SendTicket(string id, string dev, string prob) {
             
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;
@@ -393,10 +453,10 @@ namespace CustomerLogger
             MailAddress receiver = new MailAddress("cougtech@wsu.edu");
 
             MailMessage msg = new MailMessage(sender, receiver);
-            msg.Subject = "##Cougtech Walk-in " + ProblemPage.Problem + ": " + StudentIDPage.StudentID;
+            msg.Subject = "##Cougtech Walk-in " + prob + " : " + id;
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + StudentIDPage.StudentID + "\n" + DevicePage.Device + "\n" + ProblemPage.Problem);
+            sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + id + "\n" + dev + "\n" + prob);
             sb.AppendLine("\n[*] Please change the customer information for this ticket by selecting the | Customer | button above and enter their ID number in the Customer User field.");
             sb.AppendLine("[*] Add your notes by selecting the | Note | button above.");
             sb.AppendLine("[*] Close the ticket when you are done by selecting the | Close | button above.");

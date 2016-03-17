@@ -50,11 +50,6 @@ namespace CustomerLogger
             SubmitButton.IsEnabled = true;
         }
 
-        private void AccountButton_Click(object sender, RoutedEventArgs e) {
-            _device = "Account";
-            SubmitButton.IsEnabled = true;
-        }
-
         private void Other_Click(object sender, RoutedEventArgs e) {
             _device = "Other";
             SubmitButton.IsEnabled = true;

@@ -59,16 +59,6 @@ namespace CustomerLogger
             NextButton.IsEnabled = true;
         }
 
-        private void WSUServiceButton_Click(object sender, RoutedEventArgs e) {
-            _problem = "WSU Service";
-            NextButton.IsEnabled = true;
-        }
-
-        private void ApplicationButton_Click(object sender, RoutedEventArgs e) {
-            _problem = "Application";
-            NextButton.IsEnabled = true;
-        }
-
         private void Other_Click(object sender, RoutedEventArgs e) {
             _problem = "Other";
             NextButton.IsEnabled = true;
