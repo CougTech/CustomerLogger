@@ -57,19 +57,19 @@
     <Compile Include="PasswordWindow.xaml.cs">
       <DependentUpon>PasswordWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DevicePage.xaml.cs">
+    <Compile Include="Pages\DevicePage.xaml.cs">
       <DependentUpon>DevicePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MessageWindow.xaml.cs">
       <DependentUpon>MessageWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProblemPage.xaml.cs">
+    <Compile Include="Pages\ProblemPage.xaml.cs">
       <DependentUpon>ProblemPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StudentIDPage.xaml.cs">
+    <Compile Include="Pages\StudentIDPage.xaml.cs">
       <DependentUpon>StudentIDPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SummaryPage.xaml.cs">
+    <Compile Include="Pages\SummaryPage.xaml.cs">
       <DependentUpon>SummaryPage.xaml</DependentUpon>
     </Compile>
     <Page Include="Admin.xaml">
@@ -80,7 +80,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DevicePage.xaml">
+    <Page Include="Pages\DevicePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -102,15 +102,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ProblemPage.xaml">
+    <Page Include="Pages\ProblemPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="StudentIDPage.xaml">
+    <Page Include="Pages\StudentIDPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SummaryPage.xaml">
+    <Page Include="Pages\SummaryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

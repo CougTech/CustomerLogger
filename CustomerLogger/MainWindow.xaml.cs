@@ -1,24 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.IO;
 using System.Net.Mail;
 using System.Net;
 using CSV;
 using System.ComponentModel;
 
-namespace CustomerLogger {
+namespace CustomerLogger
+{
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -48,7 +40,7 @@ namespace CustomerLogger {
             //pages that we flip between. Each page is responcible for getting
             //a piece of info from the customer. Each page takes a reference to the
             //main window so if can modify the necessary data fields
-            
+
             //so.... this is probably a terrible design
             //I am pretty sure the little windows are just supposed
             //to pass info from themselves to the main window
@@ -63,12 +55,9 @@ namespace CustomerLogger {
             //programmer and UI's are dumb.... Anyway bad design but at least
             //you know why I did it.
             //But still TODO: fix this design
-            
+
             //here is the page objects
-            _student_id_page = new StudentIDPage(this);
-            _device_page = new DevicePage(this);
-            _problem_page = new ProblemPage(this);
-            _summary_page = new SummaryPage(this);
+            CreatePages();
             
             //state variables
             _logging = false;
@@ -146,7 +135,67 @@ namespace CustomerLogger {
                 return Directory.GetCurrentDirectory(); // return current directory if failed to read file
             }
         }
-        
+
+        private void CreatePages()
+        {
+            _student_id_page = new StudentIDPage();
+            _student_id_page.PageFinished += _page_PageFinished;
+
+            _device_page = new DevicePage();
+            _device_page.PageFinished += _page_PageFinished;
+
+            _problem_page = new ProblemPage();
+            _problem_page.PageFinished += _page_PageFinished;
+
+            _summary_page = new SummaryPage();
+            _summary_page.PageFinished += _summary_page_PageFinished;
+        }
+
+        // Changes page when user clicks 'next' on any of the pages except SummaryPage
+        private void _page_PageFinished(object sender, EventArgs e)
+        {
+            if (ContentFrame.Content == StudentIDPage)
+            {
+                ContentFrame.Navigate(DevicePage); // @ student id page, go to devices next
+            }
+            else if (ContentFrame.Content == DevicePage)
+            {
+                ContentFrame.Navigate(ProblemPage); // @ device page, go to problems next
+            }
+            else if (ContentFrame.Content == ProblemPage)
+            {
+                SummaryPage.SetText(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem);
+                SummaryPage.StartTimer(); // starts a 10 sec timer to auto close summary page
+                ContentFrame.Navigate(SummaryPage); // @ problem page, go to summary next
+            }
+        }
+
+        // User submits their info and it gets written to the csv file and sent to OTRS if enabled
+        private void _summary_page_PageFinished(object sender, EventArgs e)
+        {
+            if (EmailLogging == true && (DevicePage.Device != "Rental" && ProblemPage.Problem != "Rent/Checkout/Extend Rental"))
+            { // don't send tickets that are rentals (ramsay creates one)
+                int result = SendTicket(); // send in otrs ticket 
+                if (result < 0)
+                {
+                    return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
+                }
+            }
+
+            //write to csv file
+            addToCurrent(StudentIDPage.StudentID);
+            addToCurrent(DevicePage.Device);
+            addToCurrent(ProblemPage.Problem);
+            writeLine();
+
+            //let customer know they can sit down
+            MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you", 4.0);
+            mw.ShowDialog();
+
+            //get back to first state
+            Reset();
+        }
+
         //remove histroy when done, so we don't have to worry about customer going back and seeing
         //other student ID's but also so we don't get duplicates of the same customer
         private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
@@ -166,7 +215,15 @@ namespace CustomerLogger {
             //create a new writer
             try
             {
-                _writer = new CSVWriter(_log_path + "\\" + name + ".csv");
+                int i = 0;
+                string fname = _log_path + "\\" + name + "-" + i.ToString() + ".csv";
+                while (File.Exists(fname)) // this loop guarantees that it will not overwrite the file, but instead append a number to the end and create a new file
+                {
+                    i += 1;
+                    fname = _log_path + "\\" + name + "-" + i.ToString() + ".csv";
+                }
+
+                _writer = new CSVWriter(fname);
             }
             catch (Exception e) {
                 MessageBox.Show(e.Message, "Error Starting Log");
@@ -186,7 +243,26 @@ namespace CustomerLogger {
             _writer.addToCurrent("Device");
             _writer.addToCurrent("Problem");
             _writer.WriteLine();
-             //woot woot for making human readable outp
+        }
+
+        //close the file (log for the day)
+        //this includes tallying up the customers for the day and writing it
+        //then putting the log end time and writting it
+        //destroying the writer and then resetting state variables
+        public void EndLog()
+        {
+
+            _writer.addToCurrent("Customers for today: ");
+            _writer.addToCurrent(_number_records.ToString());
+            _writer.WriteLine();
+            _writer.addToCurrent("Log End Time: ");
+            _writer.addToCurrent(DateTime.Now.ToShortTimeString());
+            _writer.WriteLine();
+            //close and dealocate the csv writer
+            _writer = null;
+
+            _logging = false;
+            _email_logging = false;
         }
 
         //automatically starts the day when the timer is hit
@@ -259,25 +335,6 @@ namespace CustomerLogger {
             }
         }
 
-        //close the file (log for the day)
-        //this includes tallying up the customers for the day and writing it
-        //then putting the log end time and writting it
-        //destroying the writer and then resetting state variables
-        public void EndLog() {
-
-            _writer.addToCurrent("Customers for today: ");
-            _writer.addToCurrent(_number_records.ToString());
-            _writer.WriteLine();
-            _writer.addToCurrent("Log End Time: ");
-            _writer.addToCurrent(DateTime.Now.ToShortTimeString());
-            _writer.WriteLine();
-            //close and dealocate the csv writer
-            _writer = null;
-
-            _logging = false;
-            _email_logging = false;
-        }
-
         //opens the admin button, after the user successfully puts in our secret password
         private void AdminButton_Click(object sender, RoutedEventArgs e) {
 
@@ -294,24 +351,12 @@ namespace CustomerLogger {
             }
         }
 
-        //allows us to move from one page to the next via our current page... because of my bad design
-        public void changePage(Page page) {
-            ContentFrame.Navigate(page);
-        }
-
         //resets all pages and state related to signing in customer
         //usefull when someone has submitted and we do not want to keep
         //old submissions floating arround in memory.
         public void Reset() {
-            _student_id_page = new StudentIDPage(this);
-            changePage(_student_id_page);
-
-            //clear navigation history
-            removeBackHistory();
-
-            _device_page = new DevicePage(this);
-            _problem_page = new ProblemPage(this);
-            _summary_page = new SummaryPage(this);
+            CreatePages(); // recreate pages to clear out data
+            ContentFrame.Navigate(StudentIDPage);
         }
 
         //make sure that if the window closes for any reason (possibly other than a crash

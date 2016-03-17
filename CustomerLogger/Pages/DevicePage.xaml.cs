@@ -1,33 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace CustomerLogger {
+namespace CustomerLogger
+{
     /// <summary>
     /// Interaction logic for DevicePage.xaml
     /// </summary>
-    
+
     //gives the customer a list of radial buttons so they can choose their device
     public partial class DevicePage:Page {
 
-        MainWindow _main_window;
+        public event EventHandler PageFinished; // this event will trigger once user clicks submit
 
         private string _device;
 
-        public DevicePage(MainWindow mw) {
+        public DevicePage() {
             InitializeComponent();
-            _main_window = mw;
             SubmitButton.IsEnabled = false;
         }
 
@@ -38,7 +28,7 @@ namespace CustomerLogger {
         //make sure the submit button is enabled first them move on
         private void SubmitButton_Click(object sender, RoutedEventArgs e) {
             if(SubmitButton.IsEnabled) {
-                _main_window.changePage(_main_window.ProblemPage);
+                PageFinished(new object(), new EventArgs());
             }
         }
 

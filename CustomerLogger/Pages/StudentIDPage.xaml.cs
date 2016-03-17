@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace CustomerLogger {
+namespace CustomerLogger
+{
     /// <summary>
     /// Interaction logic for SudentIDPage.xaml
     /// </summary>
-    
+
     //inital page the customer sees
     //gets their student ID number
     //will auto place a 0 in front if it is not automatically there
@@ -25,21 +16,17 @@ namespace CustomerLogger {
     //can swipe the cougarcard and it will work as if they typed it in
     //pretty nifty, because the card swiper just puts the number on the card
     //as if it can from stdin
-    
+
     //because it is set to use the enter key to move on as well as clicking the next button,
     //if they swipe the card it should automatically save their number and move onto the next page
     //with out the user needing to click.
     public partial class StudentIDPage:Page {
 
-        MainWindow _main_window;
-
         private string _student_id;
+        public event EventHandler PageFinished;
     
-        public StudentIDPage(MainWindow mw) {
+        public StudentIDPage() {
             InitializeComponent();
-            _main_window = mw;
-            //this.Width = _main_window.Width;
-            //this.Height = _main_window.Height;
 
             SubmitButton.IsEnabled = false;
             StudentNumberTextBox.Focus();
@@ -54,7 +41,12 @@ namespace CustomerLogger {
 
             if(SubmitButton.IsEnabled) {
                 _student_id = StudentNumberTextBox.Text;
-                _main_window.changePage(_main_window.DevicePage);
+                // add 0 to id number if not present
+                if (_student_id.Length == 8)
+                {
+                    _student_id = "0" + _student_id;
+                }
+                PageFinished(new object(), new EventArgs()); // fire event to let main window know that submit was clicked
             }
 
         }
@@ -73,7 +65,7 @@ namespace CustomerLogger {
             bool correct_length;
             bool is_num;
 
-            //make sure we have a valid lenght, either 8 without a leading 0 or nine with a leading 0
+            //make sure we have a valid length, either 8 without a leading 0 or nine with a leading 0
             if(StudentNumberTextBox.Text.Length == 8 || (StudentNumberTextBox.Text.Length == 9 && StudentNumberTextBox.Text[0] == '0')) { // length of 9 is only correct if first digit is 0
 
                 correct_length = true;

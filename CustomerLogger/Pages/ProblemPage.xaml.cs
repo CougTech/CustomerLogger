@@ -1,33 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace CustomerLogger {
+namespace CustomerLogger
+{
     /// <summary>
     /// Interaction logic for ProblemPage.xaml
     /// </summary>
-    
+
     //allows the user to choose a problem from the list
     public partial class ProblemPage:Page {
 
-        private MainWindow _main_window;
-
+        public event EventHandler PageFinished;
         private string _problem;
 
-        public ProblemPage(MainWindow mw) {
+        public ProblemPage() {
             InitializeComponent();
-            _main_window = mw;
             NextButton.IsEnabled = false;
         }
 
@@ -38,8 +27,7 @@ namespace CustomerLogger {
         //when they have made an option customer can move on
         private void NextButton_Click(object sender, RoutedEventArgs e) {
             if(NextButton.IsEnabled) {
-                _main_window.SummaryPage.setText();
-                _main_window.changePage(_main_window.SummaryPage);
+                PageFinished(new object(), new EventArgs());
             }
         }
 

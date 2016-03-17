@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Forms;
 
-namespace CustomerLogger {
+namespace CustomerLogger
+{
     /// <summary>
     /// Interaction logic for Admin.xaml
     /// </summary>
@@ -53,21 +43,29 @@ namespace CustomerLogger {
             this.Activate();
         }
 
-        //starting the day includes getting a new csv file setup for that day and then starting logging
-        //keep in mind this means if the program is stopped so that an update can be made and then
-        //the day is restarted, the file from the previous day will be overwritten. So be carefull about that
-        //When doing an update make sure to rename the old file for that day something else so it will not be overwritten
+        // starting the day includes getting a new csv file setup for that day and then starting logging
+        // it will also prompt you if you want to enable emails for OTRS
         private void StartDayButton_Click(object sender, RoutedEventArgs e) {
             
             if (_main_window.Logging) {
                 System.Windows.MessageBox.Show("The day has already been started!", "Error"); // avoid being able to start a day if it is already started
                 return;
             }
-            
-            _main_window.StartLog(DateTime.Now.ToString("MM-dd-yyyy"));
+
+            _main_window.StartLog(DateTime.Now.ToString("MM-dd-yyyy")); //! this defaults to setting Logging to true and EmailLogging to true
+
+            // ask if want to enable emails
+            var result = System.Windows.Forms.MessageBox.Show("Would you like to enable emails?", "Email", MessageBoxButtons.YesNo);
+            if (result == System.Windows.Forms.DialogResult.Yes)
+            {
+                _main_window.EmailLogging = false; // set to false before calling next function so it can execute correctly and enable EmailLogging
+            }
+            emailButton_Click(new object(), new RoutedEventArgs()); //!! this will set main windows EmailLogging accordingly
+
             MessageWindow mw = new MessageWindow("Start New day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
             mw.Show();
             LogGoingTextBlock.Text = "Logging: Yes";
+
         }
 
         //end the day involves ending the log (writting the totals and then closing the file) and then turning off logging
