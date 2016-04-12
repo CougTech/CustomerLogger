@@ -48,6 +48,7 @@ namespace CustomerLogger
             if(NextButton.IsEnabled) {
                 if (descriptionTextBox.Text != "Shortly describe the problem you are having ...") { 
                     _description = descriptionTextBox.Text; // add description if its not the default text
+                    _description = _description.Replace(",", string.Empty); // remove any commas in description because we save to a CSV
                 }
                 PageFinished(new object(), new EventArgs());
             }
@@ -69,7 +70,6 @@ namespace CustomerLogger
 
         private void descriptionTextBox_KeyUp(object sender, KeyEventArgs e)
         {
-
             if (descriptionTextBox.Text.Length == 0)
             {
                 NextButton.IsEnabled = false; // disable 'Next' button if no text or text is just whitespace
@@ -86,6 +86,14 @@ namespace CustomerLogger
 
             if (descriptionTextBox.Text != "Shortly describe the problem you are having ...") {
                 NextButton.IsEnabled = true; // enable button once text is not the default text
+            }
+        }
+
+        private void descriptionTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (descriptionTextBox.Text == "Shortly describe the problem you are having ...")
+            {
+                descriptionTextBox.Text = ""; // remove default text if user starts typing before deleting it
             }
         }
     }

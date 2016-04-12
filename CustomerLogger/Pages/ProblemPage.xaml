@@ -20,7 +20,7 @@
         <RadioButton x:Name="Other" Content="Other" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,477,0,0" VerticalAlignment="Top" FontSize="34.667" RenderTransformOrigin="0.513,-0.055"/>
         <TextBlock x:Name="ProblemText" Margin="62,118,61,0" TextWrapping="Wrap" Text="Please select the option that best describes your problem:" VerticalAlignment="Top" FontSize="40"/>
         <RadioButton x:Name="RentalButton" Content="Rent/Extend/Return Rental" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,426,0,0" VerticalAlignment="Top" FontSize="34.667"/>
-        <TextBox x:Name="descriptionTextBox" Height="108" Margin="325,551,322,0" TextWrapping="Wrap" Text="Shortly describe the problem you are having ..." VerticalAlignment="Top" FontSize="21.333" SelectionBrush="#FF5AADFF" KeyUp="descriptionTextBox_KeyUp"/>
+        <TextBox x:Name="descriptionTextBox" Height="108" Margin="325,551,322,0" TextWrapping="Wrap" Text="Shortly describe the problem you are having ..." VerticalAlignment="Top" FontSize="21.333" SelectionBrush="#FF5AADFF" KeyUp="descriptionTextBox_KeyUp" KeyDown="descriptionTextBox_KeyDown"/>
         <Label x:Name="requiredLabel" Content="*" HorizontalContentAlignment="Right" Margin="265,535,876,101" FontSize="42.667" Background="#00000000" Foreground="Red"/>
 
     </Grid>
