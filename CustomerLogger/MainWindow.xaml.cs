@@ -65,18 +65,6 @@ namespace CustomerLogger
             ContentFrame.Navigating += ContentFrame_Navigating;
         }
 
-        // stops the timer on the summary page if the user decides to go back for some reason
-        private void ContentFrame_Navigating(object sender, NavigatingCancelEventArgs e)
-        {
-            if (e.NavigationMode == NavigationMode.Back)
-            {
-                if (e.Content == ProblemPage)
-                {
-                    SummaryPage.StopTimer();
-                }
-            }
-        }
-
         //holds the path to where csv logs are saved
         public string LogPath {
             set { _log_path = value; }
@@ -244,6 +232,18 @@ namespace CustomerLogger
         {
             if (e.Content == _student_id_page) { // Will clear all back history once Student ID Page has finished loading
                 removeBackHistory();
+            }
+        }
+
+        // stops the timer on the summary page if the user decides to go back for some reason
+        private void ContentFrame_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            if (e.NavigationMode == NavigationMode.Back)
+            {
+                if (e.Content == ProblemPage)
+                {
+                    SummaryPage.StopTimer();
+                }
             }
         }
 
@@ -439,8 +439,8 @@ namespace CustomerLogger
             msg.Subject = "##CTwi " + prob + " : " + id;
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + id + "\n" + dev + "\n" + prob + "\n" + descr);
-            sb.AppendLine("\n[*] Please change the customer information for this ticket by selecting the | Customer | button above and enter their ID number in the Customer User field.");
+            sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + id + "\n" + dev + "\n" + prob + "\n\n" + descr);
+            sb.AppendLine("\n\n[*] Please change the customer information for this ticket by selecting the | Customer | button above and enter their ID number in the Customer User field.");
             sb.AppendLine("[*] Add your notes by selecting the | Note | button above.");
             sb.AppendLine("[*] Close the ticket when you are done by selecting the | Close | button above.");
             msg.Body = sb.ToString();
@@ -450,7 +450,7 @@ namespace CustomerLogger
                 client.Send(msg);
             }
             catch (Exception e) {
-                System.Windows.MessageBox.Show("Could not send OTRS ticket. Please let a CougTech employee know of this problem. Thank you.", "Failed To Send");
+                MessageBox.Show("Could not send OTRS ticket. Email password may be incorrect. Please let a CougTech employee know of this problem. Thank you.", "Failed To Send");
                 Cursor = Cursors.Arrow;
                 return -1; // -1 for error
             }

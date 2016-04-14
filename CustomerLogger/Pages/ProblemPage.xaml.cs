@@ -19,6 +19,7 @@ namespace CustomerLogger
         public ProblemPage() {
             InitializeComponent();
             NextButton.IsEnabled = false;
+            requiredLabel.Visibility = Visibility.Hidden;
             descriptionTextBox.Visibility = Visibility.Hidden;
             descriptionTextBox.MaxLength = 120; // limit character limit in problem description
             _description = " ";
@@ -54,8 +55,8 @@ namespace CustomerLogger
 
         private void RadioButton_Click(object sender, RoutedEventArgs e) {
             _problem = ((RadioButton)sender).Content.ToString(); // set problem to text of radio button
-            NextButton.IsEnabled = true;
             descriptionTextBox.Visibility = Visibility.Visible;
+            requiredLabel.Visibility = Visibility.Visible;
             descriptionTextBox.Focus();
             descriptionTextBox.SelectAll();
         }
@@ -63,6 +64,28 @@ namespace CustomerLogger
         private void Grid_KeyUp(object sender, KeyEventArgs e) {
             if(e.Key == Key.Enter) {
                 NextButton_Click(sender, e);
+            }
+        }
+
+        private void descriptionTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+
+            if (descriptionTextBox.Text.Length == 0)
+            {
+                NextButton.IsEnabled = false; // disable 'Next' button if no text or text is just whitespace
+                descriptionTextBox.Text = "Shortly describe the problem you are having ...";
+                descriptionTextBox.SelectAll();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(descriptionTextBox.Text))
+            {
+                NextButton.IsEnabled = false;
+                return;
+            }
+
+            if (descriptionTextBox.Text != "Shortly describe the problem you are having ...") {
+                NextButton.IsEnabled = true; // enable button once text is not the default text
             }
         }
     }
