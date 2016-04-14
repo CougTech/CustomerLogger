@@ -38,38 +38,19 @@ namespace CustomerLogger
             InitializeComponent();
             _writer = null;
             _number_records = 0;
-            //The way this works is there is one window and we have different
-            //pages that we flip between. Each page is responcible for getting
-            //a piece of info from the customer. Each page takes a reference to the
-            //main window so if can modify the necessary data fields
 
-            //so.... this is probably a terrible design
-            //I am pretty sure the little windows are just supposed
-            //to pass info from themselves to the main window
-            //and not access the actual data in the main window.
-            //so this is kinda a terrible design, like it is bad.
-            //we should probably fix this
-            //TODO: fix this design
-            //I guess to be fair I should say I made this decision
-            //to use this sub-par design because I was just trying
-            //to get something to work. And this was much faster to code
-            //than figure out the proper events and all that... I am a backend
-            //programmer and UI's are dumb.... Anyway bad design but at least
-            //you know why I did it.
-            //But still TODO: fix this design
-
-            //here is the page objects
-            CreatePages();
-            
             //state variables
             _logging = false;
             _email_logging = false;
             _email_pwd = "";
-            ContentFrame.Navigate(_student_id_page);
             _log_path = GetDefaultDirectory();
 
+            //create the page objects
+            CreatePages();
+            ContentFrame.Navigate(_student_id_page);
+
             //sets up timers to go at particular times
-            //start of cougtech and end of cougtech working
+            //start of cougtech and end of cougtech working hours
             startDayTimer = new System.Windows.Threading.DispatcherTimer(); // Timer to automatically start logging at 8:00 am
             startDayTimer.Interval = TimeUntilNextTimer(startTime);
             startDayTimer.IsEnabled = true;
@@ -178,8 +159,8 @@ namespace CustomerLogger
         private void SendAppointment()
         {
             if (EmailLogging == true)
-            { // don't send tickets that are rentals (ramsay creates one)
-                int result = SendTicket(StudentIDPage.StudentID, " ", "Appointment"); // send in otrs ticket 
+            { 
+                int result = SendTicket(StudentIDPage.StudentID, " ", "Appointment", " "); // send in otrs ticket 
                 if (result < 0)
                 {
                     return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
@@ -224,7 +205,7 @@ namespace CustomerLogger
             }
             else if (ContentFrame.Content == ProblemPage)
             {
-                SummaryPage.SetText(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem);
+                SummaryPage.SetText(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem, ProblemPage.Description);
                 SummaryPage.StartTimer(); // starts a 10 sec timer to auto close summary page
                 ContentFrame.Navigate(SummaryPage); // @ problem page, go to summary next
             }
@@ -235,7 +216,7 @@ namespace CustomerLogger
         {
             if (EmailLogging == true && (DevicePage.Device != "Rental" && ProblemPage.Problem != "Rent/Checkout/Extend Rental"))
             { // don't send tickets that are rentals (ramsay creates one)
-                int result = SendTicket(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem); // send in otrs ticket 
+                int result = SendTicket(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem, ProblemPage.Description); // send in otrs ticket 
                 if (result < 0)
                 {
                     return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
@@ -246,6 +227,7 @@ namespace CustomerLogger
             addToCurrent(StudentIDPage.StudentID);
             addToCurrent(DevicePage.Device);
             addToCurrent(ProblemPage.Problem);
+            addToCurrent(ProblemPage.Description);
             writeLine();
 
             //let customer know they can sit down
@@ -302,6 +284,7 @@ namespace CustomerLogger
             _writer.addToCurrent("ID Number");
             _writer.addToCurrent("Device");
             _writer.addToCurrent("Problem");
+            _writer.addToCurrent("Description");
             _writer.WriteLine();
         }
 
@@ -356,7 +339,7 @@ namespace CustomerLogger
             endDayTimer.IsEnabled = true;
         }
 
-        //resets the timer to go for the next day
+        //get the time for the next day
         private TimeSpan TimeUntilNextTimer(TimeSpan target_time) {
             DateTime dt = DateTime.Today.Add(target_time);
 
@@ -442,7 +425,7 @@ namespace CustomerLogger
         //sends ticket to orts via email
         //this way we can make notes and all that good otrs stuff....
         //this is the code that actually takes our customer logger info and sends it to otrs
-        public int SendTicket(string id, string dev, string prob) {
+        public int SendTicket(string id, string dev, string prob, string descr) {
             
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;
@@ -453,10 +436,10 @@ namespace CustomerLogger
             MailAddress receiver = new MailAddress("cougtech@wsu.edu");
 
             MailMessage msg = new MailMessage(sender, receiver);
-            msg.Subject = "##Cougtech Walk-in " + prob + " : " + id;
+            msg.Subject = "##CTwi " + prob + " : " + id;
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + id + "\n" + dev + "\n" + prob);
+            sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + id + "\n" + dev + "\n" + prob + "\n" + descr);
             sb.AppendLine("\n[*] Please change the customer information for this ticket by selecting the | Customer | button above and enter their ID number in the Customer User field.");
             sb.AppendLine("[*] Add your notes by selecting the | Note | button above.");
             sb.AppendLine("[*] Close the ticket when you are done by selecting the | Close | button above.");

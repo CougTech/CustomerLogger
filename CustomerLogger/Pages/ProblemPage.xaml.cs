@@ -14,59 +14,50 @@ namespace CustomerLogger
 
         public event EventHandler PageFinished;
         private string _problem;
+        private string _description;
 
         public ProblemPage() {
             InitializeComponent();
             NextButton.IsEnabled = false;
+            descriptionTextBox.Visibility = Visibility.Hidden;
+            descriptionTextBox.MaxLength = 120; // limit character limit in problem description
+            _description = " ";
+
+            // have radiobuttons subscribe to one event
+            HardwareButton.Click += RadioButton_Click;
+            SoftwareButton.Click += RadioButton_Click;
+            WirelessButton.Click += RadioButton_Click;
+            EmailButton.Click += RadioButton_Click;
+            PasswordButton.Click += RadioButton_Click;
+            Other.Click += RadioButton_Click;
+            RentalButton.Click += RadioButton_Click;
+
         }
 
         public string Problem {
             get { return _problem; }
         }
         
+        public string Description {
+            get { return _description; }
+        }
+
         //when they have made an option customer can move on
         private void NextButton_Click(object sender, RoutedEventArgs e) {
             if(NextButton.IsEnabled) {
+                if (descriptionTextBox.Text != "Shortly describe the problem you are having ...") { 
+                    _description = descriptionTextBox.Text; // add description if its not the default text
+                }
                 PageFinished(new object(), new EventArgs());
             }
         }
 
-        //all of these radial buttons are pretty similar. The customer
-        //selects there issue. Then we save the text of the problem
-        //and then we enable the next button.
-        private void HardwareButton_Click(object sender, RoutedEventArgs e) {
-            _problem = "Hardware";
+        private void RadioButton_Click(object sender, RoutedEventArgs e) {
+            _problem = ((RadioButton)sender).Content.ToString(); // set problem to text of radio button
             NextButton.IsEnabled = true;
-        }
-
-        private void SoftwareButton_Click(object sender, RoutedEventArgs e) {
-            _problem = "Software";
-            NextButton.IsEnabled = true;
-        }
-
-        private void WirelessButton_Click(object sender, RoutedEventArgs e) {
-            _problem = "Wireless";
-            NextButton.IsEnabled = true;
-        }
-
-        private void EmailButton_Click(object sender, RoutedEventArgs e) {
-            _problem = "Email";
-            NextButton.IsEnabled = true;
-        }
-
-        private void PasswordButton_Click(object sender, RoutedEventArgs e) {
-            _problem = "Password";
-            NextButton.IsEnabled = true;
-        }
-
-        private void Other_Click(object sender, RoutedEventArgs e) {
-            _problem = "Other";
-            NextButton.IsEnabled = true;
-        }
-
-        private void RentalButton_Click(object sender, RoutedEventArgs e) {
-            _problem = "Rent/Checkout/Extend Rental";
-            NextButton.IsEnabled = true;
+            descriptionTextBox.Visibility = Visibility.Visible;
+            descriptionTextBox.Focus();
+            descriptionTextBox.SelectAll();
         }
 
         private void Grid_KeyUp(object sender, KeyEventArgs e) {

@@ -12,14 +12,15 @@
 
     <Grid KeyUp="Grid_KeyUp">
         <Button x:Name="NextButton"  Content="Next" HorizontalAlignment="Right" Margin="0,0,20,29" VerticalAlignment="Bottom" Width="160" Height="85" Click="NextButton_Click" FontSize="26.667"/>
-        <RadioButton x:Name="HardwareButton" Content="Hardware" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,188,0,0" VerticalAlignment="Top" FontSize="34.667" Click="HardwareButton_Click" Width="511"/>
-        <RadioButton x:Name="SoftwareButton" Content="Software" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,235,0,0" VerticalAlignment="Top" FontSize="34.667" Click="SoftwareButton_Click"/>
-        <RadioButton x:Name="WirelessButton" Content="Wireless" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,282,0,0" VerticalAlignment="Top" FontSize="34.667" Click="WirelessButton_Click"/>
-        <RadioButton x:Name="EmailButton" Content="Email" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,329,0,0" VerticalAlignment="Top" FontSize="34.667" Click="EmailButton_Click"/>
-        <RadioButton x:Name="PasswordButton" Content="Password" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,376,0,0" VerticalAlignment="Top" FontSize="34.667" Click="PasswordButton_Click"/>
-        <RadioButton x:Name="Other" Content="Other" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,477,0,0" VerticalAlignment="Top" FontSize="34.667" RenderTransformOrigin="0.513,-0.055" Click="Other_Click"/>
+        <RadioButton x:Name="HardwareButton" Content="Hardware" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,184,0,0" VerticalAlignment="Top" FontSize="34.667" Width="511"/>
+        <RadioButton x:Name="SoftwareButton" Content="Software" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,233,0,0" VerticalAlignment="Top" FontSize="34.667"/>
+        <RadioButton x:Name="WirelessButton" Content="Wireless" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,280,0,0" VerticalAlignment="Top" FontSize="34.667"/>
+        <RadioButton x:Name="EmailButton" Content="Email" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,329,0,0" VerticalAlignment="Top" FontSize="34.667"/>
+        <RadioButton x:Name="PasswordButton" Content="Password" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,376,0,0" VerticalAlignment="Top" FontSize="34.667"/>
+        <RadioButton x:Name="Other" Content="Other" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,477,0,0" VerticalAlignment="Top" FontSize="34.667" RenderTransformOrigin="0.513,-0.055"/>
         <TextBlock x:Name="ProblemText" Margin="62,118,61,0" TextWrapping="Wrap" Text="Please select the option that best describes your problem:" VerticalAlignment="Top" FontSize="40"/>
-        <RadioButton x:Name="RentalButton" Content="Rent/Extend/Return Rental" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,426,0,0" VerticalAlignment="Top" FontSize="34.667" Click="RentalButton_Click"/>
+        <RadioButton x:Name="RentalButton" Content="Rent/Extend/Return Rental" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,426,0,0" VerticalAlignment="Top" FontSize="34.667"/>
+        <TextBox x:Name="descriptionTextBox" Height="108" Margin="325,551,322,0" TextWrapping="Wrap" Text="Shortly describe the problem you are having ..." VerticalAlignment="Top" FontSize="21.333" SelectionBrush="#FF5AADFF"/>
 
     </Grid>
 </Page>

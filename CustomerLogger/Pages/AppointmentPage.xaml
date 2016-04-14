@@ -12,9 +12,10 @@
       Title="AppointmentPage">
 
     <Grid KeyUp="Grid_KeyUp">
-        <Label x:Name="apptLabel" Content="Do you have an appointment with us today?" Margin="188,207,188,0" VerticalAlignment="Top" FontSize="40"/>
-        <RadioButton x:Name="yesRadioButton" Content="Yes" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="537,280,0,0" FontSize="34.667" Click="yesRadioButton_Click" VerticalAlignment="Top"/>
-        <RadioButton x:Name="noRadioButton" Content="No" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="537,328,0,0" FontSize="34.667" Click="noRadioButton_Click" VerticalAlignment="Top"/>
+        <Label x:Name="apptLabel" Content="Do you have an appointment with us today?" Margin="188,199,188,0" VerticalAlignment="Top" FontSize="40" Height="66"/>
+        <RadioButton x:Name="yesRadioButton" Content="Yes" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="537,310,0,0" FontSize="34.667" Click="yesRadioButton_Click" VerticalAlignment="Top"/>
+        <RadioButton x:Name="noRadioButton" Content="No" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="537,360,0,0" FontSize="34.667" Click="noRadioButton_Click" VerticalAlignment="Top"/>
         <Button x:Name="nextButton" Content="Next" Margin="0,0,20,29" Click="SubmitButton_Click" FontSize="26.667" HorizontalAlignment="Right" Width="160" Height="80" VerticalAlignment="Bottom"/>
+        <Label x:Name="descLabel" Content="Please select &quot;No&quot; if you have not setup an appointment at cougtech.setmore.com" Margin="106,249,107,379" FontSize="26.667"/>
     </Grid>
 </Page>

@@ -10,13 +10,15 @@
 
     <Grid KeyUp="Grid_KeyUp">
         <Button x:Name="SubmitButton" Content="Submit" HorizontalAlignment="Right" Margin="0,0,21,28" VerticalAlignment="Bottom" Width="160" Height="80" Click="SubmitButton_Click" FontSize="26.667"/>
-        <TextBlock x:Name="StudentIDLabel" Margin="315,270,475,0" TextWrapping="Wrap" Text="ID Number:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
-        <TextBlock x:Name="StudentID" HorizontalAlignment="Left" Margin="651,270,0,0" TextWrapping="Wrap" Text="00000000" VerticalAlignment="Top" FontSize="48"/>
-        <TextBlock x:Name="DeviceLabel" Margin="315,365,658,0" TextWrapping="Wrap" Text="Device:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
-        <TextBlock x:Name="Device" HorizontalAlignment="Left" Margin="651,365,0,0" TextWrapping="Wrap" Text="A Device" VerticalAlignment="Top" FontSize="48"/>
-        <TextBlock x:Name="ProblemLabel" Margin="315,461,658,0" TextWrapping="Wrap" Text="Problem:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
-        <TextBlock x:Name="Problem" HorizontalAlignment="Left" Margin="651,461,0,0" TextWrapping="Wrap" Text="A Problem" VerticalAlignment="Top" FontSize="48"/>
-        <Label x:Name="label" Content="Summary" HorizontalAlignment="Left" Margin="441,120,0,0" VerticalAlignment="Top" Width="303" Height="110" FontSize="64" FontStyle="Italic"/>
+        <TextBlock x:Name="StudentIDLabel" Margin="299,238,491,0" TextWrapping="Wrap" Text="ID Number:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <TextBlock x:Name="StudentID" HorizontalAlignment="Left" Margin="635,238,0,0" TextWrapping="Wrap" Text="00000000" VerticalAlignment="Top" FontSize="48"/>
+        <TextBlock x:Name="DeviceLabel" Margin="299,333,674,0" TextWrapping="Wrap" Text="Device:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <TextBlock x:Name="Device" HorizontalAlignment="Left" Margin="635,333,0,0" TextWrapping="Wrap" Text="A Device" VerticalAlignment="Top" FontSize="48"/>
+        <TextBlock x:Name="ProblemLabel" Margin="299,429,674,0" TextWrapping="Wrap" Text="Problem:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <TextBlock x:Name="Problem" HorizontalAlignment="Left" Margin="635,429,0,0" TextWrapping="Wrap" Text="A Problem" VerticalAlignment="Top" FontSize="48"/>
+        <Label x:Name="label" Content="Summary" HorizontalAlignment="Left" Margin="425,120,0,0" VerticalAlignment="Top" Width="303" Height="110" FontSize="64" FontStyle="Italic"/>
+        <TextBlock x:Name="descriptionLabel" Margin="299,515,0,0" TextWrapping="Wrap" Text="Description:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold" HorizontalAlignment="Left"/>
+        <TextBlock x:Name="descText" HorizontalAlignment="Left" Margin="635,531,0,10" TextWrapping="Wrap" Text="Description" FontSize="21.333" Width="358"/>
 
     </Grid>
 </Page>

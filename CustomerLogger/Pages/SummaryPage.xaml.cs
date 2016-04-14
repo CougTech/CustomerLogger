@@ -36,11 +36,12 @@ namespace CustomerLogger {
             SubmitButton_Click(sender, new RoutedEventArgs());
         }
 
-        public void SetText(string id, string dev, string prob)
+        public void SetText(string id, string dev, string prob, string descr)
         {
             StudentID.Text = id;
             Device.Text = dev;
             Problem.Text = prob;
+            descText.Text = descr;
         }
 
         public void StartTimer()
