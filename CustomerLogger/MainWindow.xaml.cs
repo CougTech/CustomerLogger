@@ -250,31 +250,43 @@ namespace CustomerLogger
         //starts a .csv log for the day
         //it will be given the name passed in .csv
         public void StartLog(string name) {
-
             _logging = true;
-            _email_logging = true;
+            _email_logging = true; // enable logging and email logging for writing to the csv file and send tickets to otrs
+
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Monday) {
+                CreateLog(name); // creates a new .csv file for the week
+            }
+        }
+
+        /// <summary>
+        /// Creates a new CSVWriter object which will write to a new file
+        /// This is performed weekly every monday
+        /// </summary>
+        /// <param name="file_name">name of csv file</param>
+        public void CreateLog(string file_name) {
             _number_records = 0;
             //create a new writer
             try
             {
                 int i = 0;
-                string fname = _log_path + "\\" + name + "-" + i.ToString() + ".csv";
+                string fname = _log_path + "\\" + file_name + "-" + i.ToString() + ".csv";
                 while (File.Exists(fname)) // this loop guarantees that it will not overwrite the file, but instead append a number to the end and create a new file
                 {
                     i += 1;
-                    fname = _log_path + "\\" + name + "-" + i.ToString() + ".csv";
+                    fname = _log_path + "\\" + file_name + "-" + i.ToString() + ".csv";
                 }
 
                 _writer = new CSVWriter(fname);
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 MessageBox.Show(e.Message, "Error Starting Log");
                 return;
             }
             //basic header stuff for the csv
             //the name of the log, the time it started
             _writer.addToCurrent("Log for: ");
-            _writer.addToCurrent(name);
+            _writer.addToCurrent(file_name);
             _writer.addToCurrent(" ");
             _writer.addToCurrent("Log Start Time: ");
             _writer.addToCurrent(DateTime.Now.ToShortTimeString());
@@ -288,14 +300,12 @@ namespace CustomerLogger
             _writer.WriteLine();
         }
 
-        //close the file (log for the day)
-        //this includes tallying up the customers for the day and writing it
-        //then putting the log end time and writting it
-        //destroying the writer and then resetting state variables
-        public void EndLog()
+        /// <summary>
+        /// Writes final total of customers to file and deallocates the CSVWriter
+        /// </summary>
+        public void FinishLog()
         {
-
-            _writer.addToCurrent("Customers for today: ");
+            _writer.addToCurrent("Customers this week: ");
             _writer.addToCurrent(_number_records.ToString());
             _writer.WriteLine();
             _writer.addToCurrent("Log End Time: ");
@@ -303,6 +313,18 @@ namespace CustomerLogger
             _writer.WriteLine();
             //close and dealocate the csv writer
             _writer = null;
+        }
+
+        //close the file if Friday (log for the week)
+        //this includes tallying up the customers for the day and writing it
+        //then putting the log end time and writing it
+        //destroying the writer and then resetting state variables
+        public void EndLog()
+        {
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
+            {
+                FinishLog(); // write final stats to weekly file 
+            }
 
             _logging = false;
             _email_logging = false;
@@ -408,7 +430,7 @@ namespace CustomerLogger
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (true == _logging) {
-                EndLog(); // Will finish writing the log if the program got closed with Alt+F4 (not sure if it works on crashes..)
+                FinishLog(); // Will finish writing the log if the program got closed with Alt+F4 (not sure if it works on crashes..)
             }
         }
 
