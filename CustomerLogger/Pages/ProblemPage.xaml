@@ -10,17 +10,23 @@
       Height="688"
       Width="1200">
 
-    <Grid KeyUp="Grid_KeyUp">
+    <Grid KeyUp="Grid_KeyUp" Height="688" VerticalAlignment="Top">
         <Button x:Name="NextButton"  Content="Next" HorizontalAlignment="Right" Margin="0,0,20,29" VerticalAlignment="Bottom" Width="160" Height="85" Click="NextButton_Click" FontSize="26.667"/>
-        <RadioButton x:Name="HardwareButton" Content="Hardware" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,184,0,0" VerticalAlignment="Top" FontSize="34.667" Width="511"/>
-        <RadioButton x:Name="SoftwareButton" Content="Software" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,233,0,0" VerticalAlignment="Top" FontSize="34.667"/>
-        <RadioButton x:Name="WirelessButton" Content="Wireless" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,280,0,0" VerticalAlignment="Top" FontSize="34.667"/>
-        <RadioButton x:Name="EmailButton" Content="Email" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,329,0,0" VerticalAlignment="Top" FontSize="34.667"/>
-        <RadioButton x:Name="PasswordButton" Content="Password" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,376,0,0" VerticalAlignment="Top" FontSize="34.667"/>
-        <RadioButton x:Name="Other" Content="Other" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="450,429,0,0" VerticalAlignment="Top" FontSize="34.667" RenderTransformOrigin="0.513,-0.055"/>
-        <TextBlock x:Name="ProblemText" Margin="62,118,61,0" TextWrapping="Wrap" Text="Please select the option that best describes your problem:" VerticalAlignment="Top" FontSize="40"/>
-        <TextBox x:Name="descriptionTextBox" Margin="323,521,324,59" TextWrapping="Wrap" Text="Shortly describe the problem you are having ..." FontSize="21.333" SelectionBrush="#FF5AADFF" KeyUp="descriptionTextBox_KeyUp" KeyDown="descriptionTextBox_KeyDown" PreviewKeyDown="descriptionTextBox_PreviewKeyDown"/>
-        <Label x:Name="requiredLabel" Content="*" HorizontalContentAlignment="Right" Margin="265,501,876,135" FontSize="42.667" Background="#00000000" Foreground="Red"/>
+        <RadioButton x:Name="HardwareButton" Content="Hardware" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="326,148,0,0" VerticalAlignment="Top" FontSize="32" Width="511" FontFamily="Segoe UI Semibold"/>
+        <RadioButton x:Name="SoftwareButton" Content="Software" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="326,219,0,0" VerticalAlignment="Top" FontSize="32" FontFamily="Segoe UI Semibold"/>
+        <RadioButton x:Name="WirelessButton" Content="Wireless" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="326,286,0,0" VerticalAlignment="Top" FontSize="32" FontFamily="Segoe UI Semibold"/>
+        <RadioButton x:Name="EmailButton" Content="Email" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="326,413,0,0" VerticalAlignment="Top" FontSize="32" FontFamily="Segoe UI Semibold"/>
+        <RadioButton x:Name="PasswordButton" Content="Password" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="326,352,0,0" VerticalAlignment="Top" FontSize="32" FontFamily="Segoe UI Semibold"/>
+        <TextBlock x:Name="ProblemText" Margin="144,90,146,545" TextWrapping="Wrap" Text="Select the option that best describes your problem:" FontSize="40"/>
+        <TextBox x:Name="descriptionTextBox" Margin="325,574,322,29" TextWrapping="Wrap" Text="Shortly describe the problem you are having ..." FontSize="21.333" SelectionBrush="#FF5AADFF" KeyUp="descriptionTextBox_KeyUp" KeyDown="descriptionTextBox_KeyDown" PreviewKeyDown="descriptionTextBox_PreviewKeyDown"/>
+        <Label x:Name="requiredLabel" Content="*" HorizontalContentAlignment="Right" Margin="265,553,876,83" FontSize="42.667" Background="#00000000" Foreground="Red"/>
+        <Label x:Name="hardwareLabel" Content="computer not booting, mouse/keyboard not working ..." HorizontalAlignment="Left" Margin="377,179,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.926,0.169" Height="41" Width="581" FontSize="21.333"/>
+        <Label x:Name="softwareLabel" Content="Microsoft Word/Excel, Visual Studio, slow computer  ..." HorizontalAlignment="Left" Margin="377,248,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.926,0.169" Height="41" Width="634" FontSize="21.333"/>
+        <Label x:Name="wirelessLabel" Content="can't connect to wireless, wifi issues ..." HorizontalAlignment="Left" Margin="377,315,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.926,0.169" Height="41" Width="456" FontSize="21.333"/>
+        <Label x:Name="emailLabel" Content="emails not sending/receiving, got hacked, can't access wsu email ..." HorizontalAlignment="Left" Margin="377,436,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.926,0.169" Height="41" Width="634" FontSize="21.333"/>
+        <Label x:Name="passwordLabel" Content="password resets, password not working ..." HorizontalAlignment="Left" Margin="377,379,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.926,0.169" Height="41" Width="456" FontSize="21.333"/>
+        <RadioButton x:Name="virusRadioButton" Content="Virus" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="326,475,0,0" VerticalAlignment="Top" FontSize="32" RenderTransformOrigin="0.513,-0.055" FontFamily="Segoe UI Semibold"/>
+        <Label x:Name="virusLabel" Content="virus removal, install anti-virus ..." HorizontalAlignment="Left" Margin="377,501,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.926,0.169" Height="41" Width="456" FontSize="21.333"/>
 
     </Grid>
 </Page>

@@ -30,7 +30,7 @@ namespace CustomerLogger
             WirelessButton.Click += RadioButton_Click;
             EmailButton.Click += RadioButton_Click;
             PasswordButton.Click += RadioButton_Click;
-            Other.Click += RadioButton_Click;
+            virusRadioButton.Click += RadioButton_Click;
 
         }
 

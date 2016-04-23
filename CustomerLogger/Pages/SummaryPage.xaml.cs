@@ -42,7 +42,7 @@ namespace CustomerLogger {
             Device.Text = dev;
             Problem.Text = prob;
 
-            if (string.IsNullOrWhiteSpace(descr)) 
+            if (dev == "Rental") 
             {
                 descText.Visibility = Visibility.Hidden; // don't show Description if no description given
                 descriptionLabel.Visibility = Visibility.Hidden; // will happen when customer selects "Rental"
