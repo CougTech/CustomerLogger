@@ -24,16 +24,22 @@ namespace CSV {
         private StreamWriter _sw;
         private string _fname;
 
-        public CSVWriter(string fname) {
+        /// <summary>
+        /// Creates a new csv writer. 
+        /// Can create a new file or append to existing
+        /// </summary>
+        /// <param name="fname">CSV File to write to</param>
+        /// <param name="mode">How to initially handle file, Create will delete an existing file. Append will not</param>
+        public CSVWriter(string fname, FileMode mode) {
 
             _line = "";
             _fname = fname;
 
-            if(true == File.Exists(_fname)) { 
-            
-                File.Delete(_fname);
+            if (mode == FileMode.Create) {
+                if (true == File.Exists(_fname)) {
+                    File.Delete(_fname);
+                }
             }
-
         }
 
         public void addToCurrent(string text) {
@@ -56,6 +62,11 @@ namespace CSV {
             }
         }
 
+        /// <summary>
+        /// Opens _fname
+        /// Appends a line to the file
+        /// Closes file
+        /// </summary>
         public void WriteLine() {
 
             using(_fs = new FileStream(_fname, FileMode.Append))

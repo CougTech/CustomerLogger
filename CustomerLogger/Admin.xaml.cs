@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -43,7 +44,8 @@ namespace CustomerLogger
             this.Activate();
         }
 
-        // starting the day includes getting a new csv file setup for that day and then starting logging
+        // starting the day includes starting logging
+        // if there is no csv writer then you can select or create one
         // it will also prompt you if you want to enable emails for OTRS
         private void StartDayButton_Click(object sender, RoutedEventArgs e) {
             
@@ -52,7 +54,34 @@ namespace CustomerLogger
                 return;
             }
 
-            _main_window.StartLog(DateTime.Now.ToString("MM-dd-yyyy")); //! this defaults to setting Logging to true and EmailLogging to true
+            // create a csv writer if it does not exist. when you have to restart the program or it closes
+            // can select the already created log and continue writing to it for the week
+            if (_main_window.IsCsvNull()) {
+                System.Windows.MessageBox.Show("Select a csv file to log to.", "Notice");
+                OpenFileDialog fd = new OpenFileDialog();
+                fd.Multiselect = false;
+                fd.Filter = "CSV Files (*.csv)|*.csv";
+                DialogResult res = fd.ShowDialog();
+                if (System.Windows.Forms.DialogResult.OK == res)
+                {
+                    _main_window.CreateLog(fd.FileName, FileMode.Append);
+                    _main_window.LogPath = Path.GetDirectoryName(fd.FileName); // update logging directory
+                    DirectoryTextBlock.Text = _main_window.LogPath;
+                }
+                else // user did not select a file to log to
+                {
+                    var create = System.Windows.MessageBox.Show("No file selected. Create a new log?", "No Log Selected", MessageBoxButton.YesNo);
+                    if (create == MessageBoxResult.Yes) { // create a log
+                        _main_window.CreateLog("Week_of_" + DateTime.Now.ToString("MM-dd-yyyy"), FileMode.Create);
+                    }
+                    else { // if user says no to creating a log then don't start logging
+                        System.Windows.MessageBox.Show("No file selected or created. Not starting log", "Notice");
+                        return;
+                    }
+                }
+            }
+
+            _main_window.StartLog(); //! this defaults to setting Logging to true and EmailLogging to true
 
             // ask if want to enable emails
             var result = System.Windows.Forms.MessageBox.Show("Would you like to enable emails?", "Email", MessageBoxButtons.YesNo);

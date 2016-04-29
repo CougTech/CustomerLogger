@@ -41,7 +41,18 @@ namespace CustomerLogger {
             StudentID.Text = id;
             Device.Text = dev;
             Problem.Text = prob;
-            descText.Text = descr;
+
+            if (string.IsNullOrWhiteSpace(descr)) 
+            {
+                descText.Visibility = Visibility.Hidden; // don't show Description if no description given
+                descriptionLabel.Visibility = Visibility.Hidden; // will happen when customer selects "Rental"
+            }
+            else
+            {
+                descText.Text = descr;
+                descText.Visibility = Visibility.Visible;
+                descriptionLabel.Visibility = Visibility.Visible;
+            }
         }
 
         public void StartTimer()
@@ -54,7 +65,10 @@ namespace CustomerLogger {
 
         public void StopTimer()
         {
-            submitTimer.IsEnabled = false;
+            if (submitTimer != null) {
+                submitTimer.IsEnabled = false; // stop timer
+                submitTimer = null;
+            }
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e) {

@@ -31,12 +31,12 @@ namespace CustomerLogger
             EmailButton.Click += RadioButton_Click;
             PasswordButton.Click += RadioButton_Click;
             Other.Click += RadioButton_Click;
-            RentalButton.Click += RadioButton_Click;
 
         }
 
         public string Problem {
             get { return _problem; }
+            set { _problem = value; }
         }
         
         public string Description {
@@ -70,17 +70,9 @@ namespace CustomerLogger
 
         private void descriptionTextBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if (descriptionTextBox.Text.Length == 0)
+            if (descriptionTextBox.Text.Length == 0 || string.IsNullOrWhiteSpace(descriptionTextBox.Text))
             {
                 NextButton.IsEnabled = false; // disable 'Next' button if no text or text is just whitespace
-                descriptionTextBox.Text = "Shortly describe the problem you are having ...";
-                descriptionTextBox.SelectAll();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(descriptionTextBox.Text))
-            {
-                NextButton.IsEnabled = false;
                 return;
             }
 
@@ -94,6 +86,16 @@ namespace CustomerLogger
             if (descriptionTextBox.Text == "Shortly describe the problem you are having ...")
             {
                 descriptionTextBox.Text = ""; // remove default text if user starts typing before deleting it
+            }
+        }
+
+        private void descriptionTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            // KeyDown event does not handle space or backspace key
+            // this does
+            if (e.Key == Key.Space || e.Key == Key.Back)
+            {
+                descriptionTextBox_KeyDown(sender, e);
             }
         }
     }

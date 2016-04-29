@@ -23,13 +23,12 @@ namespace CustomerLogger
         private DevicePage _device_page;
         private ProblemPage _problem_page;
         private SummaryPage _summary_page;
-        private int _number_records;
         private string _log_path;
         private bool _logging, _email_logging;
         private string _email_pwd;
 
-        private TimeSpan startTime = new TimeSpan(8, 0, 0); // 8:00 am (24 hour clock)
-        private TimeSpan endTime = new TimeSpan(17, 0, 0); // 5:00 pm
+        private TimeSpan startTime = new TimeSpan(7, 30, 0); // 7:30 am (24 hour clock)
+        private TimeSpan endTime = new TimeSpan(17, 30, 0); // 5:30 pm
         private System.Windows.Threading.DispatcherTimer startDayTimer, endDayTimer;
 
 
@@ -37,7 +36,6 @@ namespace CustomerLogger
         public MainWindow() {
             InitializeComponent();
             _writer = null;
-            _number_records = 0;
 
             //state variables
             _logging = false;
@@ -63,6 +61,7 @@ namespace CustomerLogger
 
             ContentFrame.Navigated += ContentFrame_Navigated;
             ContentFrame.Navigating += ContentFrame_Navigating;
+
         }
 
         //holds the path to where csv logs are saved
@@ -143,33 +142,11 @@ namespace CustomerLogger
             _summary_page.PageFinished += _summary_page_PageFinished;
         }
 
-        // this will create a ticket specifically for appointments and will skip the rest of the questions
-        private void SendAppointment()
-        {
-            if (EmailLogging == true)
-            { 
-                int result = SendTicket(StudentIDPage.StudentID, " ", "Appointment", " "); // send in otrs ticket 
-                if (result < 0)
-                {
-                    return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
-                }
-            }
-
-            //write to csv file
-            addToCurrent(StudentIDPage.StudentID);
-            addToCurrent(" "); // empty string for device since it is an appointment
-            addToCurrent("Appointment");
-            writeLine();
-
-            //let customer know they can sit down
-            MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you", 4.0);
-            mw.ShowDialog();
-
-            //get back to first state
-            Reset();
-        }
-
-        // Changes page when user clicks 'next' on any of the pages except SummaryPage
+        /// <summary>
+        /// Changes page when user clicks 'next' on any of the pages except SummaryPage
+        /// </summary>
+        /// <param name="sender"> not used </param>
+        /// <param name="e"> not used </param>
         private void _page_PageFinished(object sender, EventArgs e)
         {
             if (ContentFrame.Content == StudentIDPage)
@@ -189,7 +166,17 @@ namespace CustomerLogger
             }
             else if (ContentFrame.Content == DevicePage)
             {
-                ContentFrame.Navigate(ProblemPage); // @ device page, go to problems next
+                if (DevicePage.Device == "Rental") // skip the problem description page if just signing in for rental
+                {
+                    ProblemPage.Problem = "Rent/Return/Extend Rental";
+                    SummaryPage.SetText(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem, ProblemPage.Description);
+                    SummaryPage.StartTimer(); // starts a 10 sec timer to auto close summary page
+                    ContentFrame.Navigate(SummaryPage); // go to summary next
+                }
+                else
+                {
+                    ContentFrame.Navigate(ProblemPage); // @ device page, go to problems next
+                }
             }
             else if (ContentFrame.Content == ProblemPage)
             {
@@ -211,12 +198,15 @@ namespace CustomerLogger
                 }
             }
 
-            //write to csv file
-            addToCurrent(StudentIDPage.StudentID);
-            addToCurrent(DevicePage.Device);
-            addToCurrent(ProblemPage.Problem);
-            addToCurrent(ProblemPage.Description);
-            writeLine();
+            if (Logging == true && _writer != null)
+            {
+                //write to csv file
+                addToCurrent(StudentIDPage.StudentID);
+                addToCurrent(DevicePage.Device);
+                addToCurrent(ProblemPage.Problem);
+                addToCurrent(ProblemPage.Description);
+                writeLine();
+            }
 
             //let customer know they can sit down
             MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you", 4.0);
@@ -240,74 +230,85 @@ namespace CustomerLogger
         {
             if (e.NavigationMode == NavigationMode.Back)
             {
-                if (e.Content == ProblemPage)
-                {
-                    SummaryPage.StopTimer();
-                }
+                SummaryPage.StopTimer();
             }
         }
 
-        //starts a .csv log for the day
-        //it will be given the name passed in .csv
-        public void StartLog(string name) {
-            _logging = true;
-            _email_logging = true; // enable logging and email logging for writing to the csv file and send tickets to otrs
+        public bool IsCsvNull()
+        {
+            return (_writer == null);
+        }
 
-            if (DateTime.Now.DayOfWeek == DayOfWeek.Monday) {
-                CreateLog(name); // creates a new .csv file for the week
-            }
+        /// <summary>
+        /// enable logging and email logging for writing to the csv file and send tickets to otrs
+        /// </summary>
+        public void StartLog() {
+            _logging = true;
+            _email_logging = true;
+        }
+
+        /// <summary>
+        /// Disables logging to csv and emailing tickets
+        /// </summary>
+        public void EndLog()
+        {
+            _logging = false;
+            _email_logging = false;
         }
 
         /// <summary>
         /// Creates a new CSVWriter object which will write to a new file
-        /// This is performed weekly every monday
+        /// This is performed weekly every monday or if a file does not exist for the week
         /// </summary>
         /// <param name="file_name">name of csv file</param>
-        public void CreateLog(string file_name) {
-            _number_records = 0;
+        public void CreateLog(string file_name, FileMode mode) {
             //create a new writer
             try
             {
-                int i = 0;
-                string fname = _log_path + "\\" + file_name + "-" + i.ToString() + ".csv";
-                while (File.Exists(fname)) // this loop guarantees that it will not overwrite the file, but instead append a number to the end and create a new file
+                if (mode == FileMode.Create)
                 {
-                    i += 1;
-                    fname = _log_path + "\\" + file_name + "-" + i.ToString() + ".csv";
-                }
+                    int i = 0;
+                    string fname = _log_path + "\\" + file_name + "-" + i.ToString() + ".csv";
+                    while (File.Exists(fname)) // this loop guarantees that it will not overwrite the file, but instead append a number to the end and create a new file
+                    {
+                        i += 1;
+                        fname = _log_path + "\\" + file_name + "-" + i.ToString() + ".csv";
+                    }
+                    _writer = new CSVWriter(fname, mode);
 
-                _writer = new CSVWriter(fname);
+                    //basic header stuff for the csv
+                    //the name of the log, the time it started
+                    _writer.addToCurrent("Log for: ");
+                    _writer.addToCurrent(file_name);
+                    _writer.addToCurrent(" ");
+                    _writer.addToCurrent("Log Start Time: ");
+                    _writer.addToCurrent(DateTime.Now.ToShortTimeString());
+                    _writer.WriteLine();
+                    //and then header for the collumns
+                    _writer.addToCurrent("Time");
+                    _writer.addToCurrent("ID Number");
+                    _writer.addToCurrent("Device");
+                    _writer.addToCurrent("Problem");
+                    _writer.addToCurrent("Description");
+                    _writer.WriteLine();
+                }
+                else if (mode == FileMode.Append)
+                {
+                    _writer = new CSVWriter(file_name, mode);
+                }
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Error Starting Log");
+                MessageBox.Show(e.Message, "Error Creating Log");
                 return;
             }
-            //basic header stuff for the csv
-            //the name of the log, the time it started
-            _writer.addToCurrent("Log for: ");
-            _writer.addToCurrent(file_name);
-            _writer.addToCurrent(" ");
-            _writer.addToCurrent("Log Start Time: ");
-            _writer.addToCurrent(DateTime.Now.ToShortTimeString());
-            _writer.WriteLine();
-            //and then header for the collumns
-            _writer.addToCurrent("Time");
-            _writer.addToCurrent("ID Number");
-            _writer.addToCurrent("Device");
-            _writer.addToCurrent("Problem");
-            _writer.addToCurrent("Description");
-            _writer.WriteLine();
         }
 
         /// <summary>
-        /// Writes final total of customers to file and deallocates the CSVWriter
+        /// Writes time log finished and deallocates the CSVWriter
         /// </summary>
         public void FinishLog()
         {
-            _writer.addToCurrent("Customers this week: ");
-            _writer.addToCurrent(_number_records.ToString());
-            _writer.WriteLine();
             _writer.addToCurrent("Log End Time: ");
             _writer.addToCurrent(DateTime.Now.ToShortTimeString());
             _writer.WriteLine();
@@ -315,34 +316,25 @@ namespace CustomerLogger
             _writer = null;
         }
 
-        //close the file if Friday (log for the week)
-        //this includes tallying up the customers for the day and writing it
-        //then putting the log end time and writing it
-        //destroying the writer and then resetting state variables
-        public void EndLog()
-        {
-            if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
-            {
-                FinishLog(); // write final stats to weekly file 
-            }
-
-            _logging = false;
-            _email_logging = false;
-        }
-
         //automatically starts the day when the timer is hit
         private void AutoStartLog(object sender, EventArgs e) {
             startDayTimer.IsEnabled = false; // stop timer
 
             // start the log and display message
+            // if it is Monday then we create a new log for the week.
             //we make the name of the log being the date in the MM-dd-yyyy format
             if (DateTime.Today.DayOfWeek != DayOfWeek.Saturday && DateTime.Today.DayOfWeek != DayOfWeek.Sunday) { // don't start logs on saturday/sunday
-                StartLog(DateTime.Now.ToString("MM-dd-yyyy"));
+                if (DateTime.Now.DayOfWeek == DayOfWeek.Monday)
+                {
+                    CreateLog("Week_of_" + DateTime.Now.ToString("MM-dd-yyyy"), FileMode.Create); // creates a new .csv file for the week
+                }
+
+                StartLog(); // enable Logging & EmailLogging
                 MessageWindow mw = new MessageWindow("Start New day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
                 mw.Show();
             }
 
-            startDayTimer.Interval = TimeUntilNextTimer(startTime); // update time to next day at 8:00 am
+            startDayTimer.Interval = TimeUntilNextTimer(startTime); // update time to next day at 7:30 am
             startDayTimer.IsEnabled = true;
         }
 
@@ -353,6 +345,12 @@ namespace CustomerLogger
             // end the log and display message
             if (null != _writer) {
                 EndLog();
+
+                if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
+                {
+                    FinishLog(); // write final stats to weekly file if end of day on Friday
+                }
+
                 MessageWindow mw = new MessageWindow("End day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
                 mw.Show();
             }
@@ -382,16 +380,14 @@ namespace CustomerLogger
             }
         }
 
-        //write the line for the end of the customer log
-        //delagtes to the internal CSV writer object
+        /// <summary>
+        /// writes customer details to csv file
+        /// </summary>
         public void writeLine() {
 
             if(null != _writer) {
-
-                _writer.addToStart(DateTime.Now.ToString("h:mm"));
+                _writer.addToStart(DateTime.Now.ToString("MM/dd/yyyy HH:mm"));
                 _writer.WriteLine();
-                _number_records++;
-
             }
             else {
                 if (true == _logging) {
@@ -422,16 +418,6 @@ namespace CustomerLogger
         public void Reset() {
             CreatePages(); // recreate pages to clear out data
             ContentFrame.Navigate(StudentIDPage);
-        }
-
-        //make sure that if the window closes for any reason (possibly other than a crash
-        //this may work in a crash, but we haven't tested that, also we are planning on this not crashing)
-        //we end the log, just so we have less chance of corrupted logs
-        private void Window_Closing(object sender, CancelEventArgs e)
-        {
-            if (true == _logging) {
-                FinishLog(); // Will finish writing the log if the program got closed with Alt+F4 (not sure if it works on crashes..)
-            }
         }
 
         //remove page history so customer can't go back after the final submission
@@ -478,6 +464,36 @@ namespace CustomerLogger
             }
             Cursor = Cursors.Arrow;
             return 0; // 0 for success
+        }
+
+        // this will create a ticket specifically for appointments and will skip the rest of the questions
+        // also writes to csv file if logging is enabled
+        private void SendAppointment()
+        {
+            if (EmailLogging == true)
+            {
+                int result = SendTicket(StudentIDPage.StudentID, " ", "Appointment", " "); // send in otrs ticket 
+                if (result < 0)
+                {
+                    return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
+                }
+            }
+
+            if (Logging == true && _writer != null)
+            {
+                //write to csv file
+                addToCurrent(StudentIDPage.StudentID);
+                addToCurrent(" "); // empty string for device since it is an appointment
+                addToCurrent("Appointment");
+                writeLine();
+            }
+
+            //let customer know they can sit down
+            MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you", 4.0);
+            mw.ShowDialog();
+
+            //get back to first state
+            Reset();
         }
     }
 }
