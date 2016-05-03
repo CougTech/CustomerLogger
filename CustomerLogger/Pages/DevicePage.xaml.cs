@@ -55,10 +55,11 @@ namespace CustomerLogger
             SubmitButton.IsEnabled = true;
         }
 
-        private void RentalButton_Click(object sender, RoutedEventArgs e) {
-            _device = "Rental";
-            SubmitButton.IsEnabled = true;
-        }
+        // Removed since OTRS automatically makes a ticket
+        //private void RentalButton_Click(object sender, RoutedEventArgs e) {
+        //    _device = "Rental";
+        //    SubmitButton.IsEnabled = true;
+        //}
 
         //make sure enter key works
         private void Grid_KeyUp(object sender, KeyEventArgs e) {
