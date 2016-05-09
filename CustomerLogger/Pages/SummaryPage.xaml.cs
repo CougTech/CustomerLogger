@@ -36,23 +36,16 @@ namespace CustomerLogger {
             SubmitButton_Click(sender, new RoutedEventArgs());
         }
 
-        public void SetText(string id, string dev, string prob, string descr)
-        {
+        public void SetText(string id, string prob, string descr)
+        { 
             StudentID.Text = id;
-            Device.Text = dev;
+            // Device.Text = dev;
             Problem.Text = prob;
 
-            if (dev == "Rental") 
-            {
-                descText.Visibility = Visibility.Hidden; // don't show Description if no description given
-                descriptionLabel.Visibility = Visibility.Hidden; // will happen when customer selects "Rental"
-            }
-            else
-            {
-                descText.Text = descr;
-                descText.Visibility = Visibility.Visible;
-                descriptionLabel.Visibility = Visibility.Visible;
-            }
+            descText.Text = descr;
+            descText.Visibility = Visibility.Visible;
+            descriptionLabel.Visibility = Visibility.Visible;
+           
         }
 
         public void StartTimer()
