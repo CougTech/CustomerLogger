@@ -12,12 +12,10 @@
       Title="AppointmentPage">
 
     <Grid KeyUp="Grid_KeyUp">
-        <Grid Margin="106,241,107,241">
-            <Label x:Name="apptLabel" Content="Did you make an appointment prior to coming in?" Margin="47,0,44,0" VerticalAlignment="Top" FontSize="40" Height="66"/>
-            <RadioButton x:Name="yesRadioButton" Content="Yes" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="449,109,0,0" FontSize="34.667" Click="yesRadioButton_Click" VerticalAlignment="Top"/>
-            <RadioButton x:Name="noRadioButton" Content="No" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="451,161,0,0" FontSize="34.667" Click="noRadioButton_Click" VerticalAlignment="Top"/>
-            <Label x:Name="descLabel" Content="Please select &quot;No&quot; if you did not make an appointment at cougtech.setmore.com" Margin="0,52,0,94" FontSize="26.667"/>
-        </Grid>
+        <Label x:Name="apptLabel" Content="Do you have an appointment with us today?" Margin="188,199,188,0" VerticalAlignment="Top" FontSize="40" Height="66"/>
+        <RadioButton x:Name="yesRadioButton" Content="Yes" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="537,310,0,0" FontSize="34.667" Click="yesRadioButton_Click" VerticalAlignment="Top"/>
+        <RadioButton x:Name="noRadioButton" Content="No" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="537,360,0,0" FontSize="34.667" Click="noRadioButton_Click" VerticalAlignment="Top"/>
         <Button x:Name="nextButton" Content="Next" Margin="0,0,30,29" Click="SubmitButton_Click" FontSize="26.667" HorizontalAlignment="Right" Width="160" Height="80" VerticalAlignment="Bottom"/>
+        <Label x:Name="descLabel" Content="Please select &quot;No&quot; if you have not setup an appointment at cougtech.setmore.com" Margin="106,249,107,379" FontSize="26.667"/>
     </Grid>
 </Page>

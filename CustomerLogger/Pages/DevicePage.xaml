@@ -11,20 +11,11 @@
       Width="1200">
 
     <Grid KeyUp="Grid_KeyUp">
-        <Button x:Name="SubmitButton" Content="Next" Margin="0,0,28,29" Click="SubmitButton_Click" FontSize="26.667" HorizontalAlignment="Right" Width="160" Height="80" VerticalAlignment="Bottom"/>
-        <Grid Margin="333,236,334,237">
-            <Grid Margin="0,-10,0,16">
-                <RadioButton x:Name="ComputerButton" Content="Computer Issues" VerticalContentAlignment="Center" Margin="131,63,129,0" FontSize="34.667" Click="ComputerButton_Click" VerticalAlignment="Top"/>
-                <RadioButton x:Name="PhoneButton" Content="Phone Issues" VerticalContentAlignment="Center" Margin="131,115,185,0" FontSize="34.667" Click="PhoneButton_Click" VerticalAlignment="Top"/>
-                <RadioButton x:Name="TabletButton" Content="Tablet Issues" VerticalContentAlignment="Center" Margin="131,164,188,0" FontSize="34.667" Click="TabletButton_Click" VerticalAlignment="Top"/>
-                <TextBlock x:Name="ProblemText" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="40" Text="Select the reason you're here:"/>
-
-
-            </Grid>
-
-
-        </Grid>
-
+        <Button x:Name="SubmitButton" Content="Next" Margin="0,0,30,29" Click="SubmitButton_Click" FontSize="26.667" HorizontalAlignment="Right" Width="160" Height="80" VerticalAlignment="Bottom"/>
+        <RadioButton x:Name="ComputerButton" Content="Computer Issues" VerticalContentAlignment="Center" Margin="462,273,465,0" FontSize="34.667" Click="ComputerButton_Click" VerticalAlignment="Top"/>
+        <RadioButton x:Name="PhoneButton" Content="Phone Issues" VerticalContentAlignment="Center" Margin="462,323,521,0" FontSize="34.667" Click="PhoneButton_Click" VerticalAlignment="Top"/>
+        <RadioButton x:Name="TabletButton" Content="Tablet Issues" VerticalContentAlignment="Center" Margin="462,374,524,0" FontSize="34.667" Click="TabletButton_Click" VerticalAlignment="Top"/>
+        <TextBlock x:Name="ProblemText" Margin="331,204,336,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="40" Text="Select the reason you're here:"/>
 
     </Grid>
 </Page>
