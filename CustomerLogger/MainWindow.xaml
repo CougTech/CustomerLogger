@@ -11,7 +11,7 @@
                 <GradientStop Color="White" Offset="0.064"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Frame x:Name="ContentFrame" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Visible" IsTabStop="False">
+        <Frame x:Name="ContentFrame" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#efefef" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Visible" IsTabStop="False">
         </Frame>
         <Image x:Name="cougtechImage" Margin="216,49,215,0" Source="cougtech.png" Height="151" VerticalAlignment="Top"/>
         <Button x:Name="AdminButton" Content="Admin" VerticalAlignment="Top" Click="AdminButton_Click" TabIndex="0" IsTabStop="False" HorizontalAlignment="Right" Width="75">
