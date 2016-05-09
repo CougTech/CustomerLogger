@@ -11,9 +11,9 @@
       Width="1200">
 
     <Grid KeyUp="Grid_KeyUp">
-        <Button x:Name="SubmitButton" Content="Next" Margin="0,0,20,29" Click="SubmitButton_Click" FontSize="26.667" HorizontalAlignment="Right" Width="160" Height="80" VerticalAlignment="Bottom"/>
+        <Button x:Name="SubmitButton" Content="Next" Margin="0,0,30,29" Click="SubmitButton_Click" FontSize="26.667" HorizontalAlignment="Right" Width="160" Height="80" VerticalAlignment="Bottom"/>
         <RadioButton x:Name="ComputerButton" Content="Computer Issues" VerticalContentAlignment="Center" Margin="462,273,465,0" FontSize="34.667" Click="ComputerButton_Click" VerticalAlignment="Top"/>
-        <RadioButton x:Name="PhoneButton" Content="Phone Issues" VerticalContentAlignment="Center" Margin="462,325,521,0" FontSize="34.667" Click="PhoneButton_Click" VerticalAlignment="Top"/>
+        <RadioButton x:Name="PhoneButton" Content="Phone Issues" VerticalContentAlignment="Center" Margin="462,323,521,0" FontSize="34.667" Click="PhoneButton_Click" VerticalAlignment="Top"/>
         <RadioButton x:Name="TabletButton" Content="Tablet Issues" VerticalContentAlignment="Center" Margin="462,374,524,0" FontSize="34.667" Click="TabletButton_Click" VerticalAlignment="Top"/>
         <TextBlock x:Name="ProblemText" Margin="331,204,336,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="40" Text="Select the reason you're here:"/>
 
