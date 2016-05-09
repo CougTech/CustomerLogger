@@ -20,6 +20,7 @@
                 </LinearGradientBrush>
             </Frame.Background>
         </Frame>
+        <Image x:Name="cougtechImage" Margin="216,49,215,0" Source="cougtech.png" Height="151" VerticalAlignment="Top"/>
         <Button x:Name="AdminButton" Content="Admin" VerticalAlignment="Top" Click="AdminButton_Click" TabIndex="0" IsTabStop="False" HorizontalAlignment="Right" Width="75">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -28,7 +29,6 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Image x:Name="cougtechImage" Margin="90,59,89,0" Source="cougtech_transparent.png" Height="102" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
