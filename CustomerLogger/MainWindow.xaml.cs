@@ -20,7 +20,7 @@ namespace CustomerLogger
         private CSVWriter _writer;
         private StudentIDPage _student_id_page;
         private AppointmentPage _appt_page;
-        private DevicePage _device_page;
+        //private DevicePage _device_page;
         private ProblemPage _problem_page;
         private SummaryPage _summary_page;
         private string _log_path;
@@ -80,9 +80,9 @@ namespace CustomerLogger
             get {return _student_id_page; }
         }
 
-        public DevicePage DevicePage{
-            get {return _device_page; }
-        }
+        //public DevicePage DevicePage{
+        //    get {return _device_page; }
+        //}
 
         public ProblemPage ProblemPage {
             get {return _problem_page; }
@@ -132,8 +132,8 @@ namespace CustomerLogger
             _appt_page = new AppointmentPage();
             _appt_page.PageFinished += _page_PageFinished;
 
-            _device_page = new DevicePage();
-            _device_page.PageFinished += _page_PageFinished;
+            //_device_page = new DevicePage();
+            //_device_page.PageFinished += _page_PageFinished;
 
             _problem_page = new ProblemPage();
             _problem_page.PageFinished += _page_PageFinished;
@@ -161,26 +161,27 @@ namespace CustomerLogger
                 }
                 else
                 {
-                    ContentFrame.Navigate(DevicePage); // otherwise go to devices page next
+                    ContentFrame.Navigate(ProblemPage); 
                 }
             }
-            else if (ContentFrame.Content == DevicePage)
-            {
-                if (DevicePage.Device == "Rental") // skip the problem description page if just signing in for rental
-                {
-                    ProblemPage.Problem = "Rent/Return/Extend Rental";
-                    SummaryPage.SetText(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem, ProblemPage.Description);
-                    SummaryPage.StartTimer(); // starts a 10 sec timer to auto close summary page
-                    ContentFrame.Navigate(SummaryPage); // go to summary next
-                }
-                else
-                {
-                    ContentFrame.Navigate(ProblemPage); // @ device page, go to problems next
-                }
-            }
+            /// Removing device page completely
+            //else if (ContentFrame.Content == DevicePage)
+            //{
+            //    if (DevicePage.Device == "Rental") // skip the problem description page if just signing in for rental
+            //    {
+            //        ProblemPage.Problem = "Rent/Return/Extend Rental";
+            //        SummaryPage.SetText(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem, ProblemPage.Description);
+            //        SummaryPage.StartTimer(); // starts a 10 sec timer to auto close summary page
+            //        ContentFrame.Navigate(SummaryPage); // go to summary next
+            //    }
+            //    else
+            //    {
+            //        ContentFrame.Navigate(ProblemPage); // @ device page, go to problems next
+            //    }
+            //}
             else if (ContentFrame.Content == ProblemPage)
             {
-                SummaryPage.SetText(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem, ProblemPage.Description);
+                SummaryPage.SetText(StudentIDPage.StudentID, ProblemPage.Problem, ProblemPage.Description);
                 SummaryPage.StartTimer(); // starts a 10 sec timer to auto close summary page
                 ContentFrame.Navigate(SummaryPage); // @ problem page, go to summary next
             }
@@ -189,27 +190,29 @@ namespace CustomerLogger
         // User submits their info and it gets written to the csv file and sent to OTRS if enabled
         private void _summary_page_PageFinished(object sender, EventArgs e)
         {
-            if (EmailLogging == true && (DevicePage.Device != "Rental" && ProblemPage.Problem != "Rent/Checkout/Extend Rental"))
-            { // don't send tickets that are rentals (ramsay creates one)
-                int result = SendTicket(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem, ProblemPage.Description); // send in otrs ticket 
-                if (result < 0)
-                {
-                    return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
-                }
-            }
+
+            /// Removed rental and Device
+            //if (EmailLogging == true && (DevicePage.Device != "Rental" && ProblemPage.Problem != "Rent/Checkout/Extend Rental"))
+            //{ // don't send tickets that are rentals (ramsay creates one)
+            //    int result = SendTicket(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem, ProblemPage.Description); // send in otrs ticket 
+            //    if (result < 0)
+            //    {
+            //        return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
+            //    }
+            //}
 
             if (Logging == true && _writer != null)
             {
                 //write to csv file
                 addToCurrent(StudentIDPage.StudentID);
-                addToCurrent(DevicePage.Device);
+                //addToCurrent(DevicePage.Device); No device page
                 addToCurrent(ProblemPage.Problem);
                 addToCurrent(ProblemPage.Description);
                 writeLine();
             }
 
             //let customer know they can sit down
-            MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you", 4.0);
+            MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you.", 4.0);
             mw.ShowDialog();
 
             //get back to first state
@@ -287,7 +290,7 @@ namespace CustomerLogger
                     //and then header for the collumns
                     _writer.addToCurrent("Time");
                     _writer.addToCurrent("ID Number");
-                    _writer.addToCurrent("Device");
+                    //_writer.addToCurrent("Device");
                     _writer.addToCurrent("Problem");
                     _writer.addToCurrent("Description");
                     _writer.WriteLine();
