@@ -98,5 +98,10 @@ namespace CustomerLogger
                 descriptionTextBox_KeyDown(sender, e);
             }
         }
+
+        private void descriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
