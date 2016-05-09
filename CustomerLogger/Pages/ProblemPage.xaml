@@ -20,7 +20,7 @@
             <RadioButton x:Name="WirelessButton" Content="Wireless" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="182,196,0,0" VerticalAlignment="Top" FontSize="32" FontFamily="Segoe UI Semibold"/>
             <RadioButton x:Name="EmailButton" Content="Email" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="182,323,0,0" VerticalAlignment="Top" FontSize="32" FontFamily="Segoe UI Semibold"/>
             <RadioButton x:Name="PasswordButton" Content="Password" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="182,262,0,0" VerticalAlignment="Top" FontSize="32" FontFamily="Segoe UI Semibold"/>
-            <TextBlock x:Name="ProblemText" Margin="0,0,0,405" TextWrapping="Wrap" Text="Select the option that best describes your problem:" FontSize="40"/>
+            <TextBlock x:Name="ProblemText" FontWeight="DemiBold" Margin="-16,0,-16,405" TextWrapping="Wrap" Text="Select the option that best describes your problem:" FontSize="40"/>
             <Label x:Name="hardwareLabel" Content="Computer not booting, mouse/keyboard not working..." HorizontalAlignment="Left" Margin="233,87,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.926,0.169" Height="41" Width="581" FontSize="21.333"/>
             <Label x:Name="softwareLabel" Content="Microsoft Office, Visual Studio, slow computer,..." HorizontalAlignment="Left" Margin="233,158,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.926,0.169" Height="41" Width="634" FontSize="21.333"/>
             <Label x:Name="wirelessLabel" Content="Cannot connect to WSU Wireless or ResNet" HorizontalAlignment="Left" Margin="233,227,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.926,0.169" Height="41" Width="456" FontSize="21.333"/>

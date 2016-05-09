@@ -209,7 +209,7 @@ namespace CustomerLogger
             }
 
             //let customer know they can sit down
-            MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you", 4.0);
+            MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you.", 4.0);
             mw.ShowDialog();
 
             //get back to first state
@@ -489,7 +489,7 @@ namespace CustomerLogger
             }
 
             //let customer know they can sit down
-            MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you", 4.0);
+            MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you.", 4.0);
             mw.ShowDialog();
 
             //get back to first state
