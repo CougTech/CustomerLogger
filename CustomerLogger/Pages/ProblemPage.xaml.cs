@@ -15,6 +15,7 @@ namespace CustomerLogger
         public event EventHandler PageFinished;
         private string _problem;
         private string _description;
+        string _defaultText = "Briefly describe your problem.";
 
         public ProblemPage() {
             InitializeComponent();
@@ -46,7 +47,7 @@ namespace CustomerLogger
         //when they have made an option customer can move on
         private void NextButton_Click(object sender, RoutedEventArgs e) {
             if(NextButton.IsEnabled) {
-                if (descriptionTextBox.Text != "Shortly describe the problem you are having ...") { 
+                if (descriptionTextBox.Text != _defaultText) { 
                     _description = descriptionTextBox.Text; // add description if its not the default text
                     _description = _description.Replace(",", string.Empty); // remove any commas in description because we save to a CSV
                 }
@@ -76,14 +77,14 @@ namespace CustomerLogger
                 return;
             }
 
-            if (descriptionTextBox.Text != "Shortly describe the problem you are having ...") {
+            if (descriptionTextBox.Text != _defaultText) {
                 NextButton.IsEnabled = true; // enable button once text is not the default text
             }
         }
 
         private void descriptionTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (descriptionTextBox.Text == "Shortly describe the problem you are having ...")
+            if (descriptionTextBox.Text == _defaultText)
             {
                 descriptionTextBox.Text = ""; // remove default text if user starts typing before deleting it
             }
@@ -97,11 +98,6 @@ namespace CustomerLogger
             {
                 descriptionTextBox_KeyDown(sender, e);
             }
-        }
-
-        private void descriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }
