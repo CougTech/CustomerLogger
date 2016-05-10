@@ -192,14 +192,14 @@ namespace CustomerLogger
         {
 
             /// Removed rental and Device
-            //if (EmailLogging == true && (DevicePage.Device != "Rental" && ProblemPage.Problem != "Rent/Checkout/Extend Rental"))
-            //{ // don't send tickets that are rentals (ramsay creates one)
-            //    int result = SendTicket(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem, ProblemPage.Description); // send in otrs ticket 
-            //    if (result < 0)
-            //    {
-            //        return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
-            //    }
-            //}
+            if (EmailLogging == true)
+            { // don't send tickets that are rentals (ramsay creates one)
+                int result = SendTicket(StudentIDPage.StudentID, ProblemPage.Problem, ProblemPage.Description); // send in otrs ticket 
+                if (result < 0)
+                {
+                    return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
+                }
+            }
 
             if (Logging == true && _writer != null)
             {
@@ -436,7 +436,7 @@ namespace CustomerLogger
         //sends ticket to orts via email
         //this way we can make notes and all that good otrs stuff....
         //this is the code that actually takes our customer logger info and sends it to otrs
-        public int SendTicket(string id, string dev, string prob, string descr) {
+        public int SendTicket(string id, string prob, string descr) {
             
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;
@@ -447,10 +447,17 @@ namespace CustomerLogger
             MailAddress receiver = new MailAddress("cougtech@wsu.edu");
 
             MailMessage msg = new MailMessage(sender, receiver);
-            msg.Subject = "##CTwi " + prob + " : " + id;
+
+            // Check if the ticket was for testing
+            if (descr != "TEST") {
+                msg.Subject = "##CTwi " + prob + " : " + id;
+            }
+            else {
+                msg.Subject = "##CTwi TEST : " + id;
+            }
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + id + "\n" + dev + "\n" + prob + "\n\n" + descr);
+            sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + id + "\n" + prob + "\n\n" + descr);
             sb.AppendLine("\n\n[*] Please change the customer information for this ticket by selecting the | Customer | button above and enter their ID number in the Customer User field.");
             sb.AppendLine("[*] Add your notes by selecting the | Note | button above.");
             sb.AppendLine("[*] Close the ticket when you are done by selecting the | Close | button above.");
@@ -475,7 +482,7 @@ namespace CustomerLogger
         {
             if (EmailLogging == true)
             {
-                int result = SendTicket(StudentIDPage.StudentID, " ", "Appointment", " "); // send in otrs ticket 
+                int result = SendTicket(StudentIDPage.StudentID, "Appointment", " "); // send in otrs ticket 
                 if (result < 0)
                 {
                     return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
