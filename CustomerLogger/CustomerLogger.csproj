@@ -57,6 +57,9 @@
     <Compile Include="Pages\AppointmentPage.xaml.cs">
       <DependentUpon>AppointmentPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\AppointmentProblemPage.xaml.cs">
+      <DependentUpon>AppointmentProblemPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PasswordWindow.xaml.cs">
       <DependentUpon>PasswordWindow.xaml</DependentUpon>
     </Compile>
@@ -80,6 +83,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\AppointmentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\AppointmentProblemPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
