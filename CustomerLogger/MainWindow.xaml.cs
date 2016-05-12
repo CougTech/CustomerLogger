@@ -441,7 +441,7 @@ namespace CustomerLogger
             {
                 msg.Subject = "##CTtest : " + prob + " : " + id;
             }
-            if (isAppt)
+            else if (isAppt)
             {
                 msg.Subject = "##CTapt : " + prob + " : " + id;
             }
