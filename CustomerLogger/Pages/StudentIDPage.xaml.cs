@@ -23,7 +23,7 @@ namespace CustomerLogger
     public partial class StudentIDPage:Page {
 
         private string _student_id;
-        private bool _isTest;
+        private bool _isTest = false;
         public event EventHandler PageFinished;
     
         public StudentIDPage() {

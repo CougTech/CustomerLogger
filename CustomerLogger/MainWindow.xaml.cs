@@ -437,13 +437,13 @@ namespace CustomerLogger
             MailMessage msg = new MailMessage(sender, receiver);
 
             // If the ticket is an appointment then changes the subject
+            if (StudentIDPage.isTest)
+            {
+                msg.Subject = "##CTtest : " + prob + " : " + id;
+            }
             if (isAppt)
             {
                 msg.Subject = "##CTapt : " + prob + " : " + id;
-            }
-            else if (StudentIDPage.isTest)
-            {
-                msg.Subject = "##CTtest : " + prob + " : " + id;
             }
             else
             {
