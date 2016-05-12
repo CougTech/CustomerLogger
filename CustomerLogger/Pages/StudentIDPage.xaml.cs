@@ -71,8 +71,15 @@ namespace CustomerLogger
             bool correct_length;
             bool is_num;
 
+            // Change maxLength to 9 if the first digit is 0
+            // Must check if the box is empty or the program will crash if backspaced
+            if (StudentNumberTextBox.Text != "" && StudentNumberTextBox.Text[0] == '0')
+            {
+                StudentNumberTextBox.MaxLength = 9;
+            }
+
             //make sure we have a valid length, either 8 without a leading 0 or nine with a leading 0
-            if(StudentNumberTextBox.Text.Length == 8 || (StudentNumberTextBox.Text.Length == 9 && StudentNumberTextBox.Text[0] == '0')) { // length of 9 is only correct if first digit is 0
+            if (StudentNumberTextBox.Text.Length == 8 || (StudentNumberTextBox.Text.Length == 9 && StudentNumberTextBox.Text[0] == '0')) { // length of 9 is only correct if first digit is 0
 
                 correct_length = true;
             } else {
