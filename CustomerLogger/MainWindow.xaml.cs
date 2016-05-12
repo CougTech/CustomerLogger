@@ -20,10 +20,7 @@ namespace CustomerLogger
         private CSVWriter _writer;
         private StudentIDPage _student_id_page;
         private AppointmentPage _appt_page;
-<<<<<<< HEAD
-=======
         private AppointmentProblemPage _appt_prob_page;
->>>>>>> refs/remotes/origin/AppointmentProblemPage
         private ProblemPage _problem_page;
         private SummaryPage _summary_page;
         private string _log_path;
@@ -83,13 +80,10 @@ namespace CustomerLogger
             get {return _student_id_page; }
         }
 
-<<<<<<< HEAD
-=======
         public AppointmentProblemPage AppointmentProbPage {
             get { return _appt_prob_page; }
         }
 
->>>>>>> refs/remotes/origin/AppointmentProblemPage
         public ProblemPage ProblemPage {
             get {return _problem_page; }
         }
@@ -138,12 +132,9 @@ namespace CustomerLogger
             _appt_page = new AppointmentPage();
             _appt_page.PageFinished += _page_PageFinished;
 
-<<<<<<< HEAD
-=======
             _appt_prob_page = new AppointmentProblemPage();
             _appt_prob_page.PageFinished += _page_PageFinished;
-
->>>>>>> refs/remotes/origin/AppointmentProblemPage
+            
             _problem_page = new ProblemPage();
             _problem_page.PageFinished += _page_PageFinished;
 
@@ -490,13 +481,10 @@ namespace CustomerLogger
             {
                 //write to csv file
                 addToCurrent(StudentIDPage.StudentID);
-<<<<<<< HEAD
                 addToCurrent(" "); 
                 addToCurrent("Appointment");
-=======
                 addToCurrent("Appointment"); //problem
                 addToCurrent(AppointmentProbPage.Problem);
->>>>>>> refs/remotes/origin/AppointmentProblemPage
                 writeLine();
             }
 

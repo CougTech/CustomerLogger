@@ -23,7 +23,8 @@ namespace CustomerLogger.Pages
         public event EventHandler PageFinished;
         private string _problem;
 
-        public AppointmentProblemPage() {
+        public AppointmentProblemPage()
+        {
             InitializeComponent();
             NextButton.IsEnabled = false;
 
@@ -41,13 +42,16 @@ namespace CustomerLogger.Pages
             set { _problem = value; }
         }
 
-        private void RadioButton_Click(object sender, RoutedEventArgs e) {
+        private void RadioButton_Click(object sender, RoutedEventArgs e)
+        {
             _problem = ((RadioButton)sender).Content.ToString(); // set problem to text of radio button
             NextButton.IsEnabled = true;
         }
 
-        private void NextButton_Click(object sender, RoutedEventArgs e) { 
-            if (NextButton.IsEnabled == true) {
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (NextButton.IsEnabled == true)
+            {
                 PageFinished(new object(), new EventArgs());
             }
         }
