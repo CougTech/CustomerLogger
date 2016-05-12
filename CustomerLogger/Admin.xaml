@@ -26,15 +26,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="SetEmailPassword" Content="Email Password" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Margin="64,17,0,0" Click="SetEmailPassword_Click" Height="30" Grid.Column="1">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="{DynamicResource {x:Static SystemColors.ScrollBarColorKey}}" Offset="1"/>
-                    <GradientStop Color="White"/>
-                </LinearGradientBrush>
-            </Button.Background>
-       </Button>
-            <Button x:Name="LogDirectoryButton" Content="Log Directory" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Margin="10,17,0,0" Click="LogDirectoryButton_Click" Height="30" Grid.ColumnSpan="2">
+        <Button x:Name="LogDirectoryButton" Content="Log Directory" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Margin="0,17,0,0" Click="LogDirectoryButton_Click" Height="30" Grid.Column="1">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="{DynamicResource {x:Static SystemColors.ScrollBarColorKey}}" Offset="1"/>
