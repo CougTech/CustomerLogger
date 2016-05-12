@@ -60,9 +60,6 @@
     <Compile Include="PasswordWindow.xaml.cs">
       <DependentUpon>PasswordWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\DevicePage.xaml.cs">
-      <DependentUpon>DevicePage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MessageWindow.xaml.cs">
       <DependentUpon>MessageWindow.xaml</DependentUpon>
     </Compile>
@@ -84,10 +81,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PasswordWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\DevicePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

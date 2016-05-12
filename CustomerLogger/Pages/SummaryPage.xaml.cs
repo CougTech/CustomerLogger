@@ -39,7 +39,6 @@ namespace CustomerLogger {
         public void SetText(string id, string prob, string descr)
         { 
             StudentID.Text = id;
-            // Device.Text = dev;
             Problem.Text = prob;
 
             descText.Text = descr;

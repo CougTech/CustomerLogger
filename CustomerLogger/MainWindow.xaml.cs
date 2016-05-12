@@ -20,7 +20,6 @@ namespace CustomerLogger
         private CSVWriter _writer;
         private StudentIDPage _student_id_page;
         private AppointmentPage _appt_page;
-        //private DevicePage _device_page;
         private ProblemPage _problem_page;
         private SummaryPage _summary_page;
         private string _log_path;
@@ -80,10 +79,6 @@ namespace CustomerLogger
             get {return _student_id_page; }
         }
 
-        //public DevicePage DevicePage{
-        //    get {return _device_page; }
-        //}
-
         public ProblemPage ProblemPage {
             get {return _problem_page; }
         }
@@ -132,9 +127,6 @@ namespace CustomerLogger
             _appt_page = new AppointmentPage();
             _appt_page.PageFinished += _page_PageFinished;
 
-            //_device_page = new DevicePage();
-            //_device_page.PageFinished += _page_PageFinished;
-
             _problem_page = new ProblemPage();
             _problem_page.PageFinished += _page_PageFinished;
 
@@ -151,7 +143,7 @@ namespace CustomerLogger
         {
             if (ContentFrame.Content == StudentIDPage)
             {
-                ContentFrame.Navigate(AppointmentPage); // @ student id page, go to devices next
+                ContentFrame.Navigate(AppointmentPage); 
             }
             else if (ContentFrame.Content == AppointmentPage)
             {
@@ -164,21 +156,6 @@ namespace CustomerLogger
                     ContentFrame.Navigate(ProblemPage); 
                 }
             }
-            /// Removing device page completely
-            //else if (ContentFrame.Content == DevicePage)
-            //{
-            //    if (DevicePage.Device == "Rental") // skip the problem description page if just signing in for rental
-            //    {
-            //        ProblemPage.Problem = "Rent/Return/Extend Rental";
-            //        SummaryPage.SetText(StudentIDPage.StudentID, DevicePage.Device, ProblemPage.Problem, ProblemPage.Description);
-            //        SummaryPage.StartTimer(); // starts a 10 sec timer to auto close summary page
-            //        ContentFrame.Navigate(SummaryPage); // go to summary next
-            //    }
-            //    else
-            //    {
-            //        ContentFrame.Navigate(ProblemPage); // @ device page, go to problems next
-            //    }
-            //}
             else if (ContentFrame.Content == ProblemPage)
             {
                 SummaryPage.SetText(StudentIDPage.StudentID, ProblemPage.Problem, ProblemPage.Description);
@@ -205,7 +182,6 @@ namespace CustomerLogger
             {
                 //write to csv file
                 addToCurrent(StudentIDPage.StudentID);
-                //addToCurrent(DevicePage.Device); No device page
                 addToCurrent(ProblemPage.Problem);
                 addToCurrent(ProblemPage.Description);
                 writeLine();
@@ -290,7 +266,6 @@ namespace CustomerLogger
                     //and then header for the collumns
                     _writer.addToCurrent("Time");
                     _writer.addToCurrent("ID Number");
-                    //_writer.addToCurrent("Device");
                     _writer.addToCurrent("Problem");
                     _writer.addToCurrent("Description");
                     _writer.WriteLine();
@@ -493,7 +468,7 @@ namespace CustomerLogger
             {
                 //write to csv file
                 addToCurrent(StudentIDPage.StudentID);
-                addToCurrent(" "); // empty string for device since it is an appointment
+                addToCurrent(" "); 
                 addToCurrent("Appointment");
                 writeLine();
             }
