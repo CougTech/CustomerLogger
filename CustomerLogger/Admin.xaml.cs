@@ -144,6 +144,7 @@ namespace CustomerLogger
                 //PasswordWindow pw = new PasswordWindow();
                 //pw.ShowDialog();
 
+                _main_window.EmailPassword = ""; // Hard coding for now
                 _main_window.EmailLogging = true;
                 emailSendTextBlock.Text = "Emails Sending: Yes";
                 emailButton.Content = "Disable Emails";
