@@ -20,6 +20,10 @@ namespace CustomerLogger
         private CSVWriter _writer;
         private StudentIDPage _student_id_page;
         private AppointmentPage _appt_page;
+<<<<<<< HEAD
+=======
+        private AppointmentProblemPage _appt_prob_page;
+>>>>>>> refs/remotes/origin/AppointmentProblemPage
         private ProblemPage _problem_page;
         private SummaryPage _summary_page;
         private string _log_path;
@@ -79,6 +83,13 @@ namespace CustomerLogger
             get {return _student_id_page; }
         }
 
+<<<<<<< HEAD
+=======
+        public AppointmentProblemPage AppointmentProbPage {
+            get { return _appt_prob_page; }
+        }
+
+>>>>>>> refs/remotes/origin/AppointmentProblemPage
         public ProblemPage ProblemPage {
             get {return _problem_page; }
         }
@@ -127,6 +138,12 @@ namespace CustomerLogger
             _appt_page = new AppointmentPage();
             _appt_page.PageFinished += _page_PageFinished;
 
+<<<<<<< HEAD
+=======
+            _appt_prob_page = new AppointmentProblemPage();
+            _appt_prob_page.PageFinished += _page_PageFinished;
+
+>>>>>>> refs/remotes/origin/AppointmentProblemPage
             _problem_page = new ProblemPage();
             _problem_page.PageFinished += _page_PageFinished;
 
@@ -149,7 +166,8 @@ namespace CustomerLogger
             {
                 if (AppointmentPage.HasAppointment == true) // @ appointment page
                 {
-                    SendAppointment(); // send in ticket and reset if user has one
+                    
+                    ContentFrame.Navigate(AppointmentProbPage);
                 }
                 else
                 {
@@ -161,6 +179,10 @@ namespace CustomerLogger
                 SummaryPage.SetText(StudentIDPage.StudentID, ProblemPage.Problem, ProblemPage.Description);
                 SummaryPage.StartTimer(); // starts a 10 sec timer to auto close summary page
                 ContentFrame.Navigate(SummaryPage); // @ problem page, go to summary next
+            }
+            else if (ContentFrame.Content == AppointmentProbPage) 
+            {
+                SendAppointment(_appt_prob_page.Problem); // send in ticket and reset if user has one
             }
         }
 
@@ -453,11 +475,11 @@ namespace CustomerLogger
 
         // this will create a ticket specifically for appointments and will skip the rest of the questions
         // also writes to csv file if logging is enabled
-        private void SendAppointment()
+        private void SendAppointment(string prob)
         {
             if (EmailLogging == true)
             {
-                int result = SendTicket(StudentIDPage.StudentID, "Appointment", " "); // send in otrs ticket 
+                int result = SendTicket(StudentIDPage.StudentID, ("Appointment : ") + prob, prob); // send in otrs ticket 
                 if (result < 0)
                 {
                     return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
@@ -468,8 +490,13 @@ namespace CustomerLogger
             {
                 //write to csv file
                 addToCurrent(StudentIDPage.StudentID);
+<<<<<<< HEAD
                 addToCurrent(" "); 
                 addToCurrent("Appointment");
+=======
+                addToCurrent("Appointment"); //problem
+                addToCurrent(AppointmentProbPage.Problem);
+>>>>>>> refs/remotes/origin/AppointmentProblemPage
                 writeLine();
             }
 

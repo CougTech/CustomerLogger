@@ -1,0 +1,24 @@
+﻿<Page x:Class="CustomerLogger.Pages.AppointmentProblemPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CustomerLogger.Pages"
+      mc:Ignorable="d" 
+      d:DesignWidth="669.254"
+      d:DesignHeight="483.022"
+      Height="688"
+      Width="1200"
+      Title="AppointmentProblemPage">
+
+    <Grid>
+        <RadioButton Name="FormatReinstallBackup_Button" Content="Format/Reinstall + Backup" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="366,270,0,0" VerticalAlignment="Top" FontSize="32" Width="511" FontFamily="Segoe UI Semibold"/>
+        <RadioButton Name="FormatReinstall_Button" Content="Format/Reinstall" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="366,316,0,0" VerticalAlignment="Top" FontSize="32" Width="511" FontFamily="Segoe UI Semibold"/>
+        <RadioButton Name="Bootcamp_Button" Content="Bootcamp" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="366,362,0,0" VerticalAlignment="Top" FontSize="32" Width="511" FontFamily="Segoe UI Semibold"/>
+        <RadioButton Name="Software_Button" Content="Software Install" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="366,408,0,0" VerticalAlignment="Top" FontSize="32" Width="511" FontFamily="Segoe UI Semibold"/>
+        <RadioButton Name="Troubleshoot_Button" Content="General Troubleshoot" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="366,454,0,0" VerticalAlignment="Top" FontSize="32" Width="511" FontFamily="Segoe UI Semibold"/>
+
+        <TextBlock Name="ProblemText" FontWeight="DemiBold" Margin="150,204,176,423" TextWrapping="Wrap" Text="Select the service you have an appointment for:" FontSize="40"/>
+        <Button x:Name="NextButton"  Content="Next" HorizontalAlignment="Right" Margin="0,0,30,29" VerticalAlignment="Bottom" Width="160" Height="85" Click="NextButton_Click" FontSize="26.667"/>
+    </Grid>
+</Page>
