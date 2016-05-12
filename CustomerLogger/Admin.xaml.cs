@@ -132,23 +132,23 @@ namespace CustomerLogger
 
         //closes the admin window - not the program. That is the job of 
         //the Stop Button
-        private void CloseButton_Click(object sender, RoutedEventArgs e) {
-            this.Close();
-        }
+        //private void CloseButton_Click(object sender, RoutedEventArgs e) {
+        //    this.Close();
+        //}
 
         //handles the emailing part of admin
         private void emailButton_Click(object sender, RoutedEventArgs e)
         {
             if (_main_window.EmailLogging == false)
             {
-                PasswordWindow pw = new PasswordWindow();
-                pw.ShowDialog();
+                //PasswordWindow pw = new PasswordWindow();
+                //pw.ShowDialog();
 
-                _main_window.EmailPassword = pw.Password;
                 _main_window.EmailLogging = true;
                 emailSendTextBlock.Text = "Emails Sending: Yes";
                 emailButton.Content = "Disable Emails";
-                System.Windows.MessageBox.Show("Email password set!");
+
+                //System.Windows.MessageBox.Show("Email password set!");
             }
             else
             {
@@ -157,6 +157,15 @@ namespace CustomerLogger
                 emailSendTextBlock.Text = "Emails Sending: No";
                 emailButton.Content = "Email Login";
             }
+        }
+
+        private void SetEmailPassword_Click(object sender, RoutedEventArgs e)
+        {
+            PasswordWindow pw = new PasswordWindow();
+            pw.ShowDialog();
+
+
+            
         }
     }
 }

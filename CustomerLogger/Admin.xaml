@@ -10,7 +10,7 @@
             <ColumnDefinition Width="23*"/>
             <ColumnDefinition Width="53*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="StartDayButton" Content="Start Day" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Margin="0,96,0,0" Click="StartDayButton_Click" TabIndex="7" Height="20" Grid.Column="1">
+        <Button x:Name="StartDayButton" Content="Start Day" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Margin="0,111,0,0" Click="StartDayButton_Click" TabIndex="7" Height="20" Grid.Column="1">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="{DynamicResource {x:Static SystemColors.ScrollBarColorKey}}" Offset="1"/>
@@ -18,7 +18,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="EndDayButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Margin="0,121,0,0" Height="20" Content="End Day" Click="EndDayButton_Click" TabIndex="3" Grid.Column="1">
+        <Button x:Name="EndDayButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Margin="0,136,0,0" Height="20" Content="End Day" Click="EndDayButton_Click" TabIndex="3" Grid.Column="1">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="{DynamicResource {x:Static SystemColors.ScrollBarColorKey}}" Offset="1"/>
@@ -26,7 +26,15 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="LogDirectoryButton" Content="Log Directory" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Margin="0,10,0,0" Click="LogDirectoryButton_Click" Height="30" Grid.Column="1">
+        <Button x:Name="SetEmailPassword" Content="Email Password" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Margin="64,17,0,0" Click="SetEmailPassword_Click" Height="30" Grid.Column="1">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="{DynamicResource {x:Static SystemColors.ScrollBarColorKey}}" Offset="1"/>
+                    <GradientStop Color="White"/>
+                </LinearGradientBrush>
+            </Button.Background>
+       </Button>
+            <Button x:Name="LogDirectoryButton" Content="Log Directory" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Margin="10,17,0,0" Click="LogDirectoryButton_Click" Height="30" Grid.ColumnSpan="2">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="{DynamicResource {x:Static SystemColors.ScrollBarColorKey}}" Offset="1"/>
@@ -34,7 +42,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="CloseButton" Content="Stop Program" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Margin="0,239,0,0" Click="StopButton_Click" TabIndex="4" Height="30" Grid.Column="1">
+        <Button x:Name="CloseButton" Content="Stop Program" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Margin="0,262,0,0" Click="StopButton_Click" TabIndex="4" Height="30" Grid.Column="1">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FFC8C8C8" Offset="1"/>
@@ -42,17 +50,10 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="closeButton" Content="Close" Grid.Column="1" HorizontalAlignment="Left" Margin="0,277,0,13" Width="85" Click="CloseButton_Click">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="{DynamicResource {x:Static SystemColors.ScrollBarColorKey}}" Offset="1"/>
-                    <GradientStop Color="White"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <TextBlock x:Name="DirectoryTextBlock" HorizontalAlignment="Left" Margin="10,45,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="208" Grid.ColumnSpan="2"/>
-        <TextBlock x:Name="LogGoingTextBlock" HorizontalAlignment="Left" Margin="10,146,0,0" TextWrapping="Wrap" Text="Logging: No" VerticalAlignment="Top" RenderTransformOrigin="1.549,0.773" Grid.ColumnSpan="2" Width="208"/>
-        <Button x:Name="emailButton" Content="Email Login" Grid.Column="1" HorizontalAlignment="Left" Margin="0,201,0,0" VerticalAlignment="Top" Width="85" Height="30" Click="emailButton_Click">
+
+        <TextBlock x:Name="DirectoryTextBlock" HorizontalAlignment="Left" Margin="10,52,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="208" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="LogGoingTextBlock" HorizontalAlignment="Left" Margin="10,169,0,0" TextWrapping="Wrap" Text="Logging: No" VerticalAlignment="Top" RenderTransformOrigin="1.549,0.773" Grid.ColumnSpan="2" Width="208"/>
+        <Button x:Name="emailButton" Content="Start Emails" Grid.Column="1" HorizontalAlignment="Left" Margin="0,224,0,0" VerticalAlignment="Top" Width="85" Height="30" Click="emailButton_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FFC8C8C8" Offset="1"/>
@@ -60,7 +61,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <TextBlock x:Name="emailSendTextBlock" HorizontalAlignment="Left" Margin="10,171,0,0" TextWrapping="Wrap" Text="Emails Sending: No" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="199"/>
+        <TextBlock x:Name="emailSendTextBlock" HorizontalAlignment="Left" Margin="10,194,0,0" TextWrapping="Wrap" Text="Emails Sending: No" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="199"/>
 
     </Grid>
 </Window>
