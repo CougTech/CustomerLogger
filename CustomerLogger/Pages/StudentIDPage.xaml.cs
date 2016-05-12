@@ -23,6 +23,7 @@ namespace CustomerLogger
     public partial class StudentIDPage:Page {
 
         private string _student_id;
+        private bool _isTest;
         public event EventHandler PageFinished;
     
         public StudentIDPage() {
@@ -34,6 +35,11 @@ namespace CustomerLogger
 
         public string StudentID {
             get { return _student_id; }
+        }
+
+        public bool isTest
+        {
+            get { return _isTest; }
         }
 
         //when clicked we move on to the next page
@@ -87,6 +93,19 @@ namespace CustomerLogger
             } else {
                 SubmitButton.IsEnabled = false;
             }
+
+            // Check to see if this is a test ticket
+            if (StudentNumberTextBox.Text == "00000000") {
+                SubmitButton.Background = System.Windows.Media.Brushes.Crimson;
+                SubmitButton.Content = "TEST";
+                _isTest = true;
+            }
+            else {
+                SubmitButton.Background = System.Windows.Media.Brushes.White;
+                SubmitButton.Content = "Next";
+                _isTest = false;
+            }
+
         }
 
         //allows for enter key to be used as a click for the submit button
@@ -94,6 +113,7 @@ namespace CustomerLogger
             if(e.Key == Key.Enter) {
                 SubmitButton_Click(sender, e);
             }
+
         }
     }
 }

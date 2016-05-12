@@ -80,18 +80,6 @@ namespace CustomerLogger
             if (descriptionTextBox.Text != _defaultText) {
                 NextButton.IsEnabled = true; // enable button once text is not the default text
             }
-
-            // Update buttom color if the ticket is a test
-            if (descriptionTextBox.Text == "TEST")
-            {
-                NextButton.Background = System.Windows.Media.Brushes.Crimson;
-            }
-
-            // Update buttom color if the ticket is not a test
-            if (descriptionTextBox.Text != "TEST")
-            {
-                NextButton.Background = System.Windows.Media.Brushes.White;
-            }
         }
 
         private void descriptionTextBox_KeyDown(object sender, KeyEventArgs e)

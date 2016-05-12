@@ -184,7 +184,7 @@ namespace CustomerLogger
             /// Removed rental and Device
             if (EmailLogging == true)
             { // don't send tickets that are rentals (ramsay creates one)
-                int result = SendTicket(StudentIDPage.StudentID, ProblemPage.Problem, ProblemPage.Description); // send in otrs ticket 
+                int result = SendTicket(StudentIDPage.StudentID, ProblemPage.Problem, ProblemPage.Description, false); // send in otrs ticket 
                 if (result < 0)
                 {
                     return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
@@ -424,7 +424,7 @@ namespace CustomerLogger
         //sends ticket to orts via email
         //this way we can make notes and all that good otrs stuff....
         //this is the code that actually takes our customer logger info and sends it to otrs
-        public int SendTicket(string id, string prob, string descr) {
+        public int SendTicket(string id, string prob, string descr, bool isAppt) {
             
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;
@@ -436,12 +436,18 @@ namespace CustomerLogger
 
             MailMessage msg = new MailMessage(sender, receiver);
 
-            // Check if the ticket was for testing
-            if (descr != "TEST") {
-                msg.Subject = "##CTwi : " + prob + " : " + id;
+            // If the ticket is an appointment then changes the subject
+            if (isAppt)
+            {
+                msg.Subject = "##CTapt : " + prob + " : " + id;
             }
-            else {
-                msg.Subject = "##CTwi : TEST : " + id;
+            else if (StudentIDPage.isTest)
+            {
+                msg.Subject = "##CTtest : " + prob + " : " + id;
+            }
+            else
+            {
+                msg.Subject = "##CTwi : " + prob + " : " + id;
             }
 
             StringBuilder sb = new StringBuilder();
@@ -470,7 +476,7 @@ namespace CustomerLogger
         {
             if (EmailLogging == true)
             {
-                int result = SendTicket(StudentIDPage.StudentID, ("Appointment : ") + prob, prob); // send in otrs ticket 
+                int result = SendTicket(StudentIDPage.StudentID, prob, prob, true); // send in otrs ticket 
                 if (result < 0)
                 {
                     return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
