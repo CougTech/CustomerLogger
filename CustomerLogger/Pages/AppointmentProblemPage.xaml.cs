@@ -43,10 +43,11 @@ namespace CustomerLogger.Pages
 
         private void RadioButton_Click(object sender, RoutedEventArgs e) {
             _problem = ((RadioButton)sender).Content.ToString(); // set problem to text of radio button
+            NextButton.IsEnabled = true;
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e) { 
-            if (NextButton.IsEnabled == false) {
+            if (NextButton.IsEnabled == true) {
                 PageFinished(new object(), new EventArgs());
             }
         }

@@ -18,7 +18,7 @@
         <RadioButton Name="Software_Button" Content="Software Install" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="366,408,0,0" VerticalAlignment="Top" FontSize="32" Width="511" FontFamily="Segoe UI Semibold"/>
         <RadioButton Name="Troubleshoot_Button" Content="General Troubleshoot" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="366,454,0,0" VerticalAlignment="Top" FontSize="32" Width="511" FontFamily="Segoe UI Semibold"/>
 
-        <TextBlock Name="ProblemText" FontWeight="DemiBold" Margin="167,204,159,423" TextWrapping="Wrap" Text="Select the service you have an appointment for:" FontSize="40"/>
+        <TextBlock Name="ProblemText" FontWeight="DemiBold" Margin="150,204,176,423" TextWrapping="Wrap" Text="Select the service you have an appointment for:" FontSize="40"/>
         <Button x:Name="NextButton"  Content="Next" HorizontalAlignment="Right" Margin="0,0,30,29" VerticalAlignment="Bottom" Width="160" Height="85" Click="NextButton_Click" FontSize="26.667"/>
     </Grid>
 </Page>
