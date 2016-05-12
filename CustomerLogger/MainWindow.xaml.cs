@@ -201,7 +201,7 @@ namespace CustomerLogger
             }
 
             //let customer know they can sit down
-            MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you.", 4.0);
+            MessageWindow mw = new MessageWindow("Thank you, please take a seat at a table and someone will help you shortly.", 4.0);
             mw.ShowDialog();
 
             //get back to first state
@@ -438,10 +438,10 @@ namespace CustomerLogger
 
             // Check if the ticket was for testing
             if (descr != "TEST") {
-                msg.Subject = "##CTwi " + prob + " : " + id;
+                msg.Subject = "##CTwi : " + prob + " : " + id;
             }
             else {
-                msg.Subject = "##CTwi TEST : " + id;
+                msg.Subject = "##CTwi : TEST : " + id;
             }
 
             StringBuilder sb = new StringBuilder();
@@ -481,15 +481,13 @@ namespace CustomerLogger
             {
                 //write to csv file
                 addToCurrent(StudentIDPage.StudentID);
-                addToCurrent(" "); 
                 addToCurrent("Appointment");
-                addToCurrent("Appointment"); //problem
                 addToCurrent(AppointmentProbPage.Problem);
                 writeLine();
             }
 
             //let customer know they can sit down
-            MessageWindow mw = new MessageWindow("Thank you, please have a seat and we will be right with you.", 4.0);
+            MessageWindow mw = new MessageWindow("Thank you, please take a seat at a table and someone will help you shortly.", 4.0);
             mw.ShowDialog();
 
             //get back to first state
