@@ -390,7 +390,7 @@ namespace CustomerLogger
         //opens the admin button, after the user successfully puts in our secret password
         private void AdminButton_Click(object sender, RoutedEventArgs e) {
 
-            PasswordWindow ap = new PasswordWindow();
+            PasswordWindow ap = new PasswordWindow("");
             ap.ShowDialog();
 
             //This is also terrible, but easy to use... but still, we should move this out to a file somewhere

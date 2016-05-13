@@ -24,10 +24,16 @@ namespace CustomerLogger
     {
         private string _pwd;
 
-        public PasswordWindow()
+        public PasswordWindow(string type)
         {
             InitializeComponent();
             _pwd = "";
+
+            if (type != "")
+            {
+                pwLabel.Content = "Enter " + type + " Password:";
+            }
+
             passwordBox.Focus();
         }
 
@@ -43,10 +49,15 @@ namespace CustomerLogger
             this.Close();
         }
 
+  
+
         private void passwordBox_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter) {
                 okButton_Click(sender, e);
+            }
+            if (e.Key == Key.Escape) {
+                this.Close();
             }
         }
     }
