@@ -425,16 +425,24 @@ namespace CustomerLogger
         //this way we can make notes and all that good otrs stuff....
         //this is the code that actually takes our customer logger info and sends it to otrs
         public int SendTicket(string id, string prob, string descr, bool isAppt) {
-            
-            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
-            client.EnableSsl = true;
-            client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential("cougtech.helpdesk@gmail.com", _email_pwd);
 
-            MailAddress sender = new MailAddress("cougtech.helpdesk@gmail.com");
-            MailAddress receiver = new MailAddress("cougtech@wsu.edu");
+            // Old
+            //SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+            //client.EnableSsl = true;
+            //client.UseDefaultCredentials = false;
+            //client.Credentials = new NetworkCredential("cougtech.helpdesk@gmail.com", _email_pwd);
 
-            MailMessage msg = new MailMessage(sender, receiver);
+            //MailAddress sender = new MailAddress("cougtech.helpdesk@gmail.com");
+            //MailAddress receiver = new MailAddress("cougtech@wsu.edu");
+
+            //MailMessage msg = new MailMessage(sender, receiver);
+
+            // New
+            MailMessage msg = new MailMessage();
+            MailAddress maFrom = new MailAddress("mitchell.weholt@wsu.edu");
+
+            SmtpClient client = new SmtpClient("mail.wsu.edu");
+
 
             // If the ticket is an appointment then changes the subject
             if (StudentIDPage.isTest)
