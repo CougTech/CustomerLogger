@@ -439,7 +439,7 @@ namespace CustomerLogger
 
             // New
             MailMessage msg = new MailMessage();
-            MailAddress maFrom = new MailAddress("mitchell.weholt@wsu.edu");
+            MailAddress maFrom = new MailAddress("mitchell.weholt@wsu.edu" + "<realEmail@wsu.edu>");
 
             SmtpClient client = new SmtpClient("mail.wsu.edu");
 
