@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using System.IO;
+using System.Xml;
 using System.Net.Mail;
 using System.Net;
 using CSV;
@@ -25,7 +26,6 @@ namespace CustomerLogger
         private SummaryPage _summary_page;
         private string _log_path;
         private bool _logging, _email_logging;
-        private string _email_pwd;
 
         private TimeSpan startTime = new TimeSpan(7, 30, 0); // 7:30 am (24 hour clock)
         private TimeSpan endTime = new TimeSpan(17, 30, 0); // 5:30 pm
@@ -40,7 +40,6 @@ namespace CustomerLogger
             //state variables
             _logging = false;
             _email_logging = false;
-            _email_pwd = "";
             _log_path = GetDefaultDirectory();
 
             //create the page objects
@@ -68,12 +67,6 @@ namespace CustomerLogger
         public string LogPath {
             set { _log_path = value; }
             get { return _log_path;}
-        }
-
-        //saves password used for emailing otrs
-        public string EmailPassword {
-            set { _email_pwd = value; }
-            get { return _email_pwd; }
         }
 
         public StudentIDPage StudentIDPage{
@@ -421,25 +414,61 @@ namespace CustomerLogger
             }
         }
 
+        public string getEmail(string id) {
+
+            //document.Load("https://cougtech.wsu.edu/SOAP/Look.aspx?IDn=%s" + id);
+
+            String URLString = "https://cougtech.wsu.edu/SOAP/Look.aspx?IDn=" + id;
+            XmlTextReader reader = new XmlTextReader(URLString);
+
+            while (reader.Read())
+            {
+                switch (reader.NodeType)
+                {
+                    case XmlNodeType.Element: // The node is an element.
+                        Console.Write("<" + reader.Name);
+
+                        while (reader.MoveToNextAttribute()) // Read the attributes.
+                            Console.Write(" " + reader.Name + "='" + reader.Value + "'");
+                        Console.Write(">");
+                        Console.WriteLine(">");
+                        break;
+                    case XmlNodeType.Text: //Display the text in each element.
+                        String tempString = reader.Value;
+                        Console.WriteLine(tempString);
+                        if (tempString.Contains("@")) {
+                            return tempString;
+                        }
+                        break;
+                    case XmlNodeType.EndElement: //Display the end of the element.
+                        Console.Write("</" + reader.Name);
+                        Console.WriteLine(">");
+                        break;
+                }
+            }
+
+
+            return "cougtech@wsu.edu";
+
+
+        }
+
         //sends ticket to orts via email
         //this way we can make notes and all that good otrs stuff....
         //this is the code that actually takes our customer logger info and sends it to otrs
         public int SendTicket(string id, string prob, string descr, bool isAppt) {
 
-            // Old
-            //SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
-            //client.EnableSsl = true;
-            //client.UseDefaultCredentials = false;
-            //client.Credentials = new NetworkCredential("cougtech.helpdesk@gmail.com", _email_pwd);
+            // Get WSU email
+            String wsuEmail = getEmail(id);
 
-            //MailAddress sender = new MailAddress("cougtech.helpdesk@gmail.com");
-            //MailAddress receiver = new MailAddress("cougtech@wsu.edu");
-
-            //MailMessage msg = new MailMessage(sender, receiver);
 
             // New
             MailMessage msg = new MailMessage();
-            MailAddress maFrom = new MailAddress("mitchell.weholt@wsu.edu" + "<realEmail@wsu.edu>");
+            MailAddress maFrom = new MailAddress("cougtech@wsu.edu" + "<" + wsuEmail + ">");
+            MailAddress maTo = new MailAddress("cougtech@wsu.edu");
+
+            msg.To.Add(maTo);
+            msg.From = maFrom;
 
             SmtpClient client = new SmtpClient("mail.wsu.edu");
 
@@ -470,7 +499,7 @@ namespace CustomerLogger
                 client.Send(msg);
             }
             catch (Exception e) {
-                MessageBox.Show("Could not send OTRS ticket. Email password may be incorrect. Please let a CougTech employee know of this problem. Thank you.", "Failed To Send");
+                MessageBox.Show("Could not send OTRS ticket. Please let a CougTech employee know of this problem. Thank you.", "Failed To Send");
                 Cursor = Cursors.Arrow;
                 return -1; // -1 for error
             }

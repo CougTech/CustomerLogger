@@ -16,7 +16,6 @@ namespace CustomerLogger
 
         MainWindow _main_window;
         System.Windows.Forms.FolderBrowserDialog _folder_dialog;
-        string _emailPswd = "";
           
         public AdminWindow(MainWindow main_window) {
             InitializeComponent();
@@ -148,14 +147,6 @@ namespace CustomerLogger
         {
             if (_main_window.EmailLogging == false)
             {
-                if (_emailPswd == "") {
-                    PasswordWindow pw = new PasswordWindow("Email");
-                    pw.ShowDialog();
-                    _emailPswd = pw.Password;
-                    System.Windows.MessageBox.Show("Email password set!");
-                }
-
-                _main_window.EmailPassword = _emailPswd;
                 _main_window.EmailLogging = true;
                 emailSendTextBlock.Text = "Emails Sending: Yes";
                 emailButton.Content = "Disable Emails";
@@ -163,7 +154,7 @@ namespace CustomerLogger
             }
             else
             {
-                _main_window.EmailPassword = ""; // clear out password when not sending email
+               
                 _main_window.EmailLogging = false;
                 emailSendTextBlock.Text = "Emails Sending: No";
                 emailButton.Content = "Enable Emails";
