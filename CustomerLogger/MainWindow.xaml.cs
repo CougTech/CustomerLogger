@@ -494,8 +494,15 @@ namespace CustomerLogger
         public int SendTicket(string id, string prob, string descr, bool isAppt) {
 
             // Get WSU email
-            String wsuEmail = getEmail(id);
-
+            string wsuEmail = "";
+            if (StudentIDPage.IsQuickPick)
+            {
+                wsuEmail = getEmail("99999999");
+            }
+            else
+            {
+                wsuEmail = getEmail(id);
+            }
 
             // New
             MailMessage msg = new MailMessage();
@@ -512,6 +519,10 @@ namespace CustomerLogger
             if (StudentIDPage.isTest)
             {
                 msg.Subject = "##CTtest : " + prob + " : " + id;
+            }
+            else if (StudentIDPage.IsQuickPick)
+            {
+                msg.Subject = "##CTwi : " + id;
             }
             else if (isAppt)
             {

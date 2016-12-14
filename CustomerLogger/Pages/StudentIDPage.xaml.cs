@@ -26,10 +26,12 @@ namespace CustomerLogger
         private string _student_id;
         private bool _isTest = false;
         private bool _isQuickPick = false;
+        private List<string> QuickCodes = new List<string>();
         public event EventHandler PageFinished;
     
         public StudentIDPage() {
             InitializeComponent();
+            InitializeQuickPickList();
 
             SubmitButton.IsEnabled = false;
             StudentNumberTextBox.Focus();
@@ -47,6 +49,14 @@ namespace CustomerLogger
         public bool isTest
         {
             get { return _isTest; }
+        }
+
+        private void InitializeQuickPickList()
+        {
+            QuickCodes.Add("GI");
+            QuickCodes.Add("WC");
+            QuickCodes.Add("RF");
+            QuickCodes.Add("CT");
         }
 
         //when clicked we move on to the next page
@@ -77,13 +87,7 @@ namespace CustomerLogger
 
             bool correct_length;
             bool is_num;
-
-            List<string> QuickCodes = new List<string>();
-            QuickCodes.Add("GI");
-            QuickCodes.Add("WC");
-            QuickCodes.Add("RF");
-            QuickCodes.Add("CT");
-
+            
             foreach (string s in QuickCodes)
             {
                 if (StudentNumberTextBox.Text == s)
