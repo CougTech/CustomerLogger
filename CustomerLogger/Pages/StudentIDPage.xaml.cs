@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -24,6 +25,7 @@ namespace CustomerLogger
 
         private string _student_id;
         private bool _isTest = false;
+        private bool _isQuickPick = false;
         public event EventHandler PageFinished;
     
         public StudentIDPage() {
@@ -35,6 +37,11 @@ namespace CustomerLogger
 
         public string StudentID {
             get { return _student_id; }
+        }
+
+        public bool IsQuickPick
+        {
+            get { return _isQuickPick; }
         }
 
         public bool isTest
@@ -70,6 +77,26 @@ namespace CustomerLogger
 
             bool correct_length;
             bool is_num;
+
+            List<string> QuickCodes = new List<string>();
+            QuickCodes.Add("GI");
+            QuickCodes.Add("WC");
+            QuickCodes.Add("RF");
+            QuickCodes.Add("CT");
+
+            foreach (string s in QuickCodes)
+            {
+                if (StudentNumberTextBox.Text == s)
+                {
+                    _isQuickPick = true;
+                    SubmitButton.IsEnabled = true;
+                    return;
+                }
+            }
+
+            _isQuickPick = false;
+            SubmitButton.IsEnabled = false;
+            
 
             // Change maxLength to 9 if the first digit is 0
             // Must check if the box is empty or the program will crash if backspaced

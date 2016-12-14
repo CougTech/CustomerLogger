@@ -144,7 +144,15 @@ namespace CustomerLogger
         {
             if (ContentFrame.Content == StudentIDPage)
             {
-                ContentFrame.Navigate(AppointmentPage); 
+                if (StudentIDPage.IsQuickPick == true)
+                {
+                    ContentFrame.Navigate(SummaryPage);
+                    SummaryPage.StartTimer();
+                }
+                else
+                {
+                    ContentFrame.Navigate(AppointmentPage);
+                }
             }
             else if (ContentFrame.Content == AppointmentPage)
             {
@@ -178,6 +186,7 @@ namespace CustomerLogger
             if (EmailLogging == true)
             { // don't send tickets that are rentals (ramsay creates one)
                 int result = SendTicket(StudentIDPage.StudentID, ProblemPage.Problem, ProblemPage.Description, false); // send in otrs ticket 
+                //getUserName(StudentIDPage.StudentID);
                 if (result < 0)
                 {
                     return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
@@ -414,6 +423,32 @@ namespace CustomerLogger
             }
         }
 
+        public string getUserName(string id)
+        {
+            string result = "";
+
+            //document.Load("https://cougtech.wsu.edu/SOAP/Look.aspx?IDn=%s" + id);
+
+            String URLString = "https://cougtech.wsu.edu/SOAP/Look.aspx?IDn=" + id;
+            XmlTextReader reader = new XmlTextReader(URLString);
+
+            while (reader.Read())
+            {
+                if(reader.NodeType == XmlNodeType.Element)
+                {
+                    if(reader.Name == "FirstName")
+                    {
+                        reader.Read();
+                        result = reader.Value;
+                        return result;
+                    }
+                }
+                
+            }
+
+            return result;
+        }
+
         public string getEmail(string id) {
 
             //document.Load("https://cougtech.wsu.edu/SOAP/Look.aspx?IDn=%s" + id);
@@ -464,11 +499,11 @@ namespace CustomerLogger
 
             // New
             MailMessage msg = new MailMessage();
-            MailAddress maFrom = new MailAddress("cougtech@wsu.edu" + "<" + wsuEmail + ">");
-            MailAddress maTo = new MailAddress("cougtech@wsu.edu");
+            MailAddress mailFrom = new MailAddress("cougtech@wsu.edu" + "<" + wsuEmail + ">");
+            MailAddress mailTo = new MailAddress("cougtech@wsu.edu");
 
-            msg.To.Add(maTo);
-            msg.From = maFrom;
+            msg.To.Add(mailTo);
+            msg.From = mailFrom;
 
             SmtpClient client = new SmtpClient("mail.wsu.edu");
 
@@ -480,11 +515,11 @@ namespace CustomerLogger
             }
             else if (isAppt)
             {
-                msg.Subject = "##CTapt : " + prob + " : " + id;
+                msg.Subject = "##CTapt  :  " + prob + "  :  " + id + "  :  " + getUserName(id);
             }
             else
             {
-                msg.Subject = "##CTwi : " + prob + " : " + id;
+                msg.Subject = "##CTwi  :  " + prob + "  :  " + id + "  :  " + getUserName(id);
             }
 
             StringBuilder sb = new StringBuilder();
