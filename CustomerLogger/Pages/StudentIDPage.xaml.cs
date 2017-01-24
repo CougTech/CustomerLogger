@@ -57,6 +57,7 @@ namespace CustomerLogger
             QuickCodes.Add("WC");
             QuickCodes.Add("RF");
             QuickCodes.Add("CT");
+            QuickCodes.Add("SO");
         }
 
         //when clicked we move on to the next page
