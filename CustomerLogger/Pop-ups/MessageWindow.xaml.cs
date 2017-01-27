@@ -12,7 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace CustomerLogger {
+namespace CustomerLogger
+{
     /// <summary>
     /// Interaction logic for MessageWindow.xaml
     /// </summary>
@@ -20,7 +21,8 @@ namespace CustomerLogger {
     //Displays an arbitrary message
     //used for errors or feedback or lamas, or whatever
     //just keep it classy
-    public partial class MessageWindow:Window {
+    public partial class MessageWindow:Window
+    {
 
         private System.Windows.Threading.DispatcherTimer openTimer;
 
@@ -28,7 +30,8 @@ namespace CustomerLogger {
         //If you put a new line in the message string then the message
         //should be displayed on the two lines.
         //interval is the seconds you want it to desplay for
-        public MessageWindow(string message, double interval) {
+        public MessageWindow(string message, double interval)
+        {
             InitializeComponent();
     
             MessageTextBox.Text = message;
@@ -43,12 +46,14 @@ namespace CustomerLogger {
         }
 
         //when you are done click ok
-        private void OKButton_Click(object sender, RoutedEventArgs e) {
+        private void OKButton_Click(object sender, RoutedEventArgs e)
+        {
             this.Close();
         }
 
         //auto closed after time is done
-        private void close_window(Object sender, EventArgs args) {
+        private void close_window(Object sender, EventArgs args)
+        {
             openTimer.IsEnabled = false;
             this.Close();
         }

@@ -12,18 +12,21 @@ namespace CustomerLogger
 
     //allows for admin controls of the program.
     //This includes starting/stopping logging, changing directories were things are saved and other usefull things
-    public partial class AdminWindow:Window {
+    public partial class AdminWindow:Window
+    {
 
         MainWindow _main_window;
         System.Windows.Forms.FolderBrowserDialog _folder_dialog;
           
-        public AdminWindow(MainWindow main_window) {
+        public AdminWindow(MainWindow main_window)
+        {
             InitializeComponent();
             _main_window = main_window;
             //displaying the current LogPath
             //DirectoryTextBlock.Text = _main_window.LogPath;
             //display if we are currently logging
-            if(_main_window.Logging) { 
+            if(_main_window.Logging)
+            { 
             
                 LogGoingTextBlock.Text = "Logging: Yes";
             } else {
@@ -32,11 +35,13 @@ namespace CustomerLogger
 
             //display if emails are being sent when a customer logs in
             //this is how we get the tickets into ORTS
-            if (_main_window.EmailLogging) {
+            if (_main_window.EmailLogging)
+            {
                 emailSendTextBlock.Text = "Emails Sending: Yes";
                 emailButton.Content = "Disable Emails";
             }
-            else {
+            else
+            {
                 emailSendTextBlock.Text = "Emails Sending: No";
             }
 
@@ -47,7 +52,8 @@ namespace CustomerLogger
         // starting the day includes starting logging
         // if there is no csv writer then you can select or create one
         // it will also prompt you if you want to enable emails for OTRS
-        private void LoggingButton_Click(object sender, RoutedEventArgs e) {
+        private void LoggingButton_Click(object sender, RoutedEventArgs e)
+        {
 
             // If logging is NOT on
             if (!_main_window.Logging)
@@ -100,7 +106,8 @@ namespace CustomerLogger
             }
 
             // Logging IS already on
-            else {
+            else
+            {
                 _main_window.EndLog();
                 LogGoingTextBlock.Text = "Logging: No";
                 LoggingButton.Content = "Enable Logging";
@@ -136,7 +143,8 @@ namespace CustomerLogger
         //I mean it
         //it will not be running after you click this button
         //you will need to restart it
-        private void StopButton_Click(object sender, RoutedEventArgs e) {
+        private void StopButton_Click(object sender, RoutedEventArgs e)
+        {
             _main_window.Close();
             this.Close();
         }
