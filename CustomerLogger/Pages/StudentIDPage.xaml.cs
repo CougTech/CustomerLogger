@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+//TODO clean up. Make pretty. Make all text from the text box go to one string so that multiple variables don't need to be accessed, it's hard to keep track of
+//      that crap
 namespace CustomerLogger
 {
     /// <summary>
@@ -23,7 +25,7 @@ namespace CustomerLogger
     //with out the user needing to click.
     public partial class StudentIDPage:Page {
 
-        private string _student_id;
+        private string _student_id, _quick_code;
         private bool _isTest = false;
         private bool _isQuickPick = false;
         private List<string> QuickCodes = new List<string>();
@@ -39,6 +41,11 @@ namespace CustomerLogger
 
         public string StudentID {
             get { return _student_id; }
+        }
+
+        public string QuickCode
+        {
+            get { return _quick_code; }
         }
 
         public bool IsQuickPick
@@ -84,24 +91,26 @@ namespace CustomerLogger
         }
 
         //when they type in the box this event will fire
-        private void StudentNumberTextBox_TextChanged(object sender, TextChangedEventArgs e) {
-
+        private void StudentNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
             bool correct_length;
             bool is_num;
-            string _textbox_text = "";
+
+            //Set _quick_code back to default so that it can be updated correctly
+            _quick_code = "";
 
             //Check to see if any of the characters in the text box are lowercase
             foreach (char c in StudentNumberTextBox.Text)
             {
                 if (c >= 97 && c <= 122)    //If they are
-                    _textbox_text += Char.ToUpper(c);    //Turn them to uppercase
+                    _quick_code += Char.ToUpper(c);    //Turn them to uppercase
                 else
-                    _textbox_text += c;         //Otherwise add them to _textbox_text
+                    _quick_code += c;         //Otherwise add them to _textbox_text
             }
 
             foreach (string s in QuickCodes)
             {
-                if (_textbox_text == s)
+                if (_quick_code == s)
                 {
                     _isQuickPick = true;
                     SubmitButton.IsEnabled = true;

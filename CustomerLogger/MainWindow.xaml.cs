@@ -183,7 +183,6 @@ namespace CustomerLogger
         {
             if (EmailLogging == true)
             {
-                //TODO change the ID to StudentIDPage._textbox_text
                 int result = SendTicket(StudentIDPage.StudentID, ProblemPage.Problem, ProblemPage.Description, false); // send in otrs ticket 
 
                 if (result < 0)
@@ -520,7 +519,7 @@ namespace CustomerLogger
             }
             else if (StudentIDPage.IsQuickPick)
             {
-                msg.Subject = "##CTwi : " + id;
+                msg.Subject = "##CTwi : " + StudentIDPage.QuickCode;
             }
             else if (isAppt)
             {
