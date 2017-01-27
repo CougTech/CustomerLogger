@@ -23,7 +23,8 @@ namespace CustomerLogger
     //because it is set to use the enter key to move on as well as clicking the next button,
     //if they swipe the card it should automatically save their number and move onto the next page
     //with out the user needing to click.
-    public partial class StudentIDPage:Page {
+    public partial class StudentIDPage:Page
+    {
 
         private string _student_id, _quick_code;
         private bool _isTest = false;
@@ -31,7 +32,8 @@ namespace CustomerLogger
         private List<string> QuickCodes = new List<string>();
         public event EventHandler PageFinished;
     
-        public StudentIDPage() {
+        public StudentIDPage()
+        {
             InitializeComponent();
             InitializeQuickPickList();
 
@@ -39,7 +41,8 @@ namespace CustomerLogger
             StudentNumberTextBox.Focus();
         }
 
-        public string StudentID {
+        public string StudentID
+        {
             get { return _student_id; }
         }
 
@@ -68,7 +71,8 @@ namespace CustomerLogger
         }
 
         //when clicked we move on to the next page
-        private void SubmitButton_Click(object sender, RoutedEventArgs e) {
+        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        {
 
             if(SubmitButton.IsEnabled) {
                 _student_id = StudentNumberTextBox.Text;
@@ -86,7 +90,8 @@ namespace CustomerLogger
         //incase customer thinks they did it wrong and then
         //wants to go back, it will highlight all of the text
         //woot woot for usability features
-        private void StudentNumberTextBox_GotFocus(object sender, RoutedEventArgs e) {
+        private void StudentNumberTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
             StudentNumberTextBox.SelectAll();
         }
 
@@ -130,11 +135,12 @@ namespace CustomerLogger
             }
 
             //make sure we have a valid length, either 8 without a leading 0 or nine with a leading 0
-            if (StudentNumberTextBox.Text.Length == 8 || (StudentNumberTextBox.Text.Length == 9 && StudentNumberTextBox.Text[0] == '0')) { // length of 9 is only correct if first digit is 0
-
+            if (StudentNumberTextBox.Text.Length == 8 || (StudentNumberTextBox.Text.Length == 9 && StudentNumberTextBox.Text[0] == '0'))  // length of 9 is only correct if first digit is 0
+            {
                 correct_length = true;
-            } else {
-
+            }
+            else
+            {
                 correct_length = false;
             }
 
@@ -146,19 +152,24 @@ namespace CustomerLogger
 
             //if we have a valid id number, IE correct length and its an int
             //then we can allow the customer to go on
-            if(is_num && correct_length) {
+            if(is_num && correct_length)
+            {
                 SubmitButton.IsEnabled = true;
-            } else {
+            }
+            else
+            {
                 SubmitButton.IsEnabled = false;
             }
 
             // Check to see if this is a test ticket
-            if (StudentNumberTextBox.Text == "00000000") {
+            if (StudentNumberTextBox.Text == "00000000")
+            {
                 SubmitButton.Background = System.Windows.Media.Brushes.Crimson;
                 SubmitButton.Content = "TEST";
                 _isTest = true;
             }
-            else {
+            else
+            {
                 SubmitButton.Background = System.Windows.Media.Brushes.White;
                 SubmitButton.Content = "Next";
                 _isTest = false;
@@ -167,11 +178,12 @@ namespace CustomerLogger
         }
 
         //allows for enter key to be used as a click for the submit button
-        private void StudentNumberTextBox_KeyUp(object sender, KeyEventArgs e) {
-            if(e.Key == Key.Enter) {
+        private void StudentNumberTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
                 SubmitButton_Click(sender, e);
             }
-
         }
     }
 }

@@ -10,14 +10,16 @@ namespace CustomerLogger
     /// </summary>
 
     //allows the user to choose a problem from the list
-    public partial class ProblemPage:Page {
+    public partial class ProblemPage:Page
+    {
 
         public event EventHandler PageFinished;
         private string _problem;
         private string _description;
         string _defaultText = "Briefly describe your problem.";
 
-        public ProblemPage() {
+        public ProblemPage()
+        {
             InitializeComponent();
             NextButton.IsEnabled = false;
             requiredLabel.Visibility = Visibility.Hidden;
@@ -35,19 +37,23 @@ namespace CustomerLogger
 
         }
 
-        public string Problem {
+        public string Problem
+        {
             get { return _problem; }
             set { _problem = value; }
         }
         
-        public string Description {
+        public string Description
+        {
             get { return _description; }
         }
 
         //when they have made an option customer can move on
-        private void NextButton_Click(object sender, RoutedEventArgs e) {
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
             if(NextButton.IsEnabled) {
-                if (descriptionTextBox.Text != _defaultText) { 
+                if (descriptionTextBox.Text != _defaultText)
+                { 
                     _description = descriptionTextBox.Text; // add description if its not the default text
                     _description = _description.Replace(",", string.Empty); // remove any commas in description because we save to a CSV
                 }
@@ -55,7 +61,8 @@ namespace CustomerLogger
             }
         }
 
-        private void RadioButton_Click(object sender, RoutedEventArgs e) {
+        private void RadioButton_Click(object sender, RoutedEventArgs e)
+        {
             _problem = ((RadioButton)sender).Content.ToString(); // set problem to text of radio button
             descriptionTextBox.Visibility = Visibility.Visible;
             requiredLabel.Visibility = Visibility.Visible;
@@ -63,8 +70,10 @@ namespace CustomerLogger
             descriptionTextBox.SelectAll();
         }
 
-        private void Grid_KeyUp(object sender, KeyEventArgs e) {
-            if(e.Key == Key.Enter) {
+        private void Grid_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
                 NextButton_Click(sender, e);
             }
         }
@@ -77,7 +86,8 @@ namespace CustomerLogger
                 return;
             }
 
-            if (descriptionTextBox.Text != _defaultText) {
+            if (descriptionTextBox.Text != _defaultText)
+            {
                 NextButton.IsEnabled = true; // enable button once text is not the default text
             }
         }

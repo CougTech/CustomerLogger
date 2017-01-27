@@ -21,12 +21,14 @@ namespace CustomerLogger {
     
     //Page that will display the information customer has signed in with
     //displayed as last step of sign in
-    public partial class SummaryPage:Page {
+    public partial class SummaryPage:Page
+    {
 
         public event EventHandler PageFinished; // triggered when submit is clicked
         private System.Windows.Threading.DispatcherTimer submitTimer; // timer to automatically click submit after 10 seconds
 
-        public SummaryPage() {
+        public SummaryPage()
+        {
             InitializeComponent();
             SubmitButton.Focus();
         }
@@ -63,13 +65,15 @@ namespace CustomerLogger {
             }
         }
 
-        private void SubmitButton_Click(object sender, RoutedEventArgs e) {
+        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        {
             submitTimer.IsEnabled = false;
             PageFinished(new object(), new EventArgs());
         }
 
         //allow customer to hit enter or click submit button
-        private void Grid_KeyUp(object sender, KeyEventArgs e) {
+        private void Grid_KeyUp(object sender, KeyEventArgs e)
+        {
             if(e.Key == Key.Enter) {
                 SubmitButton_Click(sender, e);
             }

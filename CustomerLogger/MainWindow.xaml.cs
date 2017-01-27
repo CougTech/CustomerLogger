@@ -17,7 +17,8 @@ namespace CustomerLogger
     /// Interaction logic for MainWindow.xaml
     /// </summary>
 
-    public partial class MainWindow:Window {
+    public partial class MainWindow:Window
+    {
         private CSVWriter _writer;
         private StudentIDPage _student_id_page;
         private AppointmentPage _appt_page;
@@ -33,7 +34,8 @@ namespace CustomerLogger
 
 
         //runs everything.
-        public MainWindow() {
+        public MainWindow()
+        {
             InitializeComponent();
             _writer = null;
 
@@ -64,24 +66,29 @@ namespace CustomerLogger
         }
 
         //holds the path to where csv logs are saved
-        public string LogPath {
+        public string LogPath
+        {
             set { _log_path = value; }
-            get { return _log_path;}
+            get { return _log_path; }
         }
 
-        public StudentIDPage StudentIDPage{
+        public StudentIDPage StudentIDPage
+        {
             get {return _student_id_page; }
         }
 
-        public AppointmentProblemPage AppointmentProbPage {
+        public AppointmentProblemPage AppointmentProbPage
+        {
             get { return _appt_prob_page; }
         }
 
-        public ProblemPage ProblemPage {
+        public ProblemPage ProblemPage
+        {
             get {return _problem_page; }
         }
 
-        public SummaryPage SummaryPage {
+        public SummaryPage SummaryPage
+        {
             get {return _summary_page; }
         }
 
@@ -90,7 +97,8 @@ namespace CustomerLogger
             get { return _appt_page; }
         }
 
-        public bool Logging {
+        public bool Logging
+        {
             get {return _logging; }
             set {_logging = value; }
         }
@@ -234,7 +242,8 @@ namespace CustomerLogger
         /// <summary>
         /// enable logging and email logging for writing to the csv file and send tickets to otrs
         /// </summary>
-        public void StartLog() {
+        public void StartLog()
+        {
             _logging = true;
             _email_logging = true;
         }
@@ -253,7 +262,8 @@ namespace CustomerLogger
         /// This is performed weekly every monday or if a file does not exist for the week
         /// </summary>
         /// <param name="file_name">name of csv file</param>
-        public void CreateLog(string file_name, FileMode mode) {
+        public void CreateLog(string file_name, FileMode mode)
+        {
             //create a new writer
             try
             {
@@ -308,7 +318,8 @@ namespace CustomerLogger
         }
 
         //automatically starts the day when the timer is hit
-        private void AutoStartLog(object sender, EventArgs e) {
+        private void AutoStartLog(object sender, EventArgs e)
+        {
             startDayTimer.IsEnabled = false; // stop timer
 
             // start the log and display message
@@ -330,7 +341,8 @@ namespace CustomerLogger
         }
 
         //automatically ends the log
-        private void AutoEndLog(object sender, EventArgs e) {
+        private void AutoEndLog(object sender, EventArgs e)
+        {
             endDayTimer.IsEnabled = false; // stop timer
 
             // end the log and display message
@@ -351,7 +363,8 @@ namespace CustomerLogger
         }
 
         //get the time for the next day
-        private TimeSpan TimeUntilNextTimer(TimeSpan target_time) {
+        private TimeSpan TimeUntilNextTimer(TimeSpan target_time)
+        {
             DateTime dt = DateTime.Today.Add(target_time);
 
             if (DateTime.Now > dt) { // if past the target time then set it for the next day
@@ -363,7 +376,8 @@ namespace CustomerLogger
 
         //add to text to current line for customer log
         //delagtes to the internal CSV writer object
-        public void addToCurrent(string text) {
+        public void addToCurrent(string text)
+        {
 
             if(null != _writer) { 
             
@@ -374,7 +388,8 @@ namespace CustomerLogger
         /// <summary>
         /// writes customer details to csv file
         /// </summary>
-        public void writeLine() {
+        public void writeLine()
+        {
 
             if(null != _writer) {
                 _writer.addToStart(DateTime.Now.ToString("MM/dd/yyyy HH:mm"));
@@ -388,7 +403,8 @@ namespace CustomerLogger
         }
 
         //opens the admin button, after the user successfully puts in our secret password
-        private void AdminButton_Click(object sender, RoutedEventArgs e) {
+        private void AdminButton_Click(object sender, RoutedEventArgs e)
+        {
 
             PasswordWindow ap = new PasswordWindow("");
             ap.ShowDialog();
@@ -406,14 +422,16 @@ namespace CustomerLogger
         //resets all pages and state related to signing in customer
         //usefull when someone has submitted and we do not want to keep
         //old submissions floating arround in memory.
-        public void Reset() {
+        public void Reset()
+        {
             CreatePages(); // recreate pages to clear out data
             ContentFrame.Navigate(StudentIDPage);
         }
 
         //remove page history so customer can't go back after the final submission
         //this way we don't get duplicates and people need to sign up
-        private void removeBackHistory() {
+        private void removeBackHistory()
+        {
             var entry = ContentFrame.NavigationService.RemoveBackEntry();
             while (entry != null)
             {
@@ -447,7 +465,8 @@ namespace CustomerLogger
             return result;
         }
 
-        public string getEmail(string id) {
+        public string getEmail(string id)
+        {
 
             //document.Load("https://cougtech.wsu.edu/SOAP/Look.aspx?IDn=%s" + id);
 
@@ -488,7 +507,8 @@ namespace CustomerLogger
         //sends ticket to orts via email
         //this way we can make notes and all that good otrs stuff....
         //this is the code that actually takes our customer logger info and sends it to otrs
-        public int SendTicket(string id, string prob, string descr, bool isAppt) {
+        public int SendTicket(string id, string prob, string descr, bool isAppt)
+        {
 
             // Get WSU email
             string wsuEmail = "";
