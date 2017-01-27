@@ -181,12 +181,11 @@ namespace CustomerLogger
         // User submits their info and it gets written to the csv file and sent to OTRS if enabled
         private void _summary_page_PageFinished(object sender, EventArgs e)
         {
-
-            /// Removed rental and Device
             if (EmailLogging == true)
-            { // don't send tickets that are rentals (ramsay creates one)
+            {
+                //TODO change the ID to StudentIDPage._textbox_text
                 int result = SendTicket(StudentIDPage.StudentID, ProblemPage.Problem, ProblemPage.Description, false); // send in otrs ticket 
-                //getUserName(StudentIDPage.StudentID);
+
                 if (result < 0)
                 {
                     return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
@@ -481,7 +480,6 @@ namespace CustomerLogger
                         break;
                 }
             }
-
 
             return "cougtech@wsu.edu";
 

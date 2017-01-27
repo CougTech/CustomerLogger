@@ -88,10 +88,20 @@ namespace CustomerLogger
 
             bool correct_length;
             bool is_num;
-            
+            string _textbox_text = "";
+
+            //Check to see if any of the characters in the text box are lowercase
+            foreach (char c in StudentNumberTextBox.Text)
+            {
+                if (c >= 97 && c <= 122)    //If they are
+                    _textbox_text += Char.ToUpper(c);    //Turn them to uppercase
+                else
+                    _textbox_text += c;         //Otherwise add them to _textbox_text
+            }
+
             foreach (string s in QuickCodes)
             {
-                if (StudentNumberTextBox.Text == s)
+                if (_textbox_text == s)
                 {
                     _isQuickPick = true;
                     SubmitButton.IsEnabled = true;
