@@ -11,8 +11,6 @@ using CSV;
 using System.ComponentModel;
 using CustomerLogger.Pages;
 
-//I changed this to show an example of commiting
-
 namespace CustomerLogger
 {
     /// <summary>
