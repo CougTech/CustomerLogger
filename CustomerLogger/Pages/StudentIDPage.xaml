@@ -13,9 +13,9 @@
       Width="1200">
 
     <Grid>
-        <Button x:Name="SubmitButton" Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="160" Height="80" Margin="0,0,30,29" Click="SubmitButton_Click" FontSize="26.667"/>
-        <TextBox x:Name="StudentNumberTextBox" MaxLines="1" MaxLength="8" HorizontalAlignment="Center" Height="90" Margin="357,325,373,273" TextWrapping="Wrap" VerticalAlignment="Center" Width="470" FontSize="60" GotFocus="StudentNumberTextBox_GotFocus" TextChanged="StudentNumberTextBox_TextChanged" KeyUp="StudentNumberTextBox_KeyUp"/>
-        <TextBlock Margin="205,246,203,0" FontWeight="DemiBold" TextWrapping="Wrap" Text="Please swipe your card or enter ID number:" VerticalAlignment="Top" FontSize="40"/>
+        <Button x:Name="SubmitButton" Content="Next" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="160" Height="80" Margin="0,0,30,47" Click="SubmitButton_Click" FontSize="26.667"/>
+        <TextBox x:Name="StudentNumberTextBox" MaxLines="1" MaxLength="8" HorizontalAlignment="Center" Height="90" Margin="357,244,373,354" TextWrapping="Wrap" VerticalAlignment="Center" Width="470" FontSize="60" GotFocus="StudentNumberTextBox_GotFocus" TextChanged="StudentNumberTextBox_TextChanged" KeyUp="StudentNumberTextBox_KeyUp"/>
+        <TextBlock Margin="205,165,203,0" FontWeight="DemiBold" TextWrapping="Wrap" Text="Please swipe your card or enter ID number:" VerticalAlignment="Top" FontSize="40"/>
 
     </Grid>
 </Page>

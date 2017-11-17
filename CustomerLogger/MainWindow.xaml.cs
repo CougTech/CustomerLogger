@@ -523,8 +523,8 @@ namespace CustomerLogger
 
             // New
             MailMessage msg = new MailMessage();
-            MailAddress mailFrom = new MailAddress("cougtech@wsu.edu" + "<" + wsuEmail + ">");
-            MailAddress mailTo = new MailAddress("cougtech@wsu.edu");
+            MailAddress mailFrom = new MailAddress("cougtech.walkin@wsu.edu" + "<" + wsuEmail + ">");
+            MailAddress mailTo = new MailAddress("cougtech.walkin@wsu.edu");
 
             msg.To.Add(mailTo);
             msg.From = mailFrom;
@@ -552,9 +552,9 @@ namespace CustomerLogger
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + id + "\n" + prob + "\n\n" + descr);
-            sb.AppendLine("\n\n[*] Please change the customer information for this ticket by selecting the | Customer | button above and enter their ID number in the Customer User field.");
-            sb.AppendLine("[*] Add your notes by selecting the | Note | button above.");
-            sb.AppendLine("[*] Close the ticket when you are done by selecting the | Close | button above.");
+            sb.AppendLine("\n\n[*] Please verify the customer information for this ticket..");
+            sb.AppendLine("[*] Start your notes by selecting the Start Work button above.");
+            sb.AppendLine("[*] Close the ticket when you are done by selecting the Close button above.");
             msg.Body = sb.ToString();
 
             Cursor = Cursors.AppStarting;

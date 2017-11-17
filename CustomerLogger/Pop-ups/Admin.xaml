@@ -26,7 +26,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <TextBlock x:Name="LogGoingTextBlock" HorizontalAlignment="Left" Margin="10,108,0,0" TextWrapping="Wrap" Text="Logging: No" VerticalAlignment="Top" RenderTransformOrigin="1.549,0.773" Grid.ColumnSpan="2" Width="208"/>
+        <TextBlock x:Name="LogGoingTextBlock" HorizontalAlignment="Left" Margin="10,108,0,0" TextWrapping="Wrap" Text="Logging Enabled:&#x9;No" VerticalAlignment="Top" RenderTransformOrigin="1.549,0.773" Grid.ColumnSpan="2" Width="208"/>
         <Button x:Name="emailButton" Content="Enable Emails" HorizontalAlignment="Left" Margin="63,22,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="emailButton_Click" Grid.ColumnSpan="2">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -35,7 +35,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <TextBlock x:Name="emailSendTextBlock" HorizontalAlignment="Left" Margin="10,128,0,0" TextWrapping="Wrap" Text="Emails Sending: No" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="199"/>
+        <TextBlock x:Name="emailSendTextBlock" HorizontalAlignment="Left" Margin="10,128,0,0" TextWrapping="Wrap" Text="Emails Enabled:&#x9;No" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="199"/>
 
     </Grid>
 </Window>
