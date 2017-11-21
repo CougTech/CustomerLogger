@@ -551,10 +551,11 @@ namespace CustomerLogger
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + id + "\n" + prob + "\n\n" + descr);
-            sb.AppendLine("\n\n[*] Please verify the customer information for this ticket..");
-            sb.AppendLine("[*] Start your notes by selecting the Start Work button above.");
-            sb.AppendLine("[*] Close the ticket when you are done by selecting the Close button above.");
+            sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + id + "\n\n" + prob + "\n\n" + descr);
+            sb.AppendLine("\n\nVerify the Customer's information in the Reporter field.");
+            sb.AppendLine("Assign to yourself, if not already assigned.");
+            sb.AppendLine("Start work notes using Start Work.");
+            sb.AppendLine("Finish with Close or Move.");
             msg.Body = sb.ToString();
 
             Cursor = Cursors.AppStarting;
