@@ -28,13 +28,13 @@ namespace CustomerLogger
             _description = " ";
 
             // have radiobuttons subscribe to one event
-            HardwareButton.Click += RadioButton_Click;
-            SoftwareButton.Click += RadioButton_Click;
-            WirelessButton.Click += RadioButton_Click;
-            EmailButton.Click += RadioButton_Click;
-            PasswordButton.Click += RadioButton_Click;
-            virusRadioButton.Click += RadioButton_Click;
-
+            HardwareButton.Click += RadioButton_Textbox_Click;
+            SoftwareButton.Click += RadioButton_Textbox_Click;
+            WirelessButton.Click += RadioButton_Textbox_Click;
+            EmailButton.Click += RadioButton_Textbox_Click;
+            PasswordButton.Click += RadioButton_Textbox_Click;
+            virusRadioButton.Click += RadioButton_Textbox_Click;
+            HealthCheckButton.Click += RadioButton_NoTextbox_Click;
         }
 
         public string Problem
@@ -61,7 +61,7 @@ namespace CustomerLogger
             }
         }
 
-        private void RadioButton_Click(object sender, RoutedEventArgs e)
+        private void RadioButton_Textbox_Click(object sender, RoutedEventArgs e)
         {
             _problem = ((RadioButton)sender).Content.ToString(); // set problem to text of radio button
             descriptionTextBox.Visibility = Visibility.Visible;
@@ -69,6 +69,16 @@ namespace CustomerLogger
             descriptionTextBox.Focus();
             descriptionTextBox.SelectAll();
         }
+
+        private void RadioButton_NoTextbox_Click(object sender, RoutedEventArgs e)
+        {
+            _problem = ((RadioButton)sender).Content.ToString(); // set problem to text of radio button
+            NextButton.IsEnabled = true;
+
+            requiredLabel.Visibility = Visibility.Hidden;
+            descriptionTextBox.Visibility = Visibility.Hidden;
+        }
+
 
         private void Grid_KeyUp(object sender, KeyEventArgs e)
         {
@@ -109,6 +119,16 @@ namespace CustomerLogger
             {
                 descriptionTextBox_KeyDown(sender, e);
             }
+        }
+
+        private void HardwareButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void descriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

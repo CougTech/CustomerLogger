@@ -209,7 +209,7 @@ namespace CustomerLogger
             }
 
             //let customer know they can sit down
-            MessageWindow mw = new MessageWindow("Thank you, please take a seat at a table and someone will help you shortly.", 4.0);
+            MessageWindow mw = new MessageWindow("Thank you!\nPlease take a seat at a table and someone will help you shortly.", 7.5);
             mw.ShowDialog();
 
             //get back to first state
@@ -594,7 +594,7 @@ namespace CustomerLogger
             }
 
             //let customer know they can sit down
-            MessageWindow mw = new MessageWindow("Thank you, please take a seat at a table and someone will help you shortly.", 4.0);
+            MessageWindow mw = new MessageWindow("Thank You!\nPlease grab a liability waiver and sit at the back table.", 7.5);
             mw.ShowDialog();
 
             //get back to first state
