@@ -42,7 +42,7 @@ namespace CustomerLogger
             //state variables
             _logging = false;
             _email_logging = false;
-            _log_path = GetDefaultDirectory();
+            _log_path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             //create the page objects
             CreatePages();
@@ -270,7 +270,7 @@ namespace CustomerLogger
                 if (mode == FileMode.Create)
                 {
                     int i = 0;
-                    string fname = _log_path + "\\" + file_name + "-" + i.ToString() + ".csv";
+                    string fname = _log_path + "\\CustomerLogger_Logs\\" + file_name + "-" + i.ToString() + ".csv";
                     while (File.Exists(fname)) // this loop guarantees that it will not overwrite the file, but instead append a number to the end and create a new file
                     {
                         i += 1;
@@ -443,9 +443,7 @@ namespace CustomerLogger
         {
             string result = "";
 
-            //document.Load("https://cougtech.wsu.edu/SOAP/Look.aspx?IDn=%s" + id);
-
-            String URLString = "https://cougtech.wsu.edu/SOAP/Look.aspx?IDn=" + id;
+            String URLString = "https://itsforms.wsu.edu/cougtech/Look.aspx?idn=" + id;
             XmlTextReader reader = new XmlTextReader(URLString);
 
             while (reader.Read())
@@ -467,10 +465,7 @@ namespace CustomerLogger
 
         public string getEmail(string id)
         {
-
-            //document.Load("https://cougtech.wsu.edu/SOAP/Look.aspx?IDn=%s" + id);
-
-            String URLString = "https://cougtech.wsu.edu/SOAP/Look.aspx?IDn=" + id;
+            String URLString = "https://itsforms.wsu.edu/cougtech/Look.aspx?idn=" + id;
             XmlTextReader reader = new XmlTextReader(URLString);
 
             while (reader.Read())
