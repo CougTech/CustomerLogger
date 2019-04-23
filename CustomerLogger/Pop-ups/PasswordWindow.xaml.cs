@@ -15,50 +15,59 @@ using System.Windows.Shapes;
 namespace CustomerLogger
 {
     /// <summary>
-    /// Interaction logic for AdminPassword.xaml
+    /// Interaction logic for PasswordWindow.xaml
+    /// The password window requests an admin password from the user before opening the admin window.
     /// </summary>
-    
-    //when the customer wants to go to the admin window they have to get through this first
-    //pretty simple just gets the password from the user and saves it to check when going to admin window
     public partial class PasswordWindow : Window
     {
-        private string _pwd;
+        //  Members ///////////////////////////////////////////////////////////////////////////////
 
-        public PasswordWindow(string type)
+        private string m_sPassword;
+
+        //  Constructor ///////////////////////////////////////////////////////////////////////////
+
+        public PasswordWindow()
         {
             InitializeComponent();
-            _pwd = "";
 
-            if (type != "")
-            {
-                pwLabel.Content = "Enter " + type + " Password:";
-            }
+            m_sPassword = "";
+            PwLabel.Content = "Enter Password:";
 
-            passwordBox.Focus();
+            PasswordBox.Focus();
         }
+
+        //  Properties  ///////////////////////////////////////////////////////////////////////////
 
         public string Password
         {
-            get { return _pwd; }
+            get { return m_sPassword; }
         }
 
-        private void okButton_Click(object sender, RoutedEventArgs e)
+        //  Private Functions   ///////////////////////////////////////////////////////////////////
+        
+        /// <summary>
+        /// Event handler for when the OK button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            _pwd = passwordBox.Password;
+            m_sPassword = PasswordBox.Password;            
 
             this.Close();
         }
 
-  
-
-        private void passwordBox_KeyUp(object sender, KeyEventArgs e)
+        /// <summary>
+        /// Event handler for when a key is presed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PasswordBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter) {
-                okButton_Click(sender, e);
-            }
-            if (e.Key == Key.Escape) {
-                this.Close();
-            }
+            if (e.Key == Key.Enter)
+                OkButton_Click(sender, e);
+            if (e.Key == Key.Escape)
+                Close();
         }
     }
 }

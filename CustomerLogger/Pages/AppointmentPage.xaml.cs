@@ -16,48 +16,96 @@ using System.Windows.Shapes;
 namespace CustomerLogger.Pages
 {
     /// <summary>
-    /// Interaction logic for AppointmentPage.xaml
+    /// Interaction logic for AppointmentPage.xaml.
+    /// The appointment page asks a customer whether they are signing in for an already scheduled appointment or not.
     /// </summary>
     public partial class AppointmentPage : Page
     {
-        public event EventHandler PageFinished;
-        private bool _hasAppointment;
+        //  Members ///////////////////////////////////////////////////////////////////////////////
 
-        public bool HasAppointment
-        {
-            get { return _hasAppointment; }
-        }
+        public event EventHandler PageFinished; //Event handler for when the next button is completed
 
+        //  Constructors    ///////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public AppointmentPage()
         {
             InitializeComponent();
-            nextButton.IsEnabled = false;
-            _hasAppointment = false;
+
+            //Disable next button and appointment flag
+            SubmitButton.IsEnabled = false;
         }
 
-        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Resets all dynamic fields on the page.
+        /// </summary>
+        public void Reset()
         {
-            PageFinished(new object(), new EventArgs());
+            CustomerName.Text = "";
         }
 
-        private void yesRadioButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sFirstName"></param>
+        public void Set_text(string sFirstName)
         {
-            _hasAppointment = true;
-            nextButton.IsEnabled = true;
+            CustomerName.Text = sFirstName + "!";
         }
 
-        private void noRadioButton_Click(object sender, RoutedEventArgs e)
-        {
-            _hasAppointment = false;
-            nextButton.IsEnabled = true;
-        }
+        //  Private Functions   ///////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// Event handler for a keypress.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Grid_KeyUp(object sender, KeyEventArgs e)
         {
+            //If the user has pressed "Enter", click the submit button
             if (e.Key == Key.Enter)
-            {
                 SubmitButton_Click(sender, e);
-            }
+        }
+
+        /// <summary>
+        /// Event handler for when the No radio button is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NoRadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Cougtech_CustomerLogger.Appointment_Set(false))
+                SubmitButton.IsEnabled = true;
+            else
+                MessageBox.Show("The ticketing system has not been initialized correctly./nPlease re-enter your student ID", "System Error");
+        }
+
+        /// <summary>
+        /// Event handler for when the submit button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+            //If the submit button is enabled
+            if (SubmitButton.IsEnabled)
+                PageFinished(new object(), new EventArgs());
+        }
+
+        /// <summary>
+        /// Event handler for when the Yes radio button is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void YesRadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Cougtech_CustomerLogger.Appointment_Set(true))
+                SubmitButton.IsEnabled = true;
+            else
+                MessageBox.Show("The ticketing system has not been initialized correctly./nPlease re-enter your student ID", "System Error");
+
         }
     }
 }

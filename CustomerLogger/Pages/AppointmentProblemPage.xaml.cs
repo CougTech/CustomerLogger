@@ -16,18 +16,28 @@ using System.Windows.Shapes;
 namespace CustomerLogger.Pages
 {
     /// <summary>
-    /// Interaction logic for AppointmentProblemPage.xaml
+    /// Interaction logic for AppointmentProblemPage.xaml.
+    /// The appointment problem page queries the customer for the type of appointment they are signing in to.
     /// </summary>
     public partial class AppointmentProblemPage : Page
     {
-        public event EventHandler PageFinished;
-        private string _problem;
+        //  Members ///////////////////////////////////////////////////////////////////////////////
 
+        public event EventHandler PageFinished; //Event handler for when the Next button is pressed
+
+        //  Constructors    ///////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public AppointmentProblemPage()
         {
             InitializeComponent();
-            NextButton.IsEnabled = false;
 
+            //Disable next button
+            SubmitButton.IsEnabled = false;
+
+            //Add radio button event handlers
             FormatReinstallBackup_Button.Click += RadioButton_Click;
             FormatReinstall_Button.Click += RadioButton_Click;
             Bootcamp_Button.Click += RadioButton_Click;
@@ -36,25 +46,44 @@ namespace CustomerLogger.Pages
             Troubleshoot_Button.Click += RadioButton_Click;
         }
 
-        public string Problem
+        //  Private Functions   ///////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Event handler for a keypress.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Grid_KeyUp(object sender, KeyEventArgs e)
         {
-            get { return _problem; }
-            set { _problem = value; }
+            //If the user has pressed "Enter", click the submit button
+            if (e.Key == Key.Enter)
+                SubmitButton_Click(sender, e);
         }
 
+        /// <summary>
+        /// Event handler for when a radio button is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RadioButton_Click(object sender, RoutedEventArgs e)
         {
-            _problem = ((RadioButton)sender).Content.ToString(); // set problem to text of radio button
-            NextButton.IsEnabled = true;
+            //Set problem to text of radio button
+            if (Cougtech_CustomerLogger.Problem_SelectionChanged(((RadioButton)sender).Content.ToString()))
+                SubmitButton.IsEnabled = true;
+            else
+                MessageBox.Show("The ticketing system has not been initialized correctly./nPlease re-enter your student ID", "System Error");
         }
 
-        private void NextButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Event handler for when the next button is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
-            if (NextButton.IsEnabled == true)
-            {
-                PageFinished(new object(), new EventArgs());
-            }
+            //If the submit button is enabled
+            if (SubmitButton.IsEnabled)
+                PageFinished(new object(), new EventArgs()); //Leave this page
         }
-
     }
 }

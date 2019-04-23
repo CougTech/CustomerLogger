@@ -6,129 +6,157 @@ using System.Windows.Input;
 namespace CustomerLogger
 {
     /// <summary>
-    /// Interaction logic for ProblemPage.xaml
+    /// Interaction logic for ProblemPage.xaml.
+    /// The problem page provides a way for the customer to describe their issue in more detail.
     /// </summary>
-
-    //allows the user to choose a problem from the list
-    public partial class ProblemPage:Page
+    public partial class ProblemPage : Page
     {
+        //  Members ///////////////////////////////////////////////////////////////////////////////
 
         public event EventHandler PageFinished;
-        private string _problem;
-        private string _description;
-        string _defaultText = "Briefly describe your problem.";
 
+        private const string m_sDefaultTextBox = "Briefly describe your problem.";
+
+        //  Constructors    ///////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public ProblemPage()
         {
             InitializeComponent();
-            NextButton.IsEnabled = false;
-            requiredLabel.Visibility = Visibility.Hidden;
-            descriptionTextBox.Visibility = Visibility.Hidden;
-            descriptionTextBox.MaxLength = 120; // limit character limit in problem description
-            _description = " ";
 
-            // have radiobuttons subscribe to one event
-            HardwareButton.Click += RadioButton_Textbox_Click;
-            SoftwareButton.Click += RadioButton_Textbox_Click;
-            WirelessButton.Click += RadioButton_Textbox_Click;
-            EmailButton.Click += RadioButton_Textbox_Click;
-            PasswordButton.Click += RadioButton_Textbox_Click;
-            virusRadioButton.Click += RadioButton_Textbox_Click;
-            HealthCheckButton.Click += RadioButton_NoTextbox_Click;
+            //Set initial page data
+            SubmitButton.IsEnabled = false;                     //Disable next button
+            requiredLabel.Visibility = Visibility.Hidden;       //Hide the red asterisk
+            DescriptionTextBox.Visibility = Visibility.Hidden;  //Hide the text box
+            DescriptionTextBox.MaxLength = 120;                 //Set the text box's max length to 120 characters
+
+            //Add radio button event handlers
+            HardwareButton.Click += RadioButton_Click_TextboxFocus;
+            SoftwareButton.Click += RadioButton_Click_TextboxFocus;
+            WirelessButton.Click += RadioButton_Click_TextboxFocus;
+            EmailButton.Click += RadioButton_Click_TextboxFocus;
+            PasswordButton.Click += RadioButton_Click_TextboxFocus;
+            virusRadioButton.Click += RadioButton_Click_TextboxFocus;
+            HealthCheckButton.Click += RadioButton_Click_NoTextboxFocus;
         }
 
-        public string Problem
+        //  Private Functions   ///////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Event handler for a keypress within the textbox.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DescriptionTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            get { return _problem; }
-            set { _problem = value; }
-        }
-        
-        public string Description
-        {
-            get { return _description; }
+            if (DescriptionTextBox.Text == m_sDefaultTextBox)   //If the text in the description box is the default text
+                DescriptionTextBox.Text = "";                       //Remove it once the user begins typing
         }
 
-        //when they have made an option customer can move on
-        private void NextButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Event handler for a keypress from a preview key.
+        /// </summary>
+        /// <remarks>
+        /// A preview key is not a standard alphanumeric character key such as "Backspace" and "Space".
+        /// </remarks>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DescriptionTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if(NextButton.IsEnabled) {
-                if (descriptionTextBox.Text != _defaultText)
-                { 
-                    _description = descriptionTextBox.Text; // add description if its not the default text
-                    _description = _description.Replace(",", string.Empty); // remove any commas in description because we save to a CSV
-                }
+            if ((e.Key == Key.Space) || (e.Key == Key.Back))    //If the key pressed is "Enter" or "Backspace"
+                DescriptionTextBox_KeyDown(sender, e);              //Call the keydown event handler
+        }
+
+        /// <summary>
+        /// Event handler for text changing within the textbox.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DescriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //Set the ticket description
+            if (Cougtech_CustomerLogger.Description_TextChanged(DescriptionTextBox.Text))
+            {
+                //If successful
+                if ((DescriptionTextBox.Text == m_sDefaultTextBox) || string.IsNullOrWhiteSpace(DescriptionTextBox.Text))   //If the default description is present, or there is no content within the text box
+                    SubmitButton.IsEnabled = false;                                                                               //Disable the submit button
+                else                                                                                                        //Else
+                    SubmitButton.IsEnabled = true;                                                                                //Enable the submit button
+            }
+            else
+                MessageBox.Show("The ticketing system has not been initialized correctly./nPlease re-enter your student ID", "System Error");
+        }
+
+        /// <summary>
+        /// Event handler for a keypress.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Grid_KeyUp(object sender, KeyEventArgs e)
+        {
+            //If the user has pressed "Enter", click the submit button
+            if (e.Key == Key.Enter)
+                SubmitButton_Click(sender, e);
+        }
+
+        /// <summary>
+        /// Event handler for when the "Next" button is pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+            //If the submit button is enabled
+            if (SubmitButton.IsEnabled)
+            {
+                //Leave this page
                 PageFinished(new object(), new EventArgs());
             }
         }
 
-        private void RadioButton_Textbox_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Event handler for when a problem radio button has been checked and the problem does not require a description.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RadioButton_Click_NoTextboxFocus(object sender, RoutedEventArgs e)
         {
-            _problem = ((RadioButton)sender).Content.ToString(); // set problem to text of radio button
-            descriptionTextBox.Visibility = Visibility.Visible;
-            requiredLabel.Visibility = Visibility.Visible;
-            descriptionTextBox.Focus();
-            descriptionTextBox.SelectAll();
-        }
-
-        private void RadioButton_NoTextbox_Click(object sender, RoutedEventArgs e)
-        {
-            _problem = ((RadioButton)sender).Content.ToString(); // set problem to text of radio button
-            NextButton.IsEnabled = true;
-
-            requiredLabel.Visibility = Visibility.Hidden;
-            descriptionTextBox.Visibility = Visibility.Hidden;
-        }
-
-
-        private void Grid_KeyUp(object sender, KeyEventArgs e)
-        {
-            if(e.Key == Key.Enter)
+            //Set the problem to the text of the radio buttton
+            if (Cougtech_CustomerLogger.Problem_SelectionChanged(((RadioButton)sender).Content.ToString()))
             {
-                NextButton_Click(sender, e);
+                //If successfull
+                SubmitButton.IsEnabled = true; //Enable the "Next" button
+
+                requiredLabel.Visibility = Visibility.Hidden;       //Hide the red asterisk
+                DescriptionTextBox.Visibility = Visibility.Hidden;  //Hide the textbox
             }
+            else
+                MessageBox.Show("The ticketing system has not been initialized correctly./nPlease re-enter your student ID", "System Error");
         }
 
-        private void descriptionTextBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (descriptionTextBox.Text.Length == 0 || string.IsNullOrWhiteSpace(descriptionTextBox.Text))
+        /// <summary>
+        /// Event handler for when a problem radio button has been checked and the problem does require a description.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RadioButton_Click_TextboxFocus(object sender, RoutedEventArgs e)
+        { 
+            //Set the problem to the text of the radio buttton
+            if(Cougtech_CustomerLogger.Problem_SelectionChanged(((RadioButton) sender).Content.ToString())) 
             {
-                NextButton.IsEnabled = false; // disable 'Next' button if no text or text is just whitespace
-                return;
+                //If successfull
+                SubmitButton.IsEnabled = false; //Disable the "Next" button
+
+                DescriptionTextBox.Visibility = Visibility.Visible; //Make the red asterisk visible
+                requiredLabel.Visibility = Visibility.Visible;      //Make the textbox visible
+
+                DescriptionTextBox.Focus();                         //Focus on the textbox
+                DescriptionTextBox.SelectAll();                     //Select the text within the textbox
             }
-
-            if (descriptionTextBox.Text != _defaultText)
-            {
-                NextButton.IsEnabled = true; // enable button once text is not the default text
-            }
-        }
-
-        private void descriptionTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (descriptionTextBox.Text == _defaultText)
-            {
-                descriptionTextBox.Text = ""; // remove default text if user starts typing before deleting it
-            }
-
-        }
-
-        private void descriptionTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            // KeyDown event does not handle space or backspace key
-            // this does
-            if (e.Key == Key.Space || e.Key == Key.Back)
-            {
-                descriptionTextBox_KeyDown(sender, e);
-            }
-        }
-
-        private void HardwareButton_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void descriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
+            else
+                MessageBox.Show("The ticketing system has not been initialized correctly./nPlease re-enter your student ID", "System Error");
         }
     }
 }

@@ -10,13 +10,16 @@
 
     <Grid KeyUp="Grid_KeyUp">
         <Button x:Name="SubmitButton" Content="Submit" HorizontalAlignment="Right" Margin="0,0,21,28" VerticalAlignment="Bottom" Width="160" Height="80" Click="SubmitButton_Click" FontSize="26.667"/>
-        <TextBlock x:Name="StudentIDLabel" Margin="299,238,491,0" TextWrapping="Wrap" Text="ID Number:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
-        <TextBlock x:Name="StudentID" HorizontalAlignment="Left" Margin="635,238,0,0" TextWrapping="Wrap" Text="00000000" VerticalAlignment="Top" FontSize="48"/>
-        <TextBlock x:Name="ProblemLabel" Margin="299,318,674,0" TextWrapping="Wrap" Text="Problem:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
-        <TextBlock x:Name="Problem" HorizontalAlignment="Left" Margin="635,318,0,0" TextWrapping="Wrap" Text="A Problem" VerticalAlignment="Top" FontSize="48"/>
-        <Label x:Name="label" Content="Summary" HorizontalAlignment="Left" Margin="435,120,0,0" VerticalAlignment="Top" Width="284" Height="110" FontSize="64" FontStyle="Italic"/>
-        <TextBlock x:Name="descriptionLabel" Margin="299,396,0,0" TextWrapping="Wrap" Text="Description:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold" HorizontalAlignment="Left"/>
-        <TextBlock x:Name="descText" HorizontalAlignment="Left" Margin="635,412,0,129" TextWrapping="Wrap" Text="Description" FontSize="21.333" Width="358"/>
+        <TextBlock x:Name="StudentIDLabel" Margin="200,225,491,0" TextWrapping="Wrap" Text="ID Number:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <TextBlock x:Name="StudentID" HorizontalAlignment="Left" Margin="502,228,0,0" TextWrapping="Wrap" Text="00000000" VerticalAlignment="Top" FontSize="48"/>
+        <TextBlock x:Name="ProblemLabel" Margin="200,318,674,0" TextWrapping="Wrap" Text="Problem:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <TextBlock x:Name="Problem" HorizontalAlignment="Left" Margin="502,318,0,0" TextWrapping="Wrap" Text="A Problem" VerticalAlignment="Top" FontSize="48"/>
+        <Label x:Name="Okay_Label" Content="Okay" Margin="183,25,0,0" VerticalAlignment="Top" Height="100" FontSize="64" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Width="177"/>
+        <TextBlock x:Name="DescriptionLabel" Margin="200,396,0,0" TextWrapping="Wrap" Text="Description:" VerticalAlignment="Top" FontSize="50" FontWeight="Bold" HorizontalAlignment="Left"/>
+        <TextBlock x:Name="Description" HorizontalAlignment="Left" Margin="502,412,0,178" TextWrapping="Wrap" Text="Description" FontSize="21.333" Width="358"/>
+        <TextBlock x:Name="ConfirmationLine" Text="Your ticket is all set!" Margin="200,100,180,0" VerticalAlignment="Top" Height="100" FontSize="64"/>
+        <TextBlock x:Name="FirstName" HorizontalAlignment="Left" Margin="365,30,0,0" TextWrapping="Wrap" Text="Name," VerticalAlignment="Top" FontSize="64"/>
+        <TextBlock x:Name="PressSubmit_Label" HorizontalAlignment="Left" Margin="200,510,0,0" Text="Please check the information above and press submit if it looks correct." VerticalAlignment="Top" FontSize="45" FontWeight="Bold" TextWrapping="Wrap" Width="814"/>
 
     </Grid>
 </Page>

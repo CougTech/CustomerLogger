@@ -7,516 +7,118 @@ using System.IO;
 using System.Xml;
 using System.Net.Mail;
 using System.Net;
-using CSV;
 using System.ComponentModel;
+
+using CSV;
+using Jira_REST;
 using CustomerLogger.Pages;
 
 namespace CustomerLogger
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml.
+    /// This is the main process which runs the main window for this application.
     /// </summary>
-
     public partial class MainWindow:Window
     {
-        private CSVWriter _writer;
-        private StudentIDPage _student_id_page;
-        private AppointmentPage _appt_page;
-        private AppointmentProblemPage _appt_prob_page;
-        private ProblemPage _problem_page;
-        private SummaryPage _summary_page;
-        private string _log_path;
-        private bool _logging, _email_logging;
+        //  Members ///////////////////////////////////////////////////////////////////////////////
 
-        private TimeSpan startTime = new TimeSpan(7, 30, 0); // 7:30 am (24 hour clock)
-        private TimeSpan endTime = new TimeSpan(17, 30, 0); // 5:30 pm
-        private System.Windows.Threading.DispatcherTimer startDayTimer, endDayTimer;
+        private AppointmentPage m_Appointment_Page;                 //Appointment check-in
+        private AppointmentProblemPage m_AppointmentProblem_Page;   //Appointment type
+        private StudentIDPage m_StudentId_Page;                     //Student ID sign-in page
+        private ProblemPage m_WiProblemPage;                        //Walk-In Problem Page
+        private SummaryPage m_WiSummaryPage;                        //Walk-in Summary Page
 
+        // Constructors ///////////////////////////////////////////////////////////////////////////
 
-        //runs everything.
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        /// <remarks>
+        /// Initializes the customer logger main process and begins session-timeout timers.
+        /// </remarks>
         public MainWindow()
         {
             InitializeComponent();
-            _writer = null;
 
-            //state variables
-            _logging = false;
-            _email_logging = false;
-            _log_path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            //create the page objects
+            //Create pages
             CreatePages();
-            ContentFrame.Navigate(_student_id_page);
 
-            //sets up timers to go at particular times
-            //start of cougtech and end of cougtech working hours
-            startDayTimer = new System.Windows.Threading.DispatcherTimer(); // Timer to automatically start logging at 8:00 am
-            startDayTimer.Interval = TimeUntilNextTimer(startTime);
-            startDayTimer.IsEnabled = true;
-            startDayTimer.Tick += new EventHandler(AutoStartLog);
-
-            endDayTimer = new System.Windows.Threading.DispatcherTimer(); // Timer to automatically end logging at 5:00 pm
-            endDayTimer.Interval = TimeUntilNextTimer(endTime);
-            endDayTimer.IsEnabled = true;
-            endDayTimer.Tick += new EventHandler(AutoEndLog);
+            //Navigate to the student sign-in page
+            ContentFrame.Navigate(m_StudentId_Page);
 
             ContentFrame.Navigated += ContentFrame_Navigated;
             ContentFrame.Navigating += ContentFrame_Navigating;
-
         }
 
-        //holds the path to where csv logs are saved
-        public string LogPath
-        {
-            set { _log_path = value; }
-            get { return _log_path; }
-        }
+        //  Properties  ///////////////////////////////////////////////////////////////////////////
 
-        public StudentIDPage StudentIDPage
+        public AppointmentPage AppointmentPage
         {
-            get {return _student_id_page; }
+            get { return m_Appointment_Page; }
         }
 
         public AppointmentProblemPage AppointmentProbPage
         {
-            get { return _appt_prob_page; }
+            get { return m_AppointmentProblem_Page; }
         }
 
         public ProblemPage ProblemPage
         {
-            get {return _problem_page; }
+            get { return m_WiProblemPage; }
+        }
+
+        public StudentIDPage StudentIDPage
+        {
+            get {return m_StudentId_Page; }
         }
 
         public SummaryPage SummaryPage
         {
-            get {return _summary_page; }
+            get {return m_WiSummaryPage; }
         }
 
-        public AppointmentPage AppointmentPage
+        //  Public Functions    ///////////////////////////////////////////////////////////////////
+        
+        /// <summary>
+        /// Removes all backpage history from the program instance.
+        /// </summary>
+        private void RemoveBackHistory()
         {
-            get { return _appt_page; }
-        }
+            //Reset all pages
+            StudentIDPage.Reset();
+            AppointmentPage.Reset();
+            SummaryPage.Reset();
 
-        public bool Logging
-        {
-            get {return _logging; }
-            set {_logging = value; }
-        }
+            //Remove Windows back history
+            JournalEntry entry = ContentFrame.NavigationService.RemoveBackEntry();
 
-        public bool EmailLogging
-        {
-            get { return _email_logging; }
-            set { _email_logging = value; }
-        }
-
-
-        // reads in a file to set the default directory
-        private string GetDefaultDirectory()
-        {
-            try {
-                using (FileStream fs = new FileStream("defaultdir.cfg", FileMode.Open)) {
-                    using (StreamReader sr = new StreamReader(fs)) {
-                        return sr.ReadLine(); // directory should be first and only line in file
-                    }
-                }
-            }
-            catch (Exception e) {
-                return Directory.GetCurrentDirectory(); // return current directory if failed to read file
-            }
-        }
-
-        private void CreatePages()
-        {
-            _student_id_page = new StudentIDPage();
-            _student_id_page.PageFinished += _page_PageFinished;
-
-            _appt_page = new AppointmentPage();
-            _appt_page.PageFinished += _page_PageFinished;
-
-            _appt_prob_page = new AppointmentProblemPage();
-            _appt_prob_page.PageFinished += _page_PageFinished;
-            
-            _problem_page = new ProblemPage();
-            _problem_page.PageFinished += _page_PageFinished;
-
-            _summary_page = new SummaryPage();
-            _summary_page.PageFinished += _summary_page_PageFinished;
+            while (entry != null)
+                entry = ContentFrame.NavigationService.RemoveBackEntry();
         }
 
         /// <summary>
-        /// Changes page when user clicks 'next' on any of the pages except SummaryPage
+        /// Resets all page states and navigates back to the student ID page.
         /// </summary>
-        /// <param name="sender"> not used </param>
-        /// <param name="e"> not used </param>
-        private void _page_PageFinished(object sender, EventArgs e)
-        {
-            if (ContentFrame.Content == StudentIDPage)
-            {
-                if (StudentIDPage.IsQuickPick == true)
-                {
-                    ContentFrame.Navigate(SummaryPage);
-                    SummaryPage.StartTimer();
-                }
-                else
-                {
-                    ContentFrame.Navigate(AppointmentPage);
-                }
-            }
-            else if (ContentFrame.Content == AppointmentPage)
-            {
-                if (AppointmentPage.HasAppointment == true) // @ appointment page
-                {
-                    
-                    ContentFrame.Navigate(AppointmentProbPage);
-                }
-                else
-                {
-                    ContentFrame.Navigate(ProblemPage); 
-                }
-            }
-            else if (ContentFrame.Content == ProblemPage)
-            {
-                SummaryPage.SetText(StudentIDPage.StudentID, ProblemPage.Problem, ProblemPage.Description);
-                SummaryPage.StartTimer(); // starts a 10 sec timer to auto close summary page
-                ContentFrame.Navigate(SummaryPage); // @ problem page, go to summary next
-            }
-            else if (ContentFrame.Content == AppointmentProbPage) 
-            {
-                SendAppointment(_appt_prob_page.Problem); // send in ticket and reset if user has one
-            }
-        }
-
-        // User submits their info and it gets written to the csv file and sent to OTRS if enabled
-        private void _summary_page_PageFinished(object sender, EventArgs e)
-        {
-            if (EmailLogging == true)
-            {
-                int result = SendTicket(StudentIDPage.StudentID, ProblemPage.Problem, ProblemPage.Description, false); // send in otrs ticket 
-
-                if (result < 0)
-                {
-                    return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
-                }
-            }
-
-            if (Logging == true && _writer != null)
-            {
-                //write to csv file
-                addToCurrent(StudentIDPage.StudentID);
-                addToCurrent(ProblemPage.Problem);
-                addToCurrent(ProblemPage.Description);
-                writeLine();
-            }
-
-            //let customer know they can sit down
-            MessageWindow mw = new MessageWindow("Thank you!\nPlease take a seat at a table and someone will help you shortly.", 7.5);
-            mw.ShowDialog();
-
-            //get back to first state
-            Reset();
-        }
-
-        //remove histroy when done, so we don't have to worry about customer going back and seeing
-        //other student ID's but also so we don't get duplicates of the same customer
-        private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
-        {
-            if (e.Content == _student_id_page) { // Will clear all back history once Student ID Page has finished loading
-                removeBackHistory();
-            }
-        }
-
-        // stops the timer on the summary page if the user decides to go back for some reason
-        private void ContentFrame_Navigating(object sender, NavigatingCancelEventArgs e)
-        {
-            if (e.NavigationMode == NavigationMode.Back)
-            {
-                SummaryPage.StopTimer();
-            }
-        }
-
-        public bool IsCsvNull()
-        {
-            return (_writer == null);
-        }
-
-        /// <summary>
-        /// enable logging and email logging for writing to the csv file and send tickets to otrs
-        /// </summary>
-        public void StartLog()
-        {
-            _logging = true;
-            _email_logging = true;
-        }
-
-        /// <summary>
-        /// Disables logging to csv and emailing tickets
-        /// </summary>
-        public void EndLog()
-        {
-            _logging = false;
-            _email_logging = false;
-        }
-
-        /// <summary>
-        /// Creates a new CSVWriter object which will write to a new file
-        /// This is performed weekly every monday or if a file does not exist for the week
-        /// </summary>
-        /// <param name="file_name">name of csv file</param>
-        public void CreateLog(string file_name, FileMode mode)
-        {
-            //create a new writer
-            try
-            {
-                if (mode == FileMode.Create)
-                {
-                    int i = 0;
-                    string fname = _log_path + "\\CustomerLogger_Logs\\" + file_name + "-" + i.ToString() + ".csv";
-                    while (File.Exists(fname)) // this loop guarantees that it will not overwrite the file, but instead append a number to the end and create a new file
-                    {
-                        i += 1;
-                        fname = _log_path + "\\" + file_name + "-" + i.ToString() + ".csv";
-                    }
-                    _writer = new CSVWriter(fname, mode);
-
-                    //basic header stuff for the csv
-                    //the name of the log, the time it started
-                    _writer.addToCurrent("Log for: ");
-                    _writer.addToCurrent(file_name);
-                    _writer.addToCurrent(" ");
-                    _writer.addToCurrent("Log Start Time: ");
-                    _writer.addToCurrent(DateTime.Now.ToShortTimeString());
-                    _writer.WriteLine();
-                    //and then header for the collumns
-                    _writer.addToCurrent("Time");
-                    _writer.addToCurrent("ID Number");
-                    _writer.addToCurrent("Problem");
-                    _writer.addToCurrent("Description");
-                    _writer.WriteLine();
-                }
-                else if (mode == FileMode.Append)
-                {
-                    _writer = new CSVWriter(file_name, mode);
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Error Creating Log");
-                return;
-            }
-        }
-
-        /// <summary>
-        /// Writes time log finished and deallocates the CSVWriter
-        /// </summary>
-        public void FinishLog()
-        {
-            _writer.addToCurrent("Log End Time: ");
-            _writer.addToCurrent(DateTime.Now.ToShortTimeString());
-            _writer.WriteLine();
-            //close and dealocate the csv writer
-            _writer = null;
-        }
-
-        //automatically starts the day when the timer is hit
-        private void AutoStartLog(object sender, EventArgs e)
-        {
-            startDayTimer.IsEnabled = false; // stop timer
-
-            // start the log and display message
-            // if it is Monday then we create a new log for the week.
-            //we make the name of the log being the date in the MM-dd-yyyy format
-            if (DateTime.Today.DayOfWeek != DayOfWeek.Saturday && DateTime.Today.DayOfWeek != DayOfWeek.Sunday) { // don't start logs on saturday/sunday
-                if (DateTime.Now.DayOfWeek == DayOfWeek.Monday)
-                {
-                    CreateLog("Week_of_" + DateTime.Now.ToString("MM-dd-yyyy"), FileMode.Create); // creates a new .csv file for the week
-                }
-
-                StartLog(); // enable Logging & EmailLogging
-                MessageWindow mw = new MessageWindow("Start New day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
-                mw.Show();
-            }
-
-            startDayTimer.Interval = TimeUntilNextTimer(startTime); // update time to next day at 7:30 am
-            startDayTimer.IsEnabled = true;
-        }
-
-        //automatically ends the log
-        private void AutoEndLog(object sender, EventArgs e)
-        {
-            endDayTimer.IsEnabled = false; // stop timer
-
-            // end the log and display message
-            if (null != _writer) {
-                EndLog();
-
-                if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
-                {
-                    FinishLog(); // write final stats to weekly file if end of day on Friday
-                }
-
-                MessageWindow mw = new MessageWindow("End day \n" + DateTime.Now.ToString("MM-dd-yyyy"), 3.0);
-                mw.Show();
-            }
-
-            endDayTimer.Interval = TimeUntilNextTimer(endTime); // update time to next day at 5:00 pm
-            endDayTimer.IsEnabled = true;
-        }
-
-        //get the time for the next day
-        private TimeSpan TimeUntilNextTimer(TimeSpan target_time)
-        {
-            DateTime dt = DateTime.Today.Add(target_time);
-
-            if (DateTime.Now > dt) { // if past the target time then set it for the next day
-                dt = dt.AddDays(1);
-            }
-
-            return dt.Subtract(DateTime.Now);
-        }
-
-        //add to text to current line for customer log
-        //delagtes to the internal CSV writer object
-        public void addToCurrent(string text)
-        {
-
-            if(null != _writer) { 
-            
-                _writer.addToCurrent(text);
-            }
-        }
-
-        /// <summary>
-        /// writes customer details to csv file
-        /// </summary>
-        public void writeLine()
-        {
-
-            if(null != _writer) {
-                _writer.addToStart(DateTime.Now.ToString("MM/dd/yyyy HH:mm"));
-                _writer.WriteLine();
-            }
-            else {
-                if (true == _logging) {
-                    MessageBox.Show("Trying to write to file but the CSV writer is set to null.", "Error Writing Record"); // Show an error message if tried to write a record but there is no CSV writer
-                }
-            }
-        }
-
-        //opens the admin button, after the user successfully puts in our secret password
-        private void AdminButton_Click(object sender, RoutedEventArgs e)
-        {
-
-            PasswordWindow ap = new PasswordWindow("");
-            ap.ShowDialog();
-
-            //This is also terrible, but easy to use... but still, we should move this out to a file somewhere
-            //because this is dumb
-            //and bad, and should be fixed if we want to do this correctly
-            //woot woot for hardcoded passwords....
-            if (ap.Password == "couglolz") { // open admin window only if password is correct
-                AdminWindow aw = new AdminWindow(this);
-                aw.ShowDialog(); // keeps admin window on top of all other windows, preventing multiple admin windows from opening
-            }
-        }
-
-        //resets all pages and state related to signing in customer
-        //usefull when someone has submitted and we do not want to keep
-        //old submissions floating arround in memory.
         public void Reset()
         {
-            CreatePages(); // recreate pages to clear out data
-            ContentFrame.Navigate(StudentIDPage);
+            RemoveBackHistory();                    //Remove all backhistory
+            CreatePages();                          //Recreate all pages to clear out data
+            ContentFrame.Navigate(StudentIDPage);   //Navigate to the student ID page
         }
 
-        //remove page history so customer can't go back after the final submission
-        //this way we don't get duplicates and people need to sign up
-        private void removeBackHistory()
+        /*
+        /// <summary>
+        /// Forms a ticket to be sent to Jira via the cougtech walk in email service.
+        /// </summary>
+        /// <param name="id">Users WSU NID.</param>
+        /// <param name="prob">Problem type.</param>
+        /// <param name="descr">The problem description.</param>
+        /// <param name="isAppt">Boolean for if the ticket is an appointment.</param>
+        /// <returns>0 if the ticket was submitted. -1 if the ticket submission failed.</returns>
+        public int SendTicket_Email(string id, string prob, string descr, bool isAppt)
         {
-            var entry = ContentFrame.NavigationService.RemoveBackEntry();
-            while (entry != null)
-            {
-                entry = ContentFrame.NavigationService.RemoveBackEntry();
-            }
-        }
-
-        public string getUserName(string id)
-        {
-            string result = "";
-
-            String URLString = "https://itsforms.wsu.edu/cougtech/Look.aspx?idn=" + id;
-            XmlTextReader reader = new XmlTextReader(URLString);
-
-            while (reader.Read())
-            {
-                if(reader.NodeType == XmlNodeType.Element)
-                {
-                    if(reader.Name == "FirstName")
-                    {
-                        reader.Read();
-                        result = reader.Value;
-                        return result;
-                    }
-                }
-                
-            }
-
-            return result;
-        }
-
-        public string getEmail(string id)
-        {
-            String URLString = "https://itsforms.wsu.edu/cougtech/Look.aspx?idn=" + id;
-            XmlTextReader reader = new XmlTextReader(URLString);
-
-            while (reader.Read())
-            {
-                switch (reader.NodeType)
-                {
-                    case XmlNodeType.Element: // The node is an element.
-                        Console.Write("<" + reader.Name);
-
-                        while (reader.MoveToNextAttribute()) // Read the attributes.
-                            Console.Write(" " + reader.Name + "='" + reader.Value + "'");
-                        Console.Write(">");
-                        Console.WriteLine(">");
-                        break;
-                    case XmlNodeType.Text: //Display the text in each element.
-                        String tempString = reader.Value;
-                        Console.WriteLine(tempString);
-                        if (tempString.Contains("@")) {
-                            return tempString;
-                        }
-                        break;
-                    case XmlNodeType.EndElement: //Display the end of the element.
-                        Console.Write("</" + reader.Name);
-                        Console.WriteLine(">");
-                        break;
-                }
-            }
-
-            return "cougtech@wsu.edu";
-
-
-        }
-
-        //sends ticket to orts via email
-        //this way we can make notes and all that good otrs stuff....
-        //this is the code that actually takes our customer logger info and sends it to otrs
-        public int SendTicket(string id, string prob, string descr, bool isAppt)
-        {
-
-            // Get WSU email
-            string wsuEmail = "";
-            if (StudentIDPage.IsQuickPick)
-            {
-                wsuEmail = getEmail("99999999");
-            }
-            else
-            {
-                wsuEmail = getEmail(id);
-            }
-
-            // New
+            //New mail object
             MailMessage msg = new MailMessage();
             MailAddress mailFrom = new MailAddress("cougtech.walkin@wsu.edu" + "<" + wsuEmail + ">");
             MailAddress mailTo = new MailAddress("cougtech.walkin@wsu.edu");
@@ -527,24 +129,25 @@ namespace CustomerLogger
             SmtpClient client = new SmtpClient("mail.wsu.edu");
 
 
-            // If the ticket is an appointment then changes the subject
-            if (StudentIDPage.isTest)
+            //Format the subject based on the ticket information
+            if (StudentIDPage.IsTest)           //Test ticket
             {
                 msg.Subject = "##CTtest : " + prob + " : " + id;
             }
-            else if (StudentIDPage.IsQuickPick)
+            else if (StudentIDPage.IsQuickPick) //Quickpick ticket
             {
                 msg.Subject = "##CTwi : " + StudentIDPage.QuickCode;
             }
-            else if (isAppt)
+            else if (isAppt)                    //Appointment ticket
             {
-                msg.Subject = "##CTapt  :  " + prob + "  :  " + id + "  :  " + getUserName(id);
+                msg.Subject = "##CTapt  :  " + prob + "  :  " + id + "  :  " + QueryFirstName(id);
             }
-            else
+            else                                //Standard walk-in ticket
             {
-                msg.Subject = "##CTwi  :  " + prob + "  :  " + id + "  :  " + getUserName(id);
+                msg.Subject = "##CTwi  :  " + prob + "  :  " + id + "  :  " + QueryFirstName(id);
             }
 
+            //Build the message body
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(DateTime.Now.ToLongTimeString() + "\n" + id + "\n\n" + prob + "\n\n" + descr);
             sb.AppendLine("\n\nVerify the Customer's information in the Reporter field.");
@@ -553,47 +156,147 @@ namespace CustomerLogger
             sb.AppendLine("Finish with Close or Move.");
             msg.Body = sb.ToString();
 
+            //Change the cursor
             Cursor = Cursors.AppStarting;
-            try {
+
+            //Send the message
+            try 
+            {
                 client.Send(msg);
             }
-            catch (Exception e) {
-                MessageBox.Show("Could not send OTRS ticket. Please let a CougTech employee know of this problem. Thank you.", "Failed To Send");
+            catch (Exception e) 
+            {
+                MessageBox.Show("Ticket failed to send\nPlease try again.");
                 Cursor = Cursors.Arrow;
-                return -1; // -1 for error
+                return -1; //-1 for error
             }
+
+            //Change the cursor back
             Cursor = Cursors.Arrow;
-            return 0; // 0 for success
+
+            return 0; //0 for success
+        }   
+        */
+
+        //  Private Functions   ///////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void AdminWindow_Login()
+        {
+            AdminWindow adminWindow = new AdminWindow(this);
+
+            if (adminWindow.Authenticate())
+                adminWindow.ShowDialog();
         }
 
-        // this will create a ticket specifically for appointments and will skip the rest of the questions
-        // also writes to csv file if logging is enabled
-        private void SendAppointment(string prob)
+        /// <summary>
+        /// Handler for when the content frame has finished navigating.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
         {
-            if (EmailLogging == true)
+            if (e.Content == m_StudentId_Page)  //If the current content is the student ID page
+                RemoveBackHistory();                //Clear all back history once Student ID Page has finished loading. This is essentially a soft reset
+        }
+
+        /// <summary>
+        /// Handler for when the content frame is currently navigating.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ContentFrame_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            if (e.NavigationMode == NavigationMode.Back)    //If the content frame is navigating backwards
+                SummaryPage.StopTimer();                        //Stop the summary page timer
+        }
+
+        /// <summary>
+        /// Creates all pages required for submitting a walk-in ticket.
+        /// </summary>
+        private void CreatePages()
+        {
+            m_StudentId_Page = new StudentIDPage();
+            m_StudentId_Page.PageFinished += PageFinished;
+
+            m_Appointment_Page = new AppointmentPage();
+            m_Appointment_Page.PageFinished += PageFinished;
+
+            m_AppointmentProblem_Page = new AppointmentProblemPage();
+            m_AppointmentProblem_Page.PageFinished += PageFinished;
+
+            m_WiProblemPage = new ProblemPage();
+            m_WiProblemPage.PageFinished += PageFinished;
+
+            m_WiSummaryPage = new SummaryPage();
+            m_WiSummaryPage.PageFinished += PageFinished;
+        }
+
+        /// <summary>
+        /// Event handler for when each customer logger page is finished.
+        /// </summary>
+        /// <param name="sender">Not used.</param>
+        /// <param name="e">Not used.</param>
+        private void PageFinished(object sender, EventArgs e)
+        {
+            if (ContentFrame.Content == StudentIDPage) //At the student ID page
             {
-                int result = SendTicket(StudentIDPage.StudentID, prob, prob, true); // send in otrs ticket 
-                if (result < 0)
+                if (StudentIDPage.IsAdmin)                  //If the user is accessing the admin page
                 {
-                    return; // Don't write to file if attempt to send emails.. this will prevent duplicates and keep the summary page open
+                    AdminWindow_Login();                        //Launch the admin window login process
+                    RemoveBackHistory();                        //Remove all back history
+                }
+                else
+                {
+                    //Create new ticket for new customer
+                    Cougtech_CustomerLogger.CreateCustomerTicket(StudentIDPage.Nid);
+
+                    if (StudentIDPage.IsQuickPick)         //Else if the issue is a quick-pick
+                    {
+                        //Populate the summary page and navigate to it
+                        SummaryPage.SetText(false, Cougtech_CustomerLogger.CustomerTicket.CustomerName, Cougtech_CustomerLogger.CustomerTicket.Nid,
+                                            Cougtech_CustomerLogger.CustomerTicket.Problem, Cougtech_CustomerLogger.CustomerTicket.Description);
+                        ContentFrame.Navigate(SummaryPage);
+                        SummaryPage.StartTimer();           //Start summary page timer
+                    }
+                    else                                        //Else
+                    {
+                        AppointmentPage.Set_text(Cougtech_CustomerLogger.CustomerTicket.CustomerName);
+                        ContentFrame.Navigate(AppointmentPage);     //Navigate to the the appointment page
+                    }
                 }
             }
-
-            if (Logging == true && _writer != null)
+            else if (ContentFrame.Content == AppointmentPage)               //At the appointment page
             {
-                //write to csv file
-                addToCurrent(StudentIDPage.StudentID);
-                addToCurrent("Appointment");
-                addToCurrent(AppointmentProbPage.Problem);
-                writeLine();
+                if (Cougtech_CustomerLogger.CustomerTicket.IsAppointment)   //If the customer has an appointment
+                    ContentFrame.Navigate(AppointmentProbPage);                 //Navigate to the appointment problem page
+                else                                                         //Else
+                    ContentFrame.Navigate(ProblemPage);                         //Navigate to the standard problem page
             }
-
-            //let customer know they can sit down
-            MessageWindow mw = new MessageWindow("Thank You!\nPlease grab a liability waiver and sit at the back table.", 7.5);
-            mw.ShowDialog();
-
-            //get back to first state
-            Reset();
+            else if (ContentFrame.Content == ProblemPage) //At the problem page
+            {
+                //Populate the summary page and navigate to it
+                SummaryPage.SetText(false, Cougtech_CustomerLogger.CustomerTicket.CustomerName, Cougtech_CustomerLogger.CustomerTicket.Nid,
+                                    Cougtech_CustomerLogger.CustomerTicket.Problem, Cougtech_CustomerLogger.CustomerTicket.Description);
+                SummaryPage.StartTimer();
+                ContentFrame.Navigate(SummaryPage);
+            }
+            else if (ContentFrame.Content == AppointmentProbPage) //At the appointment problem page
+            {
+                //Populate the summary page and navigate to it
+                SummaryPage.SetText(true, Cougtech_CustomerLogger.CustomerTicket.CustomerName, Cougtech_CustomerLogger.CustomerTicket.Nid,
+                                    Cougtech_CustomerLogger.CustomerTicket.Problem, Cougtech_CustomerLogger.CustomerTicket.Description);
+                SummaryPage.StartTimer();
+                ContentFrame.Navigate(SummaryPage);
+            }
+            else if(ContentFrame.Content == SummaryPage)
+            {
+                //Submit the customer ticket then return to the student ID page
+                Cougtech_CustomerLogger.SubmitTicket();
+                ContentFrame.Navigate(StudentIDPage);
+            }
         }
     }
 }

@@ -17,44 +17,56 @@ namespace CustomerLogger
     /// <summary>
     /// Interaction logic for MessageWindow.xaml
     /// </summary>
-    
-    //Displays an arbitrary message
-    //used for errors or feedback or lamas, or whatever
-    //just keep it classy
     public partial class MessageWindow:Window
     {
+        //  Members ///////////////////////////////////////////////////////////////////////////////
 
-        private System.Windows.Threading.DispatcherTimer openTimer;
+        private System.Windows.Threading.DispatcherTimer m_Timer;
 
-        //message is the text you want to display
-        //If you put a new line in the message string then the message
-        //should be displayed on the two lines.
-        //interval is the seconds you want it to desplay for
+        //  Constructors    ///////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Overloaded Constructor
+        /// </summary>
+        /// <param name="message">Message to display within the window.</param>
+        /// <param name="interval">Time in seconds that the window will stay before auto-destructing.</param>
         public MessageWindow(string message, double interval)
         {
             InitializeComponent();
     
+            //Set the text
             MessageTextBox.Text = message;
 
-            // Display this window for interval seconds
-            openTimer = new System.Windows.Threading.DispatcherTimer();
-            openTimer.Interval = TimeSpan.FromSeconds(interval);
-            openTimer.IsEnabled = true;
-            openTimer.Tick += new EventHandler(this.close_window);
+            //Initialize the timeout timer
+            m_Timer = new System.Windows.Threading.DispatcherTimer();
+            m_Timer.Interval = TimeSpan.FromSeconds(interval);
+            m_Timer.IsEnabled = true;
+            m_Timer.Tick += Close_Window;
 
             OKButton.Focus(); // focus on OK button so user can press enter to close popup
         }
 
-        //when you are done click ok
+        //  Private Functions   ///////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Event handler for when the OK button is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //Close the window
+            Close_Window(sender, e);
         }
 
-        //auto closed after time is done
-        private void close_window(Object sender, EventArgs args)
+        /// <summary>
+        /// Event handler which closes the message window when called.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void Close_Window(Object sender, EventArgs args)
         {
-            openTimer.IsEnabled = false;
+            m_Timer.IsEnabled = false;
             this.Close();
         }
     }

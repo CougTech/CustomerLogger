@@ -4,186 +4,184 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-//TODO clean up. Make pretty. Make all text from the text box go to one string so that multiple variables don't need to be accessed, it's hard to keep track of
-//      that crap
 namespace CustomerLogger
 {
     /// <summary>
-    /// Interaction logic for SudentIDPage.xaml
+    /// Interaction logic for SudentIDPage.xaml.
+    /// The student ID page accepts a nunmeric string from the customer which is resolved to their WSU NID.
     /// </summary>
-
-    //inital page the customer sees
-    //gets their student ID number
-    //will auto place a 0 in front if it is not automatically there
-    //also we can have the card swiper attached to the comptuer so they
-    //can swipe the cougarcard and it will work as if they typed it in
-    //pretty nifty, because the card swiper just puts the number on the card
-    //as if it can from stdin
-
-    //because it is set to use the enter key to move on as well as clicking the next button,
-    //if they swipe the card it should automatically save their number and move onto the next page
-    //with out the user needing to click.
     public partial class StudentIDPage:Page
     {
+        //  Members ///////////////////////////////////////////////////////////////////////////////
 
-        private string _student_id, _quick_code;
-        private bool _isTest = false;
-        private bool _isQuickPick = false;
-        private List<string> QuickCodes = new List<string>();
         public event EventHandler PageFinished;
+
+        private bool m_bIsAdmin, m_bIsQuickPick;
+        private string m_sNid;
+
+        //  Constructors    ///////////////////////////////////////////////////////////////////////
     
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public StudentIDPage()
         {
             InitializeComponent();
-            InitializeQuickPickList();
 
-            SubmitButton.IsEnabled = false;
-            StudentNumberTextBox.Focus();
+            m_bIsAdmin = false;
+            m_bIsQuickPick = false;
+
+            SubmitButton.IsEnabled = false; //Disable submit button
+            StudentNumberTextBox.Focus();   //Focus on the textbox
         }
 
-        public string StudentID
+        //  Properties  ///////////////////////////////////////////////////////////////////////////
+
+        public string Nid
         {
-            get { return _student_id; }
+            get { return m_sNid; }
         }
 
-        public string QuickCode
+        public bool IsAdmin
         {
-            get { return _quick_code; }
+            get { return m_bIsAdmin; }
         }
 
         public bool IsQuickPick
         {
-            get { return _isQuickPick; }
+            get { return m_bIsQuickPick; }
         }
 
-        public bool isTest
+        //  Public Functions    ///////////////////////////////////////////////////////////////////
+
+        public void Reset()
         {
-            get { return _isTest; }
+            m_bIsAdmin = false;
+            m_bIsQuickPick = false;
+
+            StudentNumberTextBox.Text = "";
+
+            Set_SubmitButton_Disabled();
         }
 
-        private void InitializeQuickPickList()
+        //  Private Functions   ///////////////////////////////////////////////////////////////////
+
+        private void Set_SubmitButton_Admin()
         {
-            QuickCodes.Add("GI");
-            QuickCodes.Add("WC");
-            QuickCodes.Add("RF");
-            QuickCodes.Add("CT");
-            QuickCodes.Add("SO");
+            SubmitButton.Background = System.Windows.Media.Brushes.IndianRed;
+            SubmitButton.Content = "Admin Login";
+            SubmitButton.IsEnabled = true;
         }
 
-        //when clicked we move on to the next page
-        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        private void Set_SubmitButton_Disabled()
         {
-
-            if(SubmitButton.IsEnabled) {
-                _student_id = StudentNumberTextBox.Text;
-                // add 0 to id number if not present
-                if (_student_id.Length == 8)
-                {
-                    _student_id = "0" + _student_id;
-                }
-                PageFinished(new object(), new EventArgs()); // fire event to let main window know that submit was clicked
-            }
-
+            SubmitButton.Background = System.Windows.Media.Brushes.Gray;
+            SubmitButton.Content = "Next";
+            SubmitButton.IsEnabled = false;
         }
 
-        //grabs all text in the text box
-        //incase customer thinks they did it wrong and then
-        //wants to go back, it will highlight all of the text
-        //woot woot for usability features
+        private void Set_SubmitButton_Enabled()
+        {
+            SubmitButton.Background = System.Windows.Media.Brushes.White;
+            SubmitButton.Content = "Next";
+            SubmitButton.IsEnabled = true;
+        }
+
+        private void Set_SubmitButton_QuickPick()
+        {
+            SubmitButton.Background = System.Windows.Media.Brushes.RoyalBlue;
+            SubmitButton.Content = "Quick-Pick";
+            SubmitButton.IsEnabled = true;
+        }
+
+        /// <summary>
+        /// Event handler for when the textbox is focused.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StudentNumberTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
+            //Select all text within the textbox in order to rewrite entry
             StudentNumberTextBox.SelectAll();
         }
 
-        //when they type in the box this event will fire
-        private void StudentNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            bool correct_length;
-            bool is_num;
-
-            //Set _quick_code back to default so that it can be updated correctly
-            _quick_code = "";
-
-            //Check to see if any of the characters in the text box are lowercase
-            foreach (char c in StudentNumberTextBox.Text)
-            {
-                if (c >= 97 && c <= 122)    //If they are
-                    _quick_code += Char.ToUpper(c);    //Turn them to uppercase
-                else
-                    _quick_code += c;         //Otherwise add them to _textbox_text
-            }
-
-            foreach (string s in QuickCodes)
-            {
-                if (_quick_code == s)
-                {
-                    _isQuickPick = true;
-                    SubmitButton.IsEnabled = true;
-                    return;
-                }
-            }
-
-            _isQuickPick = false;
-            SubmitButton.IsEnabled = false;
-            
-
-            // Change maxLength to 9 if the first digit is 0
-            // Must check if the box is empty or the program will crash if backspaced
-            if (StudentNumberTextBox.Text != "" && StudentNumberTextBox.Text[0] == '0')
-            {
-                StudentNumberTextBox.MaxLength = 9;
-            }
-
-            //make sure we have a valid length, either 8 without a leading 0 or nine with a leading 0
-            if (StudentNumberTextBox.Text.Length == 8 || (StudentNumberTextBox.Text.Length == 9 && StudentNumberTextBox.Text[0] == '0'))  // length of 9 is only correct if first digit is 0
-            {
-                correct_length = true;
-            }
-            else
-            {
-                correct_length = false;
-            }
-
-            //make sure we actually have an integer as the student id number
-            //no decimals
-            //woot woot for input sanitization
-            int n;
-            is_num = int.TryParse(StudentNumberTextBox.Text, out n);
-
-            //if we have a valid id number, IE correct length and its an int
-            //then we can allow the customer to go on
-            if(is_num && correct_length)
-            {
-                SubmitButton.IsEnabled = true;
-            }
-            else
-            {
-                SubmitButton.IsEnabled = false;
-            }
-
-            // Check to see if this is a test ticket
-            if (StudentNumberTextBox.Text == "00000000")
-            {
-                SubmitButton.Background = System.Windows.Media.Brushes.Crimson;
-                SubmitButton.Content = "TEST";
-                _isTest = true;
-            }
-            else
-            {
-                SubmitButton.Background = System.Windows.Media.Brushes.White;
-                SubmitButton.Content = "Next";
-                _isTest = false;
-            }
-
-        }
-
-        //allows for enter key to be used as a click for the submit button
+        /// <summary>
+        /// Event handler for a keypress within the textbox.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StudentNumberTextBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
-            {
+            //If the user has pressed "Enter", click the submit button
+            if (e.Key == Key.Enter)
                 SubmitButton_Click(sender, e);
+        }
+
+        /// <summary>
+        /// Event handler for when the textbox text changes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void StudentNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //Call the control layer's handler for this event and read the return code
+            string sCode = Cougtech_CustomerLogger.Nid_TextChanged(StudentNumberTextBox.Text);
+
+            //Now set the functionality of the next button depending on the return code
+            switch(sCode)
+            {
+                case "WI":      //Standard walk-in ticket
+
+                    //Color the submit button white and display ""Next"
+                    m_bIsAdmin = m_bIsQuickPick = false;
+                    Set_SubmitButton_Enabled();
+                    break;
+
+                case "QP":      //Quick-pick ticket
+
+                    //Color the submit button green and display "Quick-Code"
+                    m_bIsAdmin = false;
+                    m_bIsQuickPick = true;
+                    Set_SubmitButton_QuickPick();
+                    break;
+
+                case "Admin":   //The user is accessing the admin page
+
+                    //Color the submit button crimson and display "Admin"
+                    m_bIsAdmin = true;
+                    m_bIsQuickPick = false;
+                    Set_SubmitButton_Admin();
+                    break;
+
+                default:        //No return code was given. The data within the textbox is invalid
+
+                    //Color the submit button gray and disable
+                    m_bIsAdmin = m_bIsQuickPick = false;
+                    Set_SubmitButton_Disabled();
+                    break;
             }
+        }
+
+        /// <summary>
+        /// Event handler for when the submit button is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SubmitButton.IsEnabled)
+            {
+                //Set the NID string to the textbox content
+                m_sNid = StudentNumberTextBox.Text;
+
+                //Add 0 to the front of the string if the submission is 8 digits long and a number
+                if (!m_bIsAdmin && !m_bIsQuickPick && (m_sNid.Length == 8))
+                    m_sNid = "0" + m_sNid;
+
+                //Leave this page
+                PageFinished(new object(), new EventArgs());
+            }
+
         }
     }
 }
