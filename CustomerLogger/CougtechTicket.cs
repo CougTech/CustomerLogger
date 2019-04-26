@@ -21,6 +21,7 @@ namespace CustomerLogger
             m_bIsQuickPick = bIsQuickPick;
             m_sNid = sNid;
             m_sCustomerName = sCustomerName;
+            m_sCustomerEmail = sCustomerEmail;
             m_sDescription = sDescription;
             m_sProblem = sProblem;
         }
@@ -69,7 +70,7 @@ namespace CustomerLogger
             set { m_sProblem = value; }
         }
 
-        public string SelfUrl
+        public string Self
         {
             get { return m_sSelf; }
             set { m_sSelf = value; }

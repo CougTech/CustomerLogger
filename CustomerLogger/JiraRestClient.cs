@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace Jira_REST
 {
@@ -37,9 +38,9 @@ namespace Jira_REST
             get { return m_RequestBody; }
         }
 
-        public string Response_Url
+        public string Response_Key
         {
-            get { return m_ResponseBody.self; }
+            get { return m_ResponseBody.key; }
         }
 
         //  Public Functions    ///////////////////////////////////////////////////////////////////
@@ -50,7 +51,8 @@ namespace Jira_REST
             string serializedResponse = GetReleases();
 
             //Deserialize the response body and load into the respective member
-            m_ResponseBody = (JiraRestResponseBody)JsonConvert.DeserializeObject(serializedResponse);
+            m_ResponseBody = new JavaScriptSerializer().Deserialize<JiraRestResponseBody>(serializedResponse);
+            //m_ResponseBody = (JiraRestResponseBody)JsonConvert.DeserializeObject(serializedResponse);
         }
 
         //  Private Functions   ///////////////////////////////////////////////////////////////////

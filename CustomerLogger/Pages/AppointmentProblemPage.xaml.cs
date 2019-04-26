@@ -42,8 +42,16 @@ namespace CustomerLogger.Pages
             FormatReinstall_Button.Click += RadioButton_Click;
             Bootcamp_Button.Click += RadioButton_Click;
             Software_Button.Click += RadioButton_Click;
-            Software_Button.Click += RadioButton_Click;
             Troubleshoot_Button.Click += RadioButton_Click;
+        }
+
+        public void Reset()
+        {
+            FormatReinstallBackup_Button.IsChecked = false;
+            FormatReinstall_Button.IsChecked = false;
+            Bootcamp_Button.IsChecked = false;
+            Software_Button.IsChecked = false;
+            Troubleshoot_Button.IsChecked = false;
         }
 
         //  Private Functions   ///////////////////////////////////////////////////////////////////

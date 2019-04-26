@@ -44,6 +44,8 @@ namespace CustomerLogger.Pages
         public void Reset()
         {
             CustomerName.Text = "";
+            NoRadioButton.IsChecked = false;
+            YesRadioButton.IsChecked = false;
         }
 
         /// <summary>

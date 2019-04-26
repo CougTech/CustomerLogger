@@ -23,7 +23,6 @@ namespace CustomerLogger
         //  Members ///////////////////////////////////////////////////////////////////////////////
 
         private static bool m_bTicketing_Email, m_bTicketing_Jira, m_bStartup;
-        private static string m_sLogFilePath;
 
         private static Dictionary<string, QuickCode_t> m_QuickCodes = new Dictionary<string, Cougtech_CustomerLogger.QuickCode_t>();
 
@@ -58,7 +57,6 @@ namespace CustomerLogger
             m_bTicketing_Email = false;
             m_bTicketing_Jira = false;
             m_bStartup = true;
-            m_sLogFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); //TODO create new log path
 
             //Setup quick codes
             m_QuickCodes.Add("GI", new QuickCode_t("GI", "General Information", "Customer is looking for general information."));
@@ -288,20 +286,18 @@ namespace CustomerLogger
 
             if (bSuccess)
             {
+                string sMessage;
+
                 if (m_bTicketing_Jira)
-                {
-                    string sMessage = $"Thank you!/nPlease take a seat and a technician will help you shortly./n/n{m_CustomerTicket.SelfUrl}";
-                    MessageWindow msg = new MessageWindow(sMessage, 30);
-                }
+                    sMessage = $"Thank you!\nPlease take a seat and a technician will help you shortly.\n\n{m_CustomerTicket.Self}";
                 else
-                {
-                    string sMessage = "Thank you!/nPlease take a seat and a technician will help you shortly./n/n";
-                    MessageWindow msg = new MessageWindow(sMessage, 30);
-                }
+                    sMessage = "Thank you!\nPlease take a seat and a technician will help you shortly.";
+
+                System.Windows.MessageBox.Show(sMessage);
             }
             else
             {
-                MessageWindow msg = new MessageWindow("A problem occured. Please try again.", 30);
+                System.Windows.MessageBox.Show("A problem occured. Please try again.");
             }
         }
 
@@ -387,7 +383,7 @@ namespace CustomerLogger
         /// </summary>
         private static void PopulateRestRequest()
         {
-            string sSummary;
+            string sSummary, sDescription;
 
             //Populate summary depending on the type of ticket
             if (m_CustomerTicket.IsQuickPick)
@@ -397,8 +393,12 @@ namespace CustomerLogger
             else
                 sSummary = $"CTWI : {m_CustomerTicket.Problem} : {m_CustomerTicket.Nid} : {m_CustomerTicket.CustomerName}";
 
+            sDescription = DateTime.Now.ToLongTimeString() + "\n" + CustomerTicket.Nid + "\n\n" + CustomerTicket.Problem + "\n\n" + CustomerTicket.Description +
+                            "\n\nVerify the Customer's information in the Reporter field." + "\nAssign to yourself, if not already assigned." + "\nStart work notes using Start Work." +
+                            "\nFinish with Close or Move.";
+
             //Populate the REST request body with data
-            m_RestClient.Request.Populate(sSummary, m_CustomerTicket.Description);
+            m_RestClient.Request.Populate(sSummary, sDescription);
         }
 
         /// <summary>
@@ -450,10 +450,13 @@ namespace CustomerLogger
         /// </summary>
         private static bool SubmitTicket_Email()
         {
+            string sMailFrom = "cougtech.walkin@wsu.edu" + "<" + CustomerTicket.CustomerEmail + ">";
+            string sMailTo = "cougtech.walkin@wsu.edu";
+
             //New mail object
             MailMessage msg = new MailMessage();
-            MailAddress mailFrom = new MailAddress("cougtech.walkin@wsu.edu" + "<" + CustomerTicket.CustomerEmail + ">");
-            MailAddress mailTo = new MailAddress("cougtech.walkin@wsu.edu");
+            MailAddress mailFrom = new MailAddress(sMailFrom);
+            MailAddress mailTo = new MailAddress(sMailTo);
 
             msg.To.Add(mailTo);
             msg.From = mailFrom;
@@ -511,7 +514,7 @@ namespace CustomerLogger
                 m_RestClient.PostRequest();
 
                 //Grab the returned URL and display it
-                m_CustomerTicket.SelfUrl = m_RestClient.Response_Url;
+                m_CustomerTicket.Self = m_RestClient.Response_Key;
             }
             catch (Exception e)
             {

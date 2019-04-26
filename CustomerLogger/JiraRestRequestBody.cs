@@ -39,7 +39,9 @@ namespace Jira_REST
                     key = "CTWI"
                 }
             };
-            m_Fields.components[0].name = "RestService";
+            m_Fields.components[0] = new Component() {
+                name = "RestService"
+            };
         }
     }
 

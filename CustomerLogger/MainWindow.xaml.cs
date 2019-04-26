@@ -58,7 +58,7 @@ namespace CustomerLogger
             get { return m_Appointment_Page; }
         }
 
-        public AppointmentProblemPage AppointmentProbPage
+        public AppointmentProblemPage AppointmentProblemPage
         {
             get { return m_AppointmentProblem_Page; }
         }
@@ -88,6 +88,8 @@ namespace CustomerLogger
             //Reset all pages
             StudentIDPage.Reset();
             AppointmentPage.Reset();
+            ProblemPage.Reset();
+            AppointmentProblemPage.Reset();
             SummaryPage.Reset();
 
             //Remove Windows back history
@@ -185,7 +187,8 @@ namespace CustomerLogger
         /// </summary>
         private void AdminWindow_Login()
         {
-            AdminWindow adminWindow = new AdminWindow(this);
+            AdminWindow adminWindow = new AdminWindow(this, Cougtech_CustomerLogger.Logging_En, Cougtech_CustomerLogger.Ticketing_Email_En, 
+                                                        Cougtech_CustomerLogger.Ticketing_Jira_En);
 
             if (adminWindow.Authenticate())
                 adminWindow.ShowDialog();
@@ -271,7 +274,7 @@ namespace CustomerLogger
             else if (ContentFrame.Content == AppointmentPage)               //At the appointment page
             {
                 if (Cougtech_CustomerLogger.CustomerTicket.IsAppointment)   //If the customer has an appointment
-                    ContentFrame.Navigate(AppointmentProbPage);                 //Navigate to the appointment problem page
+                    ContentFrame.Navigate(AppointmentProblemPage);                 //Navigate to the appointment problem page
                 else                                                         //Else
                     ContentFrame.Navigate(ProblemPage);                         //Navigate to the standard problem page
             }
@@ -283,7 +286,7 @@ namespace CustomerLogger
                 SummaryPage.StartTimer();
                 ContentFrame.Navigate(SummaryPage);
             }
-            else if (ContentFrame.Content == AppointmentProbPage) //At the appointment problem page
+            else if (ContentFrame.Content == AppointmentProblemPage) //At the appointment problem page
             {
                 //Populate the summary page and navigate to it
                 SummaryPage.SetText(true, Cougtech_CustomerLogger.CustomerTicket.CustomerName, Cougtech_CustomerLogger.CustomerTicket.Nid,

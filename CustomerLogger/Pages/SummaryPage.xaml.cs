@@ -65,7 +65,7 @@ namespace CustomerLogger
         public void SetText(bool bIsAppointment, string sFirstName, string nNid, string sProblem, string sDescription = "")
         {
             //Set customer first name
-            FirstName.Text = sFirstName;
+            FirstName.Text = sFirstName  + ",";
 
             //Set confirmation line based on the appointment status
             if (bIsAppointment)

@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
+using Microsoft.Win32;
 
 namespace CustomerLogger
 {
     public class TicketLogger
     {
-        private string m_sLogDirPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private string m_sLogDirPath;
 
         private CSVWriter m_CsvLogger;
 
@@ -19,6 +20,16 @@ namespace CustomerLogger
 
         public TicketLogger()
         {
+            RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\CustomerLogger");
+
+            if(reg.GetValue("Log_Directory") == null)
+            {
+                //Create the default log path and store it within the registry
+                m_sLogDirPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Cougtech_Customer_Logs\\";
+                reg.SetValue("Log_Directory", m_sLogDirPath);
+            }
+            else
+                m_sLogDirPath = reg.GetValue("Log_Directory").ToString();
         }
 
         //  Public Functions    ///////////////////////////////////////////////////////////////////
@@ -61,7 +72,7 @@ namespace CustomerLogger
                 if (mode == FileMode.Create)
                 {
                     int i = 0;
-                    string sLogName = m_sLogDirPath + "\\Cougtech_Customer_Logs\\" + sFileName + ".csv";
+                    string sLogName = m_sLogDirPath + sFileName + ".csv";
 
                     //This loop guarantees that it will not overwrite the file, but instead append a number to the end and create a new file
                     while (File.Exists(sLogName))
@@ -124,7 +135,7 @@ namespace CustomerLogger
             else                                        //Else
                 m_CsvLogger.AddToCurrent("WI");             //Set the type to "WI" for walk-in
 
-            m_CsvLogger.AddToCurrent(customerTicket.SelfUrl);           //2nd column is the url to the ticket within Jira
+            m_CsvLogger.AddToCurrent(customerTicket.Self);              //2nd column is the url to the ticket within Jira
             m_CsvLogger.AddToCurrent(customerTicket.Nid);               //3rd column is the NID of the student
             m_CsvLogger.AddToCurrent(customerTicket.Problem);           //4th column is the walk-in problem
             m_CsvLogger.AddToCurrent(customerTicket.Description);       //5th column is the problem description

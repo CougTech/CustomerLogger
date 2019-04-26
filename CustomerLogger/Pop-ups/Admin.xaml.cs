@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -18,23 +19,38 @@ namespace CustomerLogger
           
         //  Constructors    ///////////////////////////////////////////////////////////////////////
 
-        public AdminWindow(MainWindow window)
+        public AdminWindow(MainWindow window, bool? bLogging_En, bool? bTicketing_Email_En, bool? bTicketing_Jira_En)
         {
             InitializeComponent();
+
             m_MainWindow = window;
 
-            RegistryKey reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\CustomerLogger");
+            Logging_En = bLogging_En;
+            TicketSubmission_Email_En = bTicketing_Email_En;
+            TicketSubmission_Jira_En = bTicketing_Jira_En;
+
+            RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\CustomerLogger");
 
             LogDirectory_textBox.Text = reg.GetValue("Log_Directory").ToString();
 
             this.Activate();
         }
 
+        //  Properties  ///////////////////////////////////////////////////////////////////////////
+
+        private bool? Logging_En { get; set; }
+        private bool? TicketSubmission_Email_En { get; set; }
+        private bool? TicketSubmission_Jira_En { get; set; }
+
+        //  Public Functions    ///////////////////////////////////////////////////////////////////
+
         public bool Authenticate()
         {
-            RegistryKey reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\CustomerLogger");
+            RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\CustomerLogger");
 
-            string sStoredPassword = reg.GetValue("AdminPassword").ToString();
+            string sStoredPassword = reg.GetValue("Admin_Password").ToString();
+            sStoredPassword = Regex.Unescape(sStoredPassword);
+
             PasswordWindow passwordWindow = new PasswordWindow();
             passwordWindow.ShowDialog();
 
@@ -57,7 +73,7 @@ namespace CustomerLogger
         /// <param name="e"></param>
         private void TicketSubmission_Email_En_Check_Checked(object sender, RoutedEventArgs e)
         {
-            TicketSubmission_Email_En_Check.IsChecked = Cougtech_CustomerLogger.TicketSubmission_Email_Checked();
+            TicketSubmission_Email_En = Cougtech_CustomerLogger.TicketSubmission_Email_Checked();
         }
 
         /// <summary>
@@ -67,7 +83,7 @@ namespace CustomerLogger
         /// <param name="e"></param>
         private void TicketSubmission_Rest_En_Check_Checked(object sender, RoutedEventArgs e)
         {
-            TicketSubmission_Rest_En_Check.IsChecked = Cougtech_CustomerLogger.TicketSubmission_Jira_Checked();
+            TicketSubmission_Email_En = Cougtech_CustomerLogger.TicketSubmission_Jira_Checked();
         }
 
         /// <summary>
@@ -77,7 +93,7 @@ namespace CustomerLogger
         /// <param name="e"></param>
         private void TicketLogging_En_Check_Checked(object sender, RoutedEventArgs e)
         {
-            TicketLogging_En_Check.IsChecked = Cougtech_CustomerLogger.TicketLogging_Checked();
+            TicketSubmission_Email_En = Cougtech_CustomerLogger.TicketLogging_Checked();
         }
 
         /// <summary>
@@ -111,7 +127,7 @@ namespace CustomerLogger
             if (NewPassword_TextBox.Text != "")
             {
                 //Open the registry for this program
-                RegistryKey reg = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\CustomerLogger");
+                RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\CustomerLogger");
 
                 //Hash the text within the password textbox
                 byte[] data = System.Text.Encoding.ASCII.GetBytes(NewPassword_TextBox.Text);

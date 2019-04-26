@@ -12,7 +12,7 @@
 
     <Grid KeyUp="Grid_KeyUp" Height="688" VerticalAlignment="Top">
         <Button x:Name="SubmitButton"  Content="Next" HorizontalAlignment="Right" Margin="0,0,30,29" VerticalAlignment="Bottom" Width="160" Height="85" Click="SubmitButton_Click" FontSize="26.667"/>
-        <TextBox x:Name="DescriptionTextBox" Margin="325,450,322,158" TextWrapping="Wrap" Text="Briefly describe your problem." FontSize="21.333" SelectionBrush="#FF5AADFF" KeyDown="DescriptionTextBox_KeyDown" PreviewKeyDown="DescriptionTextBox_PreviewKeyDown" RenderTransformOrigin="0.506,1" TextChanged="DescriptionTextBox_TextChanged"/>
+        <TextBox x:Name="DescriptionTextBox" Margin="325,450,322,158" TextWrapping="Wrap" Text="Briefly describe your problem." FontSize="21.333" SelectionBrush="#FF5AADFF" KeyDown="DescriptionTextBox_KeyDown" PreviewKeyDown="DescriptionTextBox_PreviewKeyDown" TextChanged="DescriptionTextBox_TextChanged"/>
         <Label x:Name="requiredLabel" Content="*" HorizontalContentAlignment="Right" Margin="290,425,876,193" FontSize="42.667" Background="#00000000" Foreground="Red" RenderTransformOrigin="0.506,-2.699"/>
         <Grid Margin="55,80,30,109">
             <RadioButton x:Name="HardwareButton" Content="Hardware" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="50,60,0,0" VerticalAlignment="Top" FontSize="28" Width="511" FontFamily="Segoe UI Semibold"/>

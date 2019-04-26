@@ -24,6 +24,7 @@ namespace CustomerLogger
         /// </summary>
         public ProblemPage()
         {
+
             InitializeComponent();
 
             //Set initial page data
@@ -40,6 +41,19 @@ namespace CustomerLogger
             PasswordButton.Click += RadioButton_Click_TextboxFocus;
             virusRadioButton.Click += RadioButton_Click_TextboxFocus;
             HealthCheckButton.Click += RadioButton_Click_NoTextboxFocus;
+        }
+
+        public void Reset()
+        {
+            HardwareButton.IsChecked = false;
+            SoftwareButton.IsChecked = false;
+            WirelessButton.IsChecked = false;
+            EmailButton.IsChecked = false;
+            PasswordButton.IsChecked = false;
+            virusRadioButton.IsChecked = false;
+            HealthCheckButton.IsChecked = false;
+
+            DescriptionTextBox.Text = m_sDefaultTextBox;
         }
 
         //  Private Functions   ///////////////////////////////////////////////////////////////////
