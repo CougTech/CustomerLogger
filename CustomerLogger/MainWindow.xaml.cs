@@ -23,6 +23,7 @@ namespace CustomerLogger
     {
         //  Members ///////////////////////////////////////////////////////////////////////////////
 
+        private AdminWindow m_AdminWindow;                          //Admin window
         private AppointmentPage m_Appointment_Page;                 //Appointment check-in
         private AppointmentProblemPage m_AppointmentProblem_Page;   //Appointment type
         private StudentIDPage m_StudentId_Page;                     //Student ID sign-in page
@@ -53,6 +54,11 @@ namespace CustomerLogger
 
         //  Properties  ///////////////////////////////////////////////////////////////////////////
 
+        public AdminWindow Admin
+        {
+            get { return m_AdminWindow; }
+        }
+        
         public AppointmentPage AppointmentPage
         {
             get { return m_Appointment_Page; }
@@ -187,11 +193,8 @@ namespace CustomerLogger
         /// </summary>
         private void AdminWindow_Login()
         {
-            AdminWindow adminWindow = new AdminWindow(this, Cougtech_CustomerLogger.Logging_En, Cougtech_CustomerLogger.Ticketing_Email_En, 
-                                                        Cougtech_CustomerLogger.Ticketing_Jira_En);
-
-            if (adminWindow.Authenticate())
-                adminWindow.ShowDialog();
+            if (Admin.Authenticate())
+                Admin.ShowDialog();
         }
 
         /// <summary>
@@ -235,6 +238,8 @@ namespace CustomerLogger
 
             m_WiSummaryPage = new SummaryPage();
             m_WiSummaryPage.PageFinished += PageFinished;
+
+            m_AdminWindow = new AdminWindow(this);
         }
 
         /// <summary>

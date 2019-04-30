@@ -19,28 +19,24 @@ namespace CustomerLogger
           
         //  Constructors    ///////////////////////////////////////////////////////////////////////
 
-        public AdminWindow(MainWindow window, bool? bLogging_En, bool? bTicketing_Email_En, bool? bTicketing_Jira_En)
+        public AdminWindow(MainWindow window)
         {
             InitializeComponent();
 
             m_MainWindow = window;
 
-            Logging_En = bLogging_En;
-            TicketSubmission_Email_En = bTicketing_Email_En;
-            TicketSubmission_Jira_En = bTicketing_Jira_En;
-
             RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\CustomerLogger");
 
-            LogDirectory_textBox.Text = reg.GetValue("Log_Directory").ToString();
+            LogDirectory_textBox.Text = Cougtech_CustomerLogger.Logging_Directory;
 
             this.Activate();
         }
 
         //  Properties  ///////////////////////////////////////////////////////////////////////////
 
-        private bool? Logging_En { get; set; }
-        private bool? TicketSubmission_Email_En { get; set; }
-        private bool? TicketSubmission_Jira_En { get; set; }
+        public bool? Logging_En { get; set; }
+        public bool TicketSubmission_Email_En { get; set; }
+        public bool TicketSubmission_Rest_En { get; set; }
 
         //  Public Functions    ///////////////////////////////////////////////////////////////////
 
@@ -48,7 +44,7 @@ namespace CustomerLogger
         {
             RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\CustomerLogger");
 
-            string sStoredPassword = reg.GetValue("Admin_Password").ToString();
+            string sStoredPassword = Cougtech_CustomerLogger.Admin_Password_Hashed;
             sStoredPassword = Regex.Unescape(sStoredPassword);
 
             PasswordWindow passwordWindow = new PasswordWindow();
@@ -66,12 +62,17 @@ namespace CustomerLogger
 
         //  Private Functions   ///////////////////////////////////////////////////////////////////
 
+        private void LogDirectory_Button_Clicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TicketSubmission_Email_En_Check_Checked(object sender, RoutedEventArgs e)
+        private void TicketSubmission_Email_En_Check_Clicked(object sender, RoutedEventArgs e)
         {
             TicketSubmission_Email_En = Cougtech_CustomerLogger.TicketSubmission_Email_Checked();
         }
@@ -81,9 +82,9 @@ namespace CustomerLogger
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TicketSubmission_Rest_En_Check_Checked(object sender, RoutedEventArgs e)
+        private void TicketSubmission_Rest_En_Check_Clicked(object sender, RoutedEventArgs e)
         {
-            TicketSubmission_Email_En = Cougtech_CustomerLogger.TicketSubmission_Jira_Checked();
+            TicketSubmission_Rest_En = Cougtech_CustomerLogger.TicketSubmission_Jira_Checked();
         }
 
         /// <summary>
@@ -91,9 +92,9 @@ namespace CustomerLogger
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TicketLogging_En_Check_Checked(object sender, RoutedEventArgs e)
+        private void TicketLogging_En_Check_Clicked(object sender, RoutedEventArgs e)
         {
-            TicketSubmission_Email_En = Cougtech_CustomerLogger.TicketLogging_Checked();
+            Logging_En = Cougtech_CustomerLogger.TicketLogging_Checked();
         }
 
         /// <summary>
@@ -114,12 +115,7 @@ namespace CustomerLogger
         /// <param name="e"></param>
         private void Close_Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
-        }
-
-        private void LogDirectory_Button_Click(object sender, RoutedEventArgs e)
-        {
-
+            this.Hide();
         }
 
         private void NewPassword_Button_Click(object sender, RoutedEventArgs e)

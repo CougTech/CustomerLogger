@@ -63,6 +63,7 @@
     </ApplicationDefinition>
     <Compile Include="CougtechTicket.cs" />
     <Compile Include="CustomerLogger.cs" />
+    <Compile Include="CustomerLogger_RegistryData.cs" />
     <Compile Include="JiraRestRequestBody.cs" />
     <Compile Include="JiraRestClient.cs" />
     <Compile Include="JiraRestResponseBody.cs" />

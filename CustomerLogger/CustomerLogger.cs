@@ -1,4 +1,5 @@
 ﻿using CSV;
+using CustomerLogger.RegistryData;
 using Jira_REST;
 using System;
 using System.Collections.Generic;
@@ -78,6 +79,12 @@ namespace CustomerLogger
 
         //  Properties  ///////////////////////////////////////////////////////////////////////////
 
+        public static string Admin_Password_Hashed
+        {
+            get { return CustomerLogger_RegistryData.Admin_Password_Hashed; }
+            set { CustomerLogger_RegistryData.Admin_Password_Hashed = value; }
+        }
+        
         public static CougtechTicket CustomerTicket
         {
             get { return m_CustomerTicket; }
@@ -86,6 +93,12 @@ namespace CustomerLogger
         public static bool Logging_En
         {
             get { return m_TicketLogger.IsEnabled(); }
+        }
+
+        public static string Logging_Directory
+        {
+            get { return CustomerLogger_RegistryData.Logging_Directory; }
+            set { CustomerLogger_RegistryData.Logging_Directory = value; }
         }
 
         public static bool Ticketing_Email_En
@@ -161,41 +174,10 @@ namespace CustomerLogger
         /// </summary>
         public static bool TicketLogging_Checked()
         {
-            //Check to see if logging is enabled
             if (!Logging_En)
             {
-                System.Windows.MessageBox.Show("Select a csv file to log to.", "Notice");
-
-                OpenFileDialog fd = new OpenFileDialog {
-                    Multiselect = false,
-                    Filter = "CSV Files (*.csv)|*.csv"
-                };
-
-                DialogResult result = fd.ShowDialog();
-
-                if (result == System.Windows.Forms.DialogResult.OK)                 //If the user entered a log file to open
-                {
-                    m_TicketLogger.GenerateLogFile(fd.FileName, FileMode.Append);        //Generate log file with the provided path
-                    return true;
-                }
-                else                                                                //Else
-                {
-                    //Inform the user that no file was selected
-                    //Create a new log file in the default directory
-                    var create = System.Windows.MessageBox.Show("No file selected. Create a new log?", "No Log File Selected", MessageBoxButton.YesNo);
-
-                    if (create == MessageBoxResult.Yes)
-                    {
-                        StartLog(FileMode.Create);
-                        return true;
-                    }
-                    else
-                    {
-                        System.Windows.MessageBox.Show("No file selected or created./nLogging has been disabled.", "Notice");
-                        m_TicketLogger.CloseLog();
-                        return false;
-                    }
-                }
+                StartLog();
+                return true;
             }
             else
             {
@@ -299,6 +281,8 @@ namespace CustomerLogger
             {
                 System.Windows.MessageBox.Show("A problem occured. Please try again.");
             }
+
+            m_TicketLogger.LogTicket(m_CustomerTicket);
         }
 
         //  Private Functions   ///////////////////////////////////////////////////////////////////
@@ -320,7 +304,7 @@ namespace CustomerLogger
                     m_TicketLogger.CloseLog();  //Close logger file
 
                     //Display goodnight message if it is a weekday
-                    MessageWindow mw = new MessageWindow("Good Night!/nLog file has been closed for " + DateTime.Now.ToString("MM/dd/yyyy"), 5.0);
+                    MessageWindow mw = new MessageWindow("Good Night!\nLog file has been closed for " + DateTime.Now.ToString("MM/dd/yyyy"), 5.0);
                     mw.Show();
                 }
             }
@@ -350,10 +334,10 @@ namespace CustomerLogger
                 if ((DateTime.Today.DayOfWeek != DayOfWeek.Saturday) && (DateTime.Today.DayOfWeek != DayOfWeek.Sunday))
                 {
                     //Begin logging for the day
-                    StartLog(FileMode.Create);
+                    StartLog();
 
                     //Display good morning message
-                    MessageWindow mw = new MessageWindow("Good Morning!/nLog file has been created for " + DateTime.Now.ToString("MM/dd/yyyy"), 5.0);
+                    MessageWindow mw = new MessageWindow("Good Morning!\nLog file has been created for " + DateTime.Now.ToString("MM/dd/yyyy"), 5.0);
                     mw.Show();
                 }
             }
@@ -423,7 +407,7 @@ namespace CustomerLogger
         /// 
         /// </summary>
         /// <param name="mode"></param>
-        private static void StartLog(FileMode mode)
+        private static bool StartLog()
         {
             string sWeekOf;
 
@@ -442,7 +426,7 @@ namespace CustomerLogger
             }
 
             //Create log file for today
-            m_TicketLogger.GenerateLogFile(sWeekOf + "//" + DateTime.Now.ToString("MM-dd-yyyy"), mode);
+            return m_TicketLogger.Generate_LogFile(sWeekOf, DateTime.Now.ToString("MM-dd-yyyy"));
         }
 
         /// <summary>
