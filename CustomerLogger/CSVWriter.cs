@@ -1,26 +1,4 @@
-﻿/*
- * Ryan Huard
- * v 1.0.0
- * 
- * Edited by Jensen Reitz
- * 3/20/2019
- * 
- * Usage:
- * CSVWriter w = new CSVWriter(file_name.csv)
- * Add to line
- *      w.addToCurrent("some string") will add "some string" at the end of the line as a new cell
- *      w.addToStart("some string") will add "some string" at the front of the line in a new cell
- * Write Line to File
- *      w.WriteLine() will open the CSV file, write the line to the file, then close it again
-*/
-
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+﻿using System.IO;
 
 namespace CSV 
 {

@@ -1,17 +1,7 @@
-﻿using System;
-using System.Text;
+﻿using CustomerLogger.Pages;
+using System;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Navigation;
-using System.IO;
-using System.Xml;
-using System.Net.Mail;
-using System.Net;
-using System.ComponentModel;
-
-using CSV;
-using Jira_REST;
-using CustomerLogger.Pages;
 
 namespace CustomerLogger
 {
