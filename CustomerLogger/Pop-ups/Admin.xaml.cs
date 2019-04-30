@@ -25,9 +25,10 @@ namespace CustomerLogger
 
             m_MainWindow = window;
 
-            RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\CustomerLogger");
-
-            LogDirectory_textBox.Text = Cougtech_CustomerLogger.Logging_Directory;
+            if(Cougtech_CustomerLogger.Logging_Directory != null)
+                LogDirectory_textBox.Text = Cougtech_CustomerLogger.Logging_Directory;
+            else
+                LogDirectory_textBox.Text = Cougtech_CustomerLogger.Logging_Directory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Cougtech_Customer_Logs";
 
             this.Activate();
         }

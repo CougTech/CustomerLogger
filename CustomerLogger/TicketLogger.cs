@@ -58,9 +58,6 @@ namespace CustomerLogger
             //Load in information on the logging directory
             string sLogDir = Cougtech_CustomerLogger.Logging_Directory;
 
-            //if ((sLogDir == null) || (sLogDir == ""))
-                //sLogDir = Cougtech_CustomerLogger.Logging_Directory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
             string sLogDir_Full = Cougtech_CustomerLogger.Logging_Directory + "\\" + sSubDir;
             DirectoryInfo logDir;
 
@@ -97,7 +94,7 @@ namespace CustomerLogger
             m_CsvLogger.AddToCurrent(DateTime.Now.ToString("MM-dd-yyyy"));
             m_CsvLogger.WriteLine();
 
-            if (i != 0)
+            if (i > 1)
             {
                 m_CsvLogger.AddToCurrent($"This is log number {i} for this date.");
                 m_CsvLogger.WriteLine();
@@ -111,7 +108,7 @@ namespace CustomerLogger
             //Now the column headers
             m_CsvLogger.AddToCurrent("Time");
             m_CsvLogger.AddToCurrent("Type");
-            m_CsvLogger.AddToCurrent("URL");
+            m_CsvLogger.AddToCurrent("Key");
             m_CsvLogger.AddToCurrent("ID Number");
             m_CsvLogger.AddToCurrent("Problem");
             m_CsvLogger.AddToCurrent("Description");
