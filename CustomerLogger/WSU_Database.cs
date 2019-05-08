@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Xml;
+using CustomerLogger;
 
 namespace WSU_Database
 {
     public class Wsu_Database
     {
-        //  Members ///////////////////////////////////////////////////////////////////////////////
-
-        private const string m_sIdLookupUrl = "https://itsforms.wsu.edu/cougtech/Look.aspx?idn=";
-
         //  Public Functions    ///////////////////////////////////////////////////////////////////
 
         /// <summary>
@@ -22,21 +19,29 @@ namespace WSU_Database
         public static string Get_FirstName(string sNid)
         {
             string sResult = null;
-            string sURLString = m_sIdLookupUrl + sNid;
+            string sURLString = Cougtech_CustomerLogger.Wsu_Database_Url + sNid;
 
             XmlTextReader xReader = new XmlTextReader(sURLString);
 
-            while (xReader.Read())
+            try
             {
-                if (xReader.NodeType == XmlNodeType.Element)
+                while (xReader.Read())
                 {
-                    if (xReader.Name == "FirstName")
+                    if (xReader.NodeType == XmlNodeType.Element)
                     {
-                        xReader.Read();
-                        sResult = xReader.Value;
-                        return sResult;
+                        if (xReader.Name == "FirstName")
+                        {
+                            xReader.Read();
+                            sResult = xReader.Value;
+                            return sResult;
+                        }
                     }
                 }
+            }
+            catch
+            {
+                //Reading from the database failed. Make sure to return null
+                return null;
             }
 
             return sResult;
@@ -52,42 +57,50 @@ namespace WSU_Database
         /// <returns>User's email address if the NID exists within the database. "cougtech@wsu.edu" if not.</returns>
         public static string Get_WsuEmail(string sNid)
         {
-            string sURLString = m_sIdLookupUrl + sNid;
+            string sURLString = Cougtech_CustomerLogger.Wsu_Database_Url + sNid;
 
             //Read the response from the URL
             XmlTextReader xReader = new XmlTextReader(sURLString);
 
-            while (xReader.Read())
+            try
             {
-                switch (xReader.NodeType)
+                while (xReader.Read())
                 {
-                    case XmlNodeType.Element:   //The response is an element.
+                    switch (xReader.NodeType)
+                    {
+                        case XmlNodeType.Element:   //The response is an element.
 
-                        Console.Write("<" + xReader.Name);
+                            Console.Write("<" + xReader.Name);
 
-                        //Run through all attributes
-                        while (xReader.MoveToNextAttribute())
-                            Console.Write(" " + xReader.Name + "='" + xReader.Value + "'");
+                            //Run through all attributes
+                            while (xReader.MoveToNextAttribute())
+                                Console.Write(" " + xReader.Name + "='" + xReader.Value + "'");
 
-                        Console.Write(">");
-                        Console.WriteLine(">");
-                        break;
+                            Console.Write(">");
+                            Console.WriteLine(">");
+                            break;
 
-                    case XmlNodeType.Text:  //The response is a string
+                        case XmlNodeType.Text:  //The response is a string
 
-                        string sTemp = xReader.Value;
-                        Console.WriteLine(sTemp);
-                        if (sTemp.Contains("@"))   //If the string is an email
-                            return sTemp;           //Return the string
+                            string sTemp = xReader.Value;
+                            Console.WriteLine(sTemp);
+                            if (sTemp.Contains("@"))   //If the string is an email
+                                return sTemp;           //Return the string
 
-                        break;
+                            break;
 
-                    case XmlNodeType.EndElement:    //The response is the end of the element
+                        case XmlNodeType.EndElement:    //The response is the end of the element
 
-                        Console.Write("</" + xReader.Name);
-                        Console.WriteLine(">");
-                        break;
+                            Console.Write("</" + xReader.Name);
+                            Console.WriteLine(">");
+                            break;
+                    }
                 }
+            }
+            catch
+            {
+                //Reading from the database failed. Make sure to return null;
+                return null;
             }
 
             return "cougtech@wsu.edu";

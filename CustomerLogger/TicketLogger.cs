@@ -73,8 +73,11 @@ namespace CustomerLogger.Logging
             //Increment the number appended to the file name if that copy already exists
             foreach (FileInfo f in csvFiles)
             {
-                if (sFileName == f.Name)
-                    sFileName += i++;
+                if ((sFileName + ".csv") == f.Name)
+                {
+                    sFileName += $" (i)";
+                    i++;
+                }
             }
 
             string sLogPath = sLogDir_Full + "\\" + sFileName + ".csv";

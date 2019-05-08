@@ -40,6 +40,21 @@ namespace CustomerLogger.RegistryData
             }
         }
 
+        public static string Wsu_DataBase_Url
+        {
+            get {
+                object regValue;
+                if ((regValue = Key.GetValue("WSU_Database_Url")) != null)
+                    return regValue.ToString();
+                else
+                    return null;
+            }
+
+            set {
+                Key.SetValue("WSU_Database_Url", value, RegistryValueKind.String);
+            }
+        }
+
         private static RegistryKey Key
         {
             get { return Registry.CurrentUser.CreateSubKey(@"SOFTWARE\CustomerLogger"); }

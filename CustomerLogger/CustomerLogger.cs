@@ -104,13 +104,19 @@ namespace CustomerLogger
             set { m_bTicketing_Jira = value; }
         }
 
+        public static string Wsu_Database_Url
+        {
+            get { return CustomerLogger_RegistryData.Wsu_DataBase_Url; }
+            set { CustomerLogger_RegistryData.Wsu_DataBase_Url = value; }
+        }
+
         //  Public Functions    ///////////////////////////////////////////////////////////////////
 
         /// <summary>
         /// Creates a new instance of customerTicket for use with a new customer.
         /// </summary>
         /// <param name="sNid">WSU NID of the customer.</param>
-        public static void CreateCustomerTicket(string sNid)
+        public static bool CreateCustomerTicket(string sNid)
         {
             int n;
 
@@ -120,6 +126,9 @@ namespace CustomerLogger
                 string sFirstname = Wsu_Database.Get_FirstName(sNid);
                 string sWsuEmail = Wsu_Database.Get_WsuEmail(sNid);
 
+                if ((sFirstname == null) || (sWsuEmail == null))
+                    return false;
+
                 m_CustomerTicket = new CougtechTicket(sNid, sFirstname, sWsuEmail);
             }
             else
@@ -127,7 +136,8 @@ namespace CustomerLogger
                                                         m_QuickCodes[sNid].f_sDescription, false, true);
 
             //Turn off startup boolean
-            m_bStartup = false;                
+            m_bStartup = false;
+            return true;
         }
 
         /// <summary>
@@ -373,7 +383,7 @@ namespace CustomerLogger
                             "\nFinish with Close or Move.";
 
             //Populate the REST request body with data
-            m_RestClient.Request.Populate(sSummary, sDescription);
+            m_RestClient.Request.Populate(sSummary, sDescription, m_CustomerTicket.CustomerEmail);
         }
 
         /// <summary>

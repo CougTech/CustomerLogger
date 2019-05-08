@@ -19,11 +19,11 @@
 
         //  Public Functions    ///////////////////////////////////////////////////////////////////
 
-        public void Populate(string sSummary, string m_sDescription)
+        public void Populate(string sSummary, string sDescription, string sEmailAddress)
         {
             m_Fields = new Fields {
                 summary = sSummary,
-                description = m_sDescription,
+                description = sDescription,
                 issuetype = new Issuetype() 
                 {
                     name = "IT Help"
@@ -31,6 +31,10 @@
                 project = new Project 
                 {
                     key = "CTWI"
+                },
+                reporter = new Reporter()
+                {
+                    emailAddress = sEmailAddress
                 }
             };
             m_Fields.components[0] = new Component() {
@@ -50,6 +54,8 @@
 
         private Issuetype m_IssueType;
         private Project m_Project;
+        private Reporter m_Reporter;
+
         private Component[] m_Components = new Component[1];
 
         //  Properties  ///////////////////////////////////////////////////////////////////////////
@@ -81,24 +87,31 @@
         public Component[] components
         {
             get { return m_Components; }
+            set { m_Components = value; }
+        }
+
+        public Reporter reporter
+        {
+            get { return m_Reporter; }
+            set { m_Reporter = value; }
         }
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public class Project
+    public class Component
     {
         //  Public Members  ///////////////////////////////////////////////////////////////////////
 
-        private string m_sKey;
+        private string m_sName;
 
         //  Properties  ///////////////////////////////////////////////////////////////////////////
 
-        public string key
+        public string name
         {
-            get { return m_sKey; }
-            set { m_sKey = value; }
+            get { return m_sName; }
+            set { m_sName = value; }
         }
     }
 
@@ -123,19 +136,33 @@
     /// <summary>
     /// 
     /// </summary>
-    public class Component
+    public class Project
     {
         //  Public Members  ///////////////////////////////////////////////////////////////////////
 
-        private string m_sName;
+        private string m_sKey;
 
         //  Properties  ///////////////////////////////////////////////////////////////////////////
 
-        public string name
+        public string key
         {
-            get { return m_sName; }
-            set { m_sName = value; }
+            get { return m_sKey; }
+            set { m_sKey = value; }
         }
     }
 
+    public class Reporter
+    {
+        //  Public Members  ///////////////////////////////////////////////////////////////////////
+
+        private string m_sEmailAddress;
+
+        //  Properties  ///////////////////////////////////////////////////////////////////////////
+
+        public string emailAddress
+        {
+            get { return m_sEmailAddress; }
+            set { m_sEmailAddress = value; }
+        }
+    }
 }

@@ -178,21 +178,26 @@ namespace CustomerLogger
                 else
                 {
                     //Create new ticket for new customer
-                    Cougtech_CustomerLogger.CreateCustomerTicket(StudentIDPage.Nid);
+                    bool bTicketSuccess = Cougtech_CustomerLogger.CreateCustomerTicket(StudentIDPage.Nid);
 
-                    if (StudentIDPage.IsQuickPick)         //Else if the issue is a quick-pick
+                    if (bTicketSuccess)
                     {
-                        //Populate the summary page and navigate to it
-                        SummaryPage.SetText(false, Cougtech_CustomerLogger.CustomerTicket.CustomerName, Cougtech_CustomerLogger.CustomerTicket.Nid,
-                                            Cougtech_CustomerLogger.CustomerTicket.Problem, Cougtech_CustomerLogger.CustomerTicket.Description);
-                        ContentFrame.Navigate(SummaryPage);
-                        SummaryPage.StartTimer();           //Start summary page timer
+                        if (StudentIDPage.IsQuickPick)         //Else if the issue is a quick-pick
+                        {
+                            //Populate the summary page and navigate to it
+                            SummaryPage.SetText(false, Cougtech_CustomerLogger.CustomerTicket.CustomerName, Cougtech_CustomerLogger.CustomerTicket.Nid,
+                                                Cougtech_CustomerLogger.CustomerTicket.Problem, Cougtech_CustomerLogger.CustomerTicket.Description);
+                            ContentFrame.Navigate(SummaryPage);
+                            SummaryPage.StartTimer();           //Start summary page timer
+                        }
+                        else                                        //Else
+                        {
+                            AppointmentPage.Set_text(Cougtech_CustomerLogger.CustomerTicket.CustomerName);
+                            ContentFrame.Navigate(AppointmentPage);     //Navigate to the the appointment page
+                        }
                     }
-                    else                                        //Else
-                    {
-                        AppointmentPage.Set_text(Cougtech_CustomerLogger.CustomerTicket.CustomerName);
-                        ContentFrame.Navigate(AppointmentPage);     //Navigate to the the appointment page
-                    }
+                    else
+                        MessageBox.Show("Error accessing the WSU database for ticket information.\nPlease check the database URL within the admin window.", "Database Error");
                 }
             }
             else if (ContentFrame.Content == AppointmentPage)               //At the appointment page
