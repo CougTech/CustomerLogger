@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Forms;
 
-namespace CustomerLogger
+namespace CustomerLogger.Popup
 {
     /// <summary>
     /// Interaction logic for Admin.xaml

@@ -1,4 +1,5 @@
 ﻿using CustomerLogger.Logging;
+using CustomerLogger.Popup;
 using CustomerLogger.RegistryData;
 using Jira_REST;
 using System;
@@ -6,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
 using System.Text;
-using WSU_Database;
+using WSU_SOAP_Client;
 
 namespace CustomerLogger
 {
@@ -123,8 +124,8 @@ namespace CustomerLogger
             if (int.TryParse(sNid, out n)) //If the NID string contains a number
             {
                 //Create a normal ticket for walk-in customer
-                string sFirstname = Wsu_Database.Get_FirstName(sNid);
-                string sWsuEmail = Wsu_Database.Get_WsuEmail(sNid);
+                string sFirstname = Wsu_Soap_Client.Get_FirstName(sNid);
+                string sWsuEmail = Wsu_Soap_Client.Get_WsuEmail(sNid);
 
                 if ((sFirstname == null) || (sWsuEmail == null))
                     return false;

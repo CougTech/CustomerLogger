@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.IO;
+﻿using System.IO;
 using System.Net;
 using System.Web.Script.Serialization;
 
@@ -63,7 +62,7 @@ namespace Jira_REST
             //Serialize the JSON request body and enter into the client request stream
             using (StreamWriter requestWriter = new StreamWriter(requestClient.GetRequestStream(), System.Text.Encoding.ASCII))
             {
-                string serializedRequest = JsonConvert.SerializeObject(m_RequestBody);  //Serialize request body
+                string serializedRequest = new JavaScriptSerializer().Serialize(m_RequestBody);
                 requestWriter.Write(serializedRequest);                                 //Write serialized body to the request stream
                 requestWriter.Flush();                                                  //Flush the request stream
                 requestWriter.Close();                                                  //Close the request stream

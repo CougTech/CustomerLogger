@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace CustomerLogger
+namespace CustomerLogger.Popup
 {
     /// <summary>
     /// Interaction logic for MessageWindow.xaml

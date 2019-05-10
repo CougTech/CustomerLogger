@@ -2,9 +2,9 @@
 using System.Xml;
 using CustomerLogger;
 
-namespace WSU_Database
+namespace WSU_SOAP_Client
 {
-    public class Wsu_Database
+    public class Wsu_Soap_Client
     {
         //  Public Functions    ///////////////////////////////////////////////////////////////////
 

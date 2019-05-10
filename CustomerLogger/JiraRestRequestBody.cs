@@ -19,6 +19,12 @@
 
         //  Public Functions    ///////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// Populates the REST request body with new ticket information.
+        /// </summary>
+        /// <param name="sSummary">Summary for the ticket.</param>
+        /// <param name="sDescription">Description of the ticket.</param>
+        /// <param name="sEmailAddress">Email address of the ticket reporter</param>
         public void Populate(string sSummary, string sDescription, string sEmailAddress)
         {
             m_Fields = new Fields {
@@ -155,7 +161,7 @@
     {
         //  Public Members  ///////////////////////////////////////////////////////////////////////
 
-        private string m_sEmailAddress;
+        private string m_sEmailAddress, m_sName;
 
         //  Properties  ///////////////////////////////////////////////////////////////////////////
 
@@ -163,6 +169,12 @@
         {
             get { return m_sEmailAddress; }
             set { m_sEmailAddress = value; }
+        }
+
+        public string name
+        {
+            get { return m_sName; }
+            set { m_sName = value; }
         }
     }
 }

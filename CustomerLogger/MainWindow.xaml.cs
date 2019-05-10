@@ -1,4 +1,5 @@
 ﻿using CustomerLogger.Pages;
+using CustomerLogger.Popup;
 using System;
 using System.Windows;
 using System.Windows.Navigation;

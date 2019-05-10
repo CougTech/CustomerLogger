@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace CustomerLogger
+namespace CustomerLogger.Popup
 {
     /// <summary>
     /// Interaction logic for PasswordWindow.xaml
