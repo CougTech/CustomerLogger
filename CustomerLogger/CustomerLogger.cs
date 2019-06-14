@@ -57,16 +57,15 @@ namespace CustomerLogger
             m_QuickCodes.Add("WC", new QuickCode_t("WC", "Writing Center", "Customer is looking for the Writing Center."));
             m_QuickCodes.Add("RF", new QuickCode_t("RF", "Reference", "Customer is looking for a technical referral."));
 
+            if (Open_Time == null || Close_Time == null) {
+                System.Console.WriteLine("NULL");
+                Open_Time = "08:00 am";
+                Close_Time = "05:00 pm";
+            }
+            //////////System.Console.WriteLine(CustomerLogger_RegistryData.Cougtech_Open_Time);
+            //System.Console.WriteLine(CustomerLogger_RegistryData.Cougtech_Close_Time);
             //Set the thread timers to the start-of-day and end-of-day times specified above
-            m_StartTimer = new System.Windows.Threading.DispatcherTimer();
-            m_StartTimer.Interval = Set_Timespan(m_StartTime);        //Timer to automatically start logging at 7:30am
-            m_StartTimer.IsEnabled = true;
-            m_StartTimer.Tick += new EventHandler(AutoStartLog);
-
-            m_EndTimer = new System.Windows.Threading.DispatcherTimer();
-            m_EndTimer.Interval = Set_Timespan(m_EndTime);            //Timer to automatically end logging at 5:30pm
-            m_EndTimer.IsEnabled = true;
-            m_EndTimer.Tick += new EventHandler(AutoEndLog);
+            Set_CougtechHours(Open_Time, Close_Time);
         }
 
         //  Properties  ///////////////////////////////////////////////////////////////////////////
@@ -75,6 +74,12 @@ namespace CustomerLogger
         {
             get { return CustomerLogger_RegistryData.Admin_Password_Hashed; }
             set { CustomerLogger_RegistryData.Admin_Password_Hashed = value; }
+        }
+
+        public static string Close_Time
+        {
+            get { return CustomerLogger_RegistryData.Cougtech_Close_Time; }
+            set { CustomerLogger_RegistryData.Cougtech_Close_Time = value; }
         }
         
         public static CougtechTicket CustomerTicket
@@ -93,13 +98,31 @@ namespace CustomerLogger
             set { CustomerLogger_RegistryData.Logging_Directory = value; }
         }
 
+        public static string Open_Time
+        {
+            get { return CustomerLogger_RegistryData.Cougtech_Open_Time; }
+            set { CustomerLogger_RegistryData.Cougtech_Open_Time = value; }
+        }
+
+        public static string Ticketing_Email_Address
+        {
+            get { return CustomerLogger_RegistryData.Email_Ticketing_Address; }
+            set { CustomerLogger_RegistryData.Email_Ticketing_Address = value; }
+        }
+
+        public static string Ticketing_Rest_Url
+        {
+            get { return CustomerLogger_RegistryData.Rest_Ticketing_URL; }
+            set { CustomerLogger_RegistryData.Rest_Ticketing_URL = value; }
+        }
+
         public static bool Ticketing_Email_En
         {
             get { return m_bTicketing_Email; }
             set { m_bTicketing_Email = value; }
         }
 
-        public static bool Ticketing_Jira_En
+        public static bool Ticketing_Rest_En
         {
             get { return m_bTicketing_Jira; }
             set { m_bTicketing_Jira = value; }
@@ -169,6 +192,54 @@ namespace CustomerLogger
                 m_CustomerTicket.Description = sDescription;
 
             return true;
+        }
+
+        public static void Set_CougtechHours(string sOpenTime, string sCloseTime)
+        {
+            int nHourOpen, nMinOpen, nHourClose, nMinClose;
+            System.Console.WriteLine(sOpenTime);
+
+            if (sOpenTime.Substring(5) == "am")
+            {
+                nHourOpen = int.Parse(sOpenTime.Substring(0, 2));
+                nMinOpen = int.Parse(sOpenTime.Substring(3, 2));
+            }
+            else if (sOpenTime.Substring(5) == "pm")
+            {
+                nHourOpen = int.Parse(sOpenTime.Substring(0, 2)) + 12;
+                nMinOpen = int.Parse(sOpenTime.Substring(3, 2));
+            }
+            else
+                nHourOpen = nMinOpen = 0;
+
+
+            if (sCloseTime.Substring(5) == "am")
+            {
+                nHourClose = int.Parse(sCloseTime.Substring(0, 2));
+                nMinClose = int.Parse(sCloseTime.Substring(3, 2));
+            }
+            else if (sCloseTime.Substring(5) == "pm")
+            {
+                nHourClose = int.Parse(sCloseTime.Substring(0, 2)) + 12;
+                nMinClose = int.Parse(sCloseTime.Substring(3, 2));
+            }
+            else
+                nHourClose = nMinClose = 0;
+
+            TimeSpan openTime, closeTime;
+
+            openTime = new TimeSpan(nHourOpen, nMinOpen, 0);
+            closeTime = new TimeSpan(nHourClose, nMinClose, 0);
+
+            m_StartTimer = new System.Windows.Threading.DispatcherTimer();
+            m_StartTimer.Interval = Set_Timespan(openTime);
+            m_StartTimer.IsEnabled = true;
+            m_StartTimer.Tick += new EventHandler(AutoStartLog);
+
+            m_EndTimer = new System.Windows.Threading.DispatcherTimer();
+            m_EndTimer.Interval = Set_Timespan(closeTime);
+            m_EndTimer.IsEnabled = true;
+            m_EndTimer.Tick += new EventHandler(AutoEndLog);
         }
 
         /// <summary>

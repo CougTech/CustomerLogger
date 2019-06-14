@@ -1,25 +1,213 @@
 ﻿<Window x:Class="CustomerLogger.Popup.AdminWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Admin" Height="351" Width="370" ResizeMode="NoResize" ShowActivated="False" ShowInTaskbar="False" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" BorderThickness="0">
+        Title="Admin" Height="336" Width="370" ResizeMode="NoResize" ShowActivated="False" ShowInTaskbar="False" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" BorderThickness="0">
     <Window.Background>
         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlLightLightColorKey}}"/>
     </Window.Background>
-    <Grid Margin="10,10,4,0">
-        <Button x:Name="Close_Button" Content="Close" Click="Close_Button_Click" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" Margin="0,0,10,10"/>
-        <Button x:Name="Exit_Button" Content="Exit Program" Margin="0,0,90,10" Background="IndianRed" Click="Exit_Button_Click" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom"/>
-        <CheckBox x:Name="TicketLogging_En_Check" Content="Enable Ticket Logging" Margin="20,15,114,0" VerticalAlignment="Top" Click="TicketLogging_En_Check_Clicked" Height="15" IsChecked="{Binding Path=Logging_En, Mode=TwoWay}" RenderTransformOrigin="0.376,0.333"/>
-        <CheckBox x:Name="TicketSubmission_Email_En_Check" Content="Enable Ticketing via Email" HorizontalAlignment="Left" Margin="20,30,0,0" VerticalAlignment="Top" Click="TicketSubmission_Email_En_Check_Clicked" Width="197" Height="15" IsChecked="{Binding Path=TicketSubmission_Email_En, Mode=TwoWay}"/>
-        <CheckBox x:Name="TicketSubmission_Rest_En_Check" Content="Enable Ticketing via REST API" HorizontalAlignment="Left" Margin="20,45,0,0" VerticalAlignment="Top" Click="TicketSubmission_Rest_En_Check_Clicked" Width="197" Height="15" IsChecked="{Binding Path=TicketSubmission_Jira_En, Mode=TwoWay}"/>
-        <TextBox x:Name="LogDirectory_textBox" Height="23" Margin="20,90,72,0" Text="" VerticalAlignment="Top"/>
-        <Label x:Name="LogDirectory_Label" Content="Log Directory" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left" Margin="15,67,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="NewPassword_Label" Content="Admin Password" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left" Margin="15,224,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="NewPassword_Button" Content="New Password" Margin="20,247,0,0" VerticalAlignment="Top" Height="28" Click="NewPassword_Button_Click" HorizontalAlignment="Left" Width="90"/>
-        <Button x:Name="LogDirectory_Browse_Button" Content="Browse" HorizontalAlignment="Right" Margin="0,90,10,0" VerticalAlignment="Top" Width="57" Height="23" Click="LogDirectory_Browse_Button_Clicked"/>
-        <Button x:Name="LogDirectory_OK_Button" Content="OK" HorizontalAlignment="Left" Margin="20,118,0,0" VerticalAlignment="Top" Width="50" Height="23" Click="LogDirectory_OK_Button_Clicked"/>
-        <TextBox x:Name="Database_URL_Textbox" Height="23" Margin="20,168,10,0" Text="" VerticalAlignment="Top"/>
-        <Label x:Name="Database_URL_Label" Content="WSU Database Lookup URL:" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left" Margin="15,145,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="Database_Url_OK_Button" Content="OK" HorizontalAlignment="Left" Margin="20,196,0,0" VerticalAlignment="Top" Width="50" Height="23" Click="Database_Url_OK_Button_Click"/>
 
+    <Grid Margin="0,10,0,0">
+        <TabControl Margin="0,0,0,0">
+            <TabItem Name="GeneralTab" Header="General">
+                <Grid Margin="0,0,0,30">
+                    <Label x:Name="CTHours_Label" Content="Cougtech Hours" FontWeight="Bold" Margin="10,10,0,0" HorizontalAlignment="Left" Width="100" Height="25" VerticalAlignment="Top"/>
+                    <Label x:Name="CTHours_Open_Label" Content="Opens:" Margin="10,40,0,0" HorizontalAlignment="Left" Width="100" Height="25" VerticalAlignment="Top"/>
+                    <Label x:Name="CTHours_OpenColon_Label" Content=":" Margin="128,40,0,0" HorizontalAlignment="Left" Width="20" Height="25" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
+                    <ComboBox x:Name="CTHours_HourOpen_Combo" HorizontalAlignment="Left" Margin="75,40,0,0" VerticalAlignment="Top" Width="53" SelectedValuePath="Content" DropDownClosed="CougtechHours_Changed">
+                        <ComboBoxItem Content="01"/>
+                        <ComboBoxItem Content="02"/>
+                        <ComboBoxItem Content="03"/>
+                        <ComboBoxItem Content="04"/>
+                        <ComboBoxItem Content="05"/>
+                        <ComboBoxItem Content="06"/>
+                        <ComboBoxItem Content="07"/>
+                        <ComboBoxItem Content="08"/>
+                        <ComboBoxItem Content="09"/>
+                        <ComboBoxItem Content="10"/>
+                        <ComboBoxItem Content="11"/>
+                        <ComboBoxItem Content="12"/>
+                    </ComboBox>
+                    <ComboBox x:Name="CTHours_MinOpen_Combo" HorizontalAlignment="Left" Margin="144,40,0,0" VerticalAlignment="Top" Width="53" SelectedValuePath="Content" DropDownClosed="CougtechHours_Changed">
+                        <ComboBoxItem Content="00"/>
+                        <ComboBoxItem Content="01"/>
+                        <ComboBoxItem Content="02"/>
+                        <ComboBoxItem Content="03"/>
+                        <ComboBoxItem Content="04"/>
+                        <ComboBoxItem Content="05"/>
+                        <ComboBoxItem Content="06"/>
+                        <ComboBoxItem Content="07"/>
+                        <ComboBoxItem Content="08"/>
+                        <ComboBoxItem Content="09"/>
+                        <ComboBoxItem Content="10"/>
+                        <ComboBoxItem Content="11"/>
+                        <ComboBoxItem Content="12"/>
+                        <ComboBoxItem Content="13"/>
+                        <ComboBoxItem Content="14"/>
+                        <ComboBoxItem Content="15"/>
+                        <ComboBoxItem Content="16"/>
+                        <ComboBoxItem Content="17"/>
+                        <ComboBoxItem Content="18"/>
+                        <ComboBoxItem Content="19"/>
+                        <ComboBoxItem Content="20"/>
+                        <ComboBoxItem Content="21"/>
+                        <ComboBoxItem Content="22"/>
+                        <ComboBoxItem Content="23"/>
+                        <ComboBoxItem Content="24"/>
+                        <ComboBoxItem Content="25"/>
+                        <ComboBoxItem Content="26"/>
+                        <ComboBoxItem Content="27"/>
+                        <ComboBoxItem Content="28"/>
+                        <ComboBoxItem Content="29"/>
+                        <ComboBoxItem Content="30"/>
+                        <ComboBoxItem Content="31"/>
+                        <ComboBoxItem Content="32"/>
+                        <ComboBoxItem Content="33"/>
+                        <ComboBoxItem Content="34"/>
+                        <ComboBoxItem Content="35"/>
+                        <ComboBoxItem Content="36"/>
+                        <ComboBoxItem Content="37"/>
+                        <ComboBoxItem Content="38"/>
+                        <ComboBoxItem Content="39"/>
+                        <ComboBoxItem Content="40"/>
+                        <ComboBoxItem Content="41"/>
+                        <ComboBoxItem Content="42"/>
+                        <ComboBoxItem Content="43"/>
+                        <ComboBoxItem Content="44"/>
+                        <ComboBoxItem Content="45"/>
+                        <ComboBoxItem Content="46"/>
+                        <ComboBoxItem Content="47"/>
+                        <ComboBoxItem Content="48"/>
+                        <ComboBoxItem Content="49"/>
+                        <ComboBoxItem Content="50"/>
+                        <ComboBoxItem Content="51"/>
+                        <ComboBoxItem Content="52"/>
+                        <ComboBoxItem Content="53"/>
+                        <ComboBoxItem Content="54"/>
+                        <ComboBoxItem Content="55"/>
+                        <ComboBoxItem Content="56"/>
+                        <ComboBoxItem Content="57"/>
+                        <ComboBoxItem Content="58"/>
+                        <ComboBoxItem Content="59"/>
+                    </ComboBox>
+                    <ComboBox x:Name="CTHours_AmPm_Combo" HorizontalAlignment="Left" Margin="202,40,0,0" VerticalAlignment="Top" Width="50" SelectedValuePath="Content" DropDownClosed="CougtechHours_Changed">
+                        <ComboBoxItem Content="am"/>
+                        <ComboBoxItem Content="pm"/>
+                    </ComboBox>
+
+                    <Label x:Name="NewPassword_Label" Content="Admin Password" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left" Margin="10,167,0,0" VerticalAlignment="Top"/>
+                    <Button x:Name="NewPassword_Button" Content="New Password" Margin="20,190,0,0" VerticalAlignment="Top" Height="28" Click="NewPassword_Button_Click" HorizontalAlignment="Left" Width="90"/>
+
+                    <TextBox x:Name="Database_URL_Textbox" Height="23" Margin="20,130,10,0" Text="" VerticalAlignment="Top" TextChanged="Textbox_TextChanged"/>
+                    <Label x:Name="Database_URL_Label" Content="WSU Database SOAP URL:" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left" Margin="10,107,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="CTHours_Closes_Label" Content="Closes:" Margin="10,67,0,0" HorizontalAlignment="Left" Width="100" Height="25" VerticalAlignment="Top"/>
+                    <Label x:Name="CTHours_ClosesColon_Label_Copy" Content=":" Margin="128,67,0,0" HorizontalAlignment="Left" Width="20" Height="25" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
+                    <ComboBox x:Name="CTHours_HourCloses_Combo" HorizontalAlignment="Left" Margin="75,67,0,0" VerticalAlignment="Top" Width="53" SelectedValuePath="Content" DropDownClosed="CougtechHours_Changed">
+                        <ComboBoxItem Content="01"/>
+                        <ComboBoxItem Content="02"/>
+                        <ComboBoxItem Content="03"/>
+                        <ComboBoxItem Content="04"/>
+                        <ComboBoxItem Content="05"/>
+                        <ComboBoxItem Content="06"/>
+                        <ComboBoxItem Content="07"/>
+                        <ComboBoxItem Content="08"/>
+                        <ComboBoxItem Content="09"/>
+                        <ComboBoxItem Content="10"/>
+                        <ComboBoxItem Content="11"/>
+                        <ComboBoxItem Content="12"/>
+                    </ComboBox>
+                    <ComboBox x:Name="CTHours_MinCloses_Combo" HorizontalAlignment="Left" Margin="144,67,0,0" VerticalAlignment="Top" Width="53" SelectedValuePath="Content" DropDownClosed="CougtechHours_Changed">
+                        <ComboBoxItem Content="00"/>
+                        <ComboBoxItem Content="01"/>
+                        <ComboBoxItem Content="02"/>
+                        <ComboBoxItem Content="03"/>
+                        <ComboBoxItem Content="04"/>
+                        <ComboBoxItem Content="05"/>
+                        <ComboBoxItem Content="06"/>
+                        <ComboBoxItem Content="07"/>
+                        <ComboBoxItem Content="08"/>
+                        <ComboBoxItem Content="09"/>
+                        <ComboBoxItem Content="10"/>
+                        <ComboBoxItem Content="11"/>
+                        <ComboBoxItem Content="12"/>
+                        <ComboBoxItem Content="13"/>
+                        <ComboBoxItem Content="14"/>
+                        <ComboBoxItem Content="15"/>
+                        <ComboBoxItem Content="16"/>
+                        <ComboBoxItem Content="17"/>
+                        <ComboBoxItem Content="18"/>
+                        <ComboBoxItem Content="19"/>
+                        <ComboBoxItem Content="20"/>
+                        <ComboBoxItem Content="21"/>
+                        <ComboBoxItem Content="22"/>
+                        <ComboBoxItem Content="23"/>
+                        <ComboBoxItem Content="24"/>
+                        <ComboBoxItem Content="25"/>
+                        <ComboBoxItem Content="26"/>
+                        <ComboBoxItem Content="27"/>
+                        <ComboBoxItem Content="28"/>
+                        <ComboBoxItem Content="29"/>
+                        <ComboBoxItem Content="30"/>
+                        <ComboBoxItem Content="31"/>
+                        <ComboBoxItem Content="32"/>
+                        <ComboBoxItem Content="33"/>
+                        <ComboBoxItem Content="34"/>
+                        <ComboBoxItem Content="35"/>
+                        <ComboBoxItem Content="36"/>
+                        <ComboBoxItem Content="37"/>
+                        <ComboBoxItem Content="38"/>
+                        <ComboBoxItem Content="39"/>
+                        <ComboBoxItem Content="40"/>
+                        <ComboBoxItem Content="41"/>
+                        <ComboBoxItem Content="42"/>
+                        <ComboBoxItem Content="43"/>
+                        <ComboBoxItem Content="44"/>
+                        <ComboBoxItem Content="45"/>
+                        <ComboBoxItem Content="46"/>
+                        <ComboBoxItem Content="47"/>
+                        <ComboBoxItem Content="48"/>
+                        <ComboBoxItem Content="49"/>
+                        <ComboBoxItem Content="50"/>
+                        <ComboBoxItem Content="51"/>
+                        <ComboBoxItem Content="52"/>
+                        <ComboBoxItem Content="53"/>
+                        <ComboBoxItem Content="54"/>
+                        <ComboBoxItem Content="55"/>
+                        <ComboBoxItem Content="56"/>
+                        <ComboBoxItem Content="57"/>
+                        <ComboBoxItem Content="58"/>
+                        <ComboBoxItem Content="59"/>
+                    </ComboBox>
+                    <ComboBox x:Name="CTHours_AmPm_Combo2" HorizontalAlignment="Left" Margin="202,67,0,0" VerticalAlignment="Top" Width="50" SelectedValuePath="Content" DropDownClosed="CougtechHours_Changed">
+                        <ComboBoxItem Content="am"/>
+                        <ComboBoxItem Content="pm"/>
+                    </ComboBox>
+                </Grid>
+            </TabItem>
+            <TabItem Name="TicketingTab" Header="Ticketing">
+                <Grid Margin="0,0,0,30">
+                    <Label x:Name="TicketSubmission_Email_Label" Content="Email Ticketing" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="TicketSubmission_Email_En_Check" Content="Enable Ticketing via Jira email services" HorizontalAlignment="Left" Margin="20,36,0,0" VerticalAlignment="Top" Click="TicketSubmission_Email_En_Check_Clicked" Width="227" Height="15" IsChecked="{Binding Path=TicketSubmission_Email_En, Mode=TwoWay}"/>
+                    <Label x:Name="TicketSubmission_Email_Label2" Content="Ticketing Address:" HorizontalAlignment="Left" Margin="15,61,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="TicketSubmission_Email_Textbox" Height="23" Margin="20,87,10,0" Text="" VerticalAlignment="Top" TextChanged="Textbox_TextChanged"/>
+
+                    <Label x:Name="TicketSubmission_Rest_Label" Content="REST API Ticketing" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="TicketSubmission_Rest_En_Check" Content="Enable Ticketing via Jira REST API" HorizontalAlignment="Left" Margin="20,146,0,0" VerticalAlignment="Top" Click="TicketSubmission_Rest_En_Check_Clicked" Width="197" Height="15" IsChecked="{Binding Path=TicketSubmission_Jira_En, Mode=TwoWay}"/>
+                    <Label x:Name="TicketSubmission_Rest_Label2" Content="REST Ticketing URL:" HorizontalAlignment="Left" Margin="15,174,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="TicketSubmission_Rest_Textbox" Height="23" Margin="20,200,10,0" Text="" VerticalAlignment="Top" TextChanged="Textbox_TextChanged"/>
+                </Grid>
+            </TabItem>
+            <TabItem Name="LoggingTab" Header="Logging">
+                <Grid Margin="0,0,0,30">
+                    <CheckBox x:Name="TicketLogging_En_Check" Content="Enable Ticket Logging" Margin="20,10,114,0" VerticalAlignment="Top" Click="TicketLogging_En_Check_Clicked" Height="15" IsChecked="{Binding Path=Logging_En, Mode=TwoWay}" RenderTransformOrigin="0.376,0.333"/>
+                    <TextBox x:Name="LogDirectory_textBox" Height="23" Margin="20,50,72,0" Text="" VerticalAlignment="Top" TextChanged="Textbox_TextChanged"/>
+                    <Label x:Name="LogDirectory_Label" Content="Log Location:" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left" Margin="15,30,0,0" VerticalAlignment="Top"/>
+                    <Button x:Name="LogDirectory_Browse_Button" Content="Browse" HorizontalAlignment="Right" Margin="0,50,10,0" VerticalAlignment="Top" Width="57" Height="23" Click="LogDirectory_Browse_Button_Clicked"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Button x:Name="Close_Button" Content="Close" Click="Close_Button_Click" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" Margin="0,0,90,10"/>
+        <Button x:Name="Exit_Button" Content="Exit Program" Margin="0,0,10,10" Background="IndianRed" Click="Exit_Button_Click" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom"/>
+        <Button x:Name="Apply_Button" Content="Apply" Click="Apply_Button_Click" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" Margin="0,0,170,10"/>
     </Grid>
 </Window>

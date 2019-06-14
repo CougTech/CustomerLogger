@@ -144,6 +144,7 @@ namespace CustomerLogger
         /// </summary>
         private void CreatePages()
         {
+            
             m_StudentId_Page = new StudentIDPage();
             m_StudentId_Page.PageFinished += PageFinished;
 
