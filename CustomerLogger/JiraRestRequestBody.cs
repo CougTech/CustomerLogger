@@ -30,18 +30,17 @@
             m_Fields = new Fields {
                 summary = sSummary,
                 description = sDescription,
-                issuetype = new Issuetype() 
-                {
+                issuetype = new Issuetype() {
                     name = "IT Help"
                 },
-                project = new Project 
-                {
+                project = new Project {
                     key = "CTWI"
                 },
-                reporter = new Reporter()
-                {
-                    emailAddress = sEmailAddress
+                reporter = new Reporter() {
+
+                   emailAddress = sEmailAddress
                 }
+
             };
             m_Fields.components[0] = new Component() {
                 name = "RestService"

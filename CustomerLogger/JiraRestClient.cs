@@ -11,14 +11,19 @@ namespace Jira_REST
     {
         //  Members ///////////////////////////////////////////////////////////////////////////////
 
-        private const string m_sRequestUrl = "https://tstjira.esg.wsu.edu/rest/api/2/issue";
+        //private const string m_sRequestUrl = "https://tstjira.esg.wsu.edu/rest/api/2/issue";
         private const string m_AuthorizationHash = "Basic Q3JpbXNvblJlc3RTZXJ2aWNlOkNRUHV5XiVYISExMg==";
 
         private JiraRestRequestBody m_RequestBody;
         private JiraRestResponseBody m_ResponseBody;
 
         //  Constructors    ///////////////////////////////////////////////////////////////////////
+        //static JiraRestRequestHandler() {
+        //    if (RequestURL == null){
+        //        RequestURL = "https://tstjira.esg.wsu.edu/rest/api/2/issue";
+        //    }
 
+        //}
         public JiraRestRequestHandler()
         {
             m_RequestBody = new JiraRestRequestBody();
@@ -27,6 +32,10 @@ namespace Jira_REST
 
         //  Properties  ///////////////////////////////////////////////////////////////////////////
 
+        public static string RequestURL{
+            get { return CustomerLogger.RegistryData.CustomerLogger_RegistryData.Rest_Ticketing_URL; }
+            set { CustomerLogger.Cougtech_CustomerLogger.Ticketing_Rest_Url = value; }
+        }
         public JiraRestRequestBody Request
         {
             get { return m_RequestBody; }
@@ -53,7 +62,7 @@ namespace Jira_REST
 
         private string GetReleases()
         {
-            HttpWebRequest requestClient = (HttpWebRequest)WebRequest.Create(m_sRequestUrl);
+            HttpWebRequest requestClient = (HttpWebRequest)WebRequest.Create(RequestURL);
 
             requestClient.Method = "POST";                                      //Set the request method to POST
             requestClient.ContentType = "application/json";                     //Set the request content type to JSON

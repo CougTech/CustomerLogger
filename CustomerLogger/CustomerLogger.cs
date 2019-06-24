@@ -116,17 +116,6 @@ namespace CustomerLogger
             set { CustomerLogger_RegistryData.Rest_Ticketing_URL = value; }
         }
 
-        public static bool Ticketing_Email_En
-        {
-            get { return m_bTicketing_Email; }
-            set { m_bTicketing_Email = value; }
-        }
-
-        public static bool Ticketing_Rest_En
-        {
-            get { return m_bTicketing_Jira; }
-            set { m_bTicketing_Jira = value; }
-        }
 
         public static string Wsu_Database_Url
         {
@@ -507,8 +496,11 @@ namespace CustomerLogger
         /// </summary>
         private static bool SubmitTicket_Email()
         {
-            string sMailFrom = "cougtech.walkin@wsu.edu" + "<" + CustomerTicket.CustomerEmail + ">";
-            string sMailTo = "cougtech.walkin@wsu.edu";
+            //string sMailFrom = "cougtech.walkin@wsu.edu" + "<" + CustomerTicket.CustomerEmail + ">";
+            //string sMailTo = "cougtech.walkin@wsu.edu";
+
+            string sMailFrom = Ticketing_Email_Address +"<" + CustomerTicket.CustomerEmail + ">";
+            string sMailTo = Ticketing_Email_Address;
 
             //New mail object
             MailMessage msg = new MailMessage();
