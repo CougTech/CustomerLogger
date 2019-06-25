@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Forms;
 
-namespace CustomerLogger
+namespace CustomerLogger.Popup
 {
     /// <summary>
     /// Interaction logic for Admin.xaml
@@ -12,7 +12,8 @@ namespace CustomerLogger
     {
         //  Members ///////////////////////////////////////////////////////////////////////////////
 
-        MainWindow m_MainWindow;
+        private bool m_bUnsavedChanges;
+        private MainWindow m_MainWindow;
           
         //  Constructors    ///////////////////////////////////////////////////////////////////////
 
@@ -21,16 +22,57 @@ namespace CustomerLogger
             InitializeComponent();
 
             m_MainWindow = window;
+            if(Cougtech_CustomerLogger.Open_Time != null)
+            {
+                string sOpenTime = Cougtech_CustomerLogger.Open_Time;
 
-            if(Cougtech_CustomerLogger.Logging_Directory != null)
-                LogDirectory_textBox.Text = Cougtech_CustomerLogger.Logging_Directory;
+                CTHours_HourOpen_Combo.SelectedValue = sOpenTime.Substring(0, 2);
+                CTHours_MinOpen_Combo.SelectedValue = sOpenTime.Substring(3, 2);
+                CTHours_AmPm_Combo.SelectedValue = sOpenTime.Substring(5);
+            }
             else
-                LogDirectory_textBox.Text = Cougtech_CustomerLogger.Logging_Directory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Cougtech_Customer_Logs";
+            {
+                CTHours_HourOpen_Combo.SelectedValue = "";
+                CTHours_MinOpen_Combo.SelectedValue = "";
+                CTHours_AmPm_Combo.SelectedValue = "";
+            }
+
+            if (Cougtech_CustomerLogger.Close_Time != null)
+            {
+                string sCloseTime = Cougtech_CustomerLogger.Close_Time;
+
+                CTHours_HourCloses_Combo.SelectedValue = sCloseTime.Substring(0, 2);
+                CTHours_MinCloses_Combo.SelectedValue = sCloseTime.Substring(3, 2);
+                CTHours_AmPm_Combo2.SelectedValue = sCloseTime.Substring(5);
+            }
+            else
+            {
+                CTHours_HourCloses_Combo.SelectedValue = "";
+                CTHours_MinCloses_Combo.SelectedValue = "";
+                CTHours_AmPm_Combo2.SelectedValue = "";
+            }
 
             if (Cougtech_CustomerLogger.Wsu_Database_Url != null)
                 Database_URL_Textbox.Text = Cougtech_CustomerLogger.Wsu_Database_Url;
             else
                 Database_URL_Textbox.Text = "";
+
+            if(Cougtech_CustomerLogger.Ticketing_Email_Address != null)
+                TicketSubmission_Email_Textbox.Text = Cougtech_CustomerLogger.Ticketing_Email_Address;
+            else
+                TicketSubmission_Email_Textbox.Text = "";
+
+            if (Cougtech_CustomerLogger.Ticketing_Rest_Url != null)
+                TicketSubmission_Rest_Textbox.Text = Cougtech_CustomerLogger.Ticketing_Rest_Url;
+            else
+                TicketSubmission_Rest_Textbox.Text = "";
+
+            if (Cougtech_CustomerLogger.Logging_Directory != null)
+                LogDirectory_textBox.Text = Cougtech_CustomerLogger.Logging_Directory;
+            else
+                LogDirectory_textBox.Text = Cougtech_CustomerLogger.Logging_Directory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Cougtech_Customer_Logs";
+
+            UnsavedChanges = false;
 
             this.Activate();
         }
@@ -38,8 +80,28 @@ namespace CustomerLogger
         //  Properties  ///////////////////////////////////////////////////////////////////////////
 
         public bool? Logging_En { get; set; }
-        public bool TicketSubmission_Email_En { get; set; }
-        public bool TicketSubmission_Rest_En { get; set; }
+
+        public bool? TicketSubmission_Email_En { get; set; }
+
+        public bool? TicketSubmission_Rest_En { get; set; }
+
+        private bool UnsavedChanges
+        {
+            get { return m_bUnsavedChanges; }
+            set 
+            {
+                if(value == true)
+                {
+                    Apply_Button.IsEnabled = true;
+                    m_bUnsavedChanges = true;
+                }
+                else
+                {
+                    Apply_Button.IsEnabled = false;
+                    m_bUnsavedChanges = false;
+                }
+            }
+        }
 
         //  Public Functions    ///////////////////////////////////////////////////////////////////
 
@@ -76,11 +138,24 @@ namespace CustomerLogger
 
         //  Private Functions   ///////////////////////////////////////////////////////////////////
 
-        private void Database_Url_OK_Button_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Apply_Button_Click(object sender, RoutedEventArgs e)
         {
+            Cougtech_CustomerLogger.Open_Time = $"{CTHours_HourOpen_Combo.Text}:{CTHours_MinOpen_Combo.Text}{CTHours_AmPm_Combo.Text}";
+            Cougtech_CustomerLogger.Close_Time = $"{CTHours_HourCloses_Combo.Text}:{CTHours_MinCloses_Combo.Text}{CTHours_AmPm_Combo2.Text}";
+
+            Cougtech_CustomerLogger.Set_CougtechHours(Cougtech_CustomerLogger.Open_Time, Cougtech_CustomerLogger.Close_Time);
+
+            Cougtech_CustomerLogger.Logging_Directory = LogDirectory_textBox.Text;
+            Cougtech_CustomerLogger.Ticketing_Email_Address = TicketSubmission_Email_Textbox.Text;
+            Cougtech_CustomerLogger.Ticketing_Rest_Url = TicketSubmission_Rest_Textbox.Text;
             Cougtech_CustomerLogger.Wsu_Database_Url = Database_URL_Textbox.Text;
 
-            System.Windows.MessageBox.Show("WSU database URL has been successfully saved.", "Success");
+            UnsavedChanges = false;
         }
 
         /// <summary>
@@ -91,6 +166,11 @@ namespace CustomerLogger
         private void Close_Button_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
+        }
+
+        private void CougtechHours_Changed(object sender, EventArgs e)
+        {
+            UnsavedChanges = true;
         }
 
         /// <summary>
@@ -117,15 +197,11 @@ namespace CustomerLogger
             if(result == System.Windows.Forms.DialogResult.OK)
             {
                 LogDirectory_textBox.Text = fileDialog.FileName;
+                UnsavedChanges = true;
+
+                //TODO move
                 Cougtech_CustomerLogger.Logging_Directory = fileDialog.FileName;
             }
-        }
-
-        private void LogDirectory_OK_Button_Clicked(object sender, RoutedEventArgs e)
-        {
-            Cougtech_CustomerLogger.Logging_Directory = LogDirectory_textBox.Text;
-
-            System.Windows.MessageBox.Show("Ticket-logging directory has been successfully saved.", "Success");
         }
 
         private void NewPassword_Button_Click(object sender, RoutedEventArgs e)
@@ -133,6 +209,11 @@ namespace CustomerLogger
             //Launch new password window
             NewPasswordWindow newPassword = new NewPasswordWindow();
             newPassword.ShowDialog();
+        }
+
+        private void Textbox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            UnsavedChanges = true;
         }
 
         /// <summary>

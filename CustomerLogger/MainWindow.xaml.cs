@@ -1,4 +1,5 @@
 ﻿using CustomerLogger.Pages;
+using CustomerLogger.Popup;
 using System;
 using System.Windows;
 using System.Windows.Navigation;
@@ -143,6 +144,7 @@ namespace CustomerLogger
         /// </summary>
         private void CreatePages()
         {
+            
             m_StudentId_Page = new StudentIDPage();
             m_StudentId_Page.PageFinished += PageFinished;
 

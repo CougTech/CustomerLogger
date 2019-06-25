@@ -13,7 +13,7 @@
         </Grid.Background>
         <Frame x:Name="ContentFrame" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#efefef" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Visible" IsTabStop="False">
         </Frame>
-        <Image x:Name="cougtechImage" Margin="0,20,10,0" Source="cougtech.png" Height="70" VerticalAlignment="Top" HorizontalAlignment="Right" Width="325"/>
+        <Image x:Name="cougtechImage" Margin="0,20,10,0" Source="csd.png" Height="200" VerticalAlignment="Top" HorizontalAlignment="Right" Width="325"/>
 
     </Grid>
 </Window>
