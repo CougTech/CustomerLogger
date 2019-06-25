@@ -138,10 +138,11 @@ namespace CustomerLogger
                 //Create a normal ticket for walk-in customer
                 string sFirstname = Wsu_Soap_Client.Get_FirstName(sNid);
                 string sWsuEmail = Wsu_Soap_Client.Get_WsuEmail(sNid);
+                
 
                 if ((sFirstname == null) || (sWsuEmail == null))
                     return false;
-
+                
                 m_CustomerTicket = new CougtechTicket(sNid, sFirstname, sWsuEmail);
             }
             else

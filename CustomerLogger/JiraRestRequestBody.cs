@@ -27,6 +27,13 @@
         /// <param name="sEmailAddress">Email address of the ticket reporter</param>
         public void Populate(string sSummary, string sDescription, string sEmailAddress)
         {
+            string sNID = "Butch";
+            if (sEmailAddress.Length > 8)
+            {
+                sNID = sEmailAddress.Substring(0, sEmailAddress.Length - 8);
+            }
+
+
             m_Fields = new Fields {
                 summary = sSummary,
                 description = sDescription,
@@ -37,13 +44,12 @@
                     key = "CTWI"
                 },
                 reporter = new Reporter() {
-
-                   emailAddress = sEmailAddress
+                    name = sNID
                 }
 
             };
             m_Fields.components[0] = new Component() {
-                name = "RestService"
+                name = "RestService" 
             };
         }
     }
@@ -160,7 +166,7 @@
     {
         //  Public Members  ///////////////////////////////////////////////////////////////////////
 
-        private string m_sEmailAddress, m_sName;
+        private string m_sEmailAddress, m_sName, m_sUserName, m_sSelf;
 
         //  Properties  ///////////////////////////////////////////////////////////////////////////
 
@@ -174,6 +180,16 @@
         {
             get { return m_sName; }
             set { m_sName = value; }
+        }
+
+        public string username {
+            get { return m_sUserName; }
+            set { m_sUserName = value; }
+        }
+
+        public string self {
+            get { return m_sSelf; }
+            set { m_sSelf = value; }
         }
     }
 }
